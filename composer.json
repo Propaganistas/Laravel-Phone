@@ -1,0 +1,24 @@
+{
+    "name": "propaganistas/laravel-phone",
+    "description": "Adds a phone validator to Laravel based on Google's libphonenumber API.",
+    "keywords": ["laravel", "libphonenumber"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Propaganistas",
+            "email": "propaganistas@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*",
+        "illuminate/validation": "4.1.*",
+        "giggsey/libphonenumber-for-php": "~5.9"
+    },
+    "autoload": {
+        "psr-0": {
+            "Propaganistas\\LaravelPhone": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
