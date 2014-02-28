@@ -31,10 +31,11 @@ class PhoneValidator extends Validator
 	/**
 	 * Provides some arbitrary validation regarding the _country field to only allow
 	 * country codes libphonenumber can handle.
+	 * If using a package based on umpirsky/country-list, invalidate the option 'ZZ => Unknown or invalid region'.
 	 */
 	public function validatePhoneCountry($attribute, $value, $parameters)
 	{
-		return (strlen($value) === 2 && ctype_alpha($value) && ctype_upper($value));
+		return (strlen($value) === 2 && ctype_alpha($value) && ctype_upper($value) && $value != 'ZZ');
 	}
 
 }
