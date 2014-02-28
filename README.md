@@ -47,3 +47,20 @@ In your custom view, you could then use:
     {{ Form::select('fieldname_country', Countries::getList(App::getLocale(), 'php', 'cldr')) }}
 
 (or replace `Countries::getList(App::getLocale(), 'php', 'cldr')` by your custom country list array)
+
+Finally, if using a Presenter package like [robclancy/presenter](https://github.com/robclancy/presenter), you could add this to the Presenter to automatically format phone fields.
+
+    /**
+    * Returns a properly formatted phone number for fields with name 'fieldname'.
+    *
+    * @return string
+    */
+    public function presentFieldname()
+    {
+      $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+      $phoneProto = $phoneUtil->parse($this->getObject()->fieldname, $this->getObject()->fieldname_country);
+      return $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+    }
+
+
+NOTE: remember to update all occurences of *fieldname* with the name of your phone field.
