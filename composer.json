@@ -15,6 +15,9 @@
         "illuminate/validation": "4.1.*",
         "giggsey/libphonenumber-for-php": "~5.9"
     },
+    "suggest": {
+        "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
+    },
     "autoload": {
         "psr-0": {
             "Propaganistas\\LaravelPhone": "src/"
