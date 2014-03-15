@@ -24,7 +24,11 @@ class PhoneValidator extends Validator
 		}
 
 		$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-		$phoneProto = $phoneUtil->parse($value, $country);
+		try {
+			$phoneProto = $phoneUtil->parse($value, $country);
+		} catch (\libphonenumber\NumberParseException $e) {
+			return FALSE;
+		}
 		return $phoneUtil->isValidNumber($phoneProto);
 	}
 
