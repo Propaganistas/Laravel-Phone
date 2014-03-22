@@ -36,7 +36,7 @@ To validate a field using the phone validator, use the `phone` keyword in your v
           'phonefield'  => 'phone:US,BE',
         );
 
-  The validator will check for validity in all of the provided country codes, so feel free to add as much country codes as you like.
+  The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
 
 - Or you don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [CountryList package by monarobase](https://github.com/Monarobase/country-list). The country field has to be named similar to the phone field but with `_country` appended:
 
