@@ -1,8 +1,7 @@
 {
     "name": "propaganistas/laravel-phone",
-    "version": "1.0.0",
     "description": "Adds a phone validator to Laravel based on Google's libphonenumber API.",
-    "keywords": ["laravel", "libphonenumber"],
+    "keywords": ["laravel", "libphonenumber", "validation", "phone"],
     "license": "MIT",
     "authors": [
         {

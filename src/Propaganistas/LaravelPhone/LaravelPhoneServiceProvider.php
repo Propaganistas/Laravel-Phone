@@ -1,7 +1,6 @@
 <?php namespace Propaganistas\LaravelPhone;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Factory;
 
 class LaravelPhoneServiceProvider extends ServiceProvider
 {
@@ -19,16 +18,7 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->package('propaganistas/laravel-phone');
-
-		// Registering the validator extension with the validator factory.
-		$this->app['validator']->resolver(function($translator, $data, $rules, $messages)
-		{
-			// Set custom validation error message.
-			$messages['phone'] = $translator->get('laravel-phone::validation.phone');
-
-			return new PhoneValidator($translator, $data, $rules, $messages);
-		});
+		$this->app['validator']->extend('phone', 'Propaganistas\LaravelPhone\Validator@phone');
 	}
 
 	/**
@@ -37,14 +27,4 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	 * @return void
 	 */
 	public function register() {}
-
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array();
-	}
 }
