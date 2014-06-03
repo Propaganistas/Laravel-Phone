@@ -55,11 +55,14 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 
         public function presentPhonefield()
         {
+          $phone = $this->getObject()->phonefield;
+          $country = $this->getObject()->phonefield_country; // Or supply a country code yourself...
+          
           $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-          $phoneProto = $phoneUtil->parse($this->getObject()->phonefield, $this->getObject()->phonefield_country);
+          $phoneProto = $phoneUtil->parse($phone, $country);
           return $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
         }
 
 
 
-NOTE: remember to update all occurences of *phonefield* and *countryfield* with their respective names.
+NOTE: remember to update all occurences of *phonefield* (and *phonefield_country*) with their respective names.
