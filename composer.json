@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*",
-        "illuminate/validation": "4.1.*",
+        "illuminate/support": "4.*",
+        "illuminate/validation": "4.*",
         "giggsey/libphonenumber-for-php": "~5.9"
     },
     "suggest": {
@@ -23,5 +23,5 @@
             "Propaganistas\\LaravelPhone": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "prefer-stable": true
 }
