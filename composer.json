@@ -13,7 +13,7 @@
         "php": ">=5.3.0",
         "illuminate/support": "4.*",
         "illuminate/validation": "4.*",
-        "giggsey/libphonenumber-for-php": "~5.9"
+        "giggsey/libphonenumber-for-php": "6.1.*"
     },
     "suggest": {
         "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
