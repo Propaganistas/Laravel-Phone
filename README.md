@@ -1,6 +1,6 @@
 # Laravel Phone Validator
 
-Adds a phone validator to Laravel 4 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
+Adds a phone validator to Laravel 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
 
 ### Installation
 
