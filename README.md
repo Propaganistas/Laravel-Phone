@@ -29,7 +29,7 @@ Adds a phone validator to Laravel 5 based on the [PHP port](https://github.com/g
     ],
     ```
 
-4. In your `app/lang` add for each language an extra language line for the validator:
+4. In your languages directory, add for each language an extra language line for the validator:
 
     ```php
     "phone" => "The :attribute field contains an invalid number.",
