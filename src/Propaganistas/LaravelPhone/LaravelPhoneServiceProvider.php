@@ -20,7 +20,7 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	{
 		$this->app['validator']->extend('phone', 'Propaganistas\LaravelPhone\Validator@phone');
 
-        include __DIR__.'/../../helpers.php';
+        include __DIR__ . '/../../../helpers.php';
 	}
 
 	/**
