@@ -10,7 +10,7 @@ Adds a phone validator to Laravel 5 based on the [PHP port](https://github.com/g
     "propaganistas/laravel-phone": "~2.0"
     ```
     
-    If you need the Laravel 4 version, you can point at version `~1.2` or head over to the `Laravel4` branch. By default libphonenumber v7 will be used. However if you'd like to keep working with liphonenumber v6 (Laravel 4 only), please take a look at the `lib-v6` branch.
+    If you need the Laravel 4 version, you can point at version `~1.2` or head over to the `Laravel4` branch.
 
 2. Run the Composer update comand
 
