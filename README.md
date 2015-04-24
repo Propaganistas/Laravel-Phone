@@ -65,10 +65,11 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 {{ Form::select('phonefield_country', Countries::getList(App::getLocale(), 'php', 'cldr')) }}
     ```
 
-  And finally format a fetched phone value using the helper function:
+### Display
+Format a fetched phone value using the helper function:
 
-    ```php
+```php
 phone_format($phone_number, $country_code, $format = null)
-    ```
+```
 
-  The `$format` parameter is optional and should be a constant of `\libphonenumber\PhoneNumberFormat` (defaults to `\libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
+The `$format` parameter is optional and should be a constant of `\libphonenumber\PhoneNumberFormat` (defaults to `\libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
