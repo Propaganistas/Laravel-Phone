@@ -65,17 +65,15 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 {{ Form::select('phonefield_country', Countries::getList(App::getLocale(), 'php', 'cldr')) }}
     ```
 
-  Finally, if using a Presenter package like [robclancy/presenter](https://github.com/robclancy/presenter), you could add this to the Presenter to automatically format phone fields.
+  Finally format a fetched phone value like this:
 
     ```php
-public function presentPhonefield()
-{
-        $phone = $this->getObject()->phonefield;
-        $country = $this->getObject()->phonefield_country; // Or supply a country code yourself...
-        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-        $phoneProto = $phoneUtil->parse($phone, $country);
-        return $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
-}
+$phone = $model->phonefield; // Fetch the phone field value
+$country = $mdel->phonefield_country; // Fetch the country value or supply a country code yourself...
+        
+$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+$phoneProto = $phoneUtil->parse($phone, $country);
+$formatted_phone = $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
     ```
 
 NOTE: remember to update all occurences of *phonefield* (and *phonefield_country*) with their respective names.
