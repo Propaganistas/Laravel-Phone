@@ -21,7 +21,10 @@
     "autoload": {
         "psr-0": {
             "Propaganistas\\LaravelPhone": "src/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]        
     },
     "prefer-stable": true
 }
