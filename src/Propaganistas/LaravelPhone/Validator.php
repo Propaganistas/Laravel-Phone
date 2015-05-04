@@ -31,7 +31,7 @@ class Validator
 			$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 			try {
 				$phoneProto = $phoneUtil->parse($value, $country);
-				if ($phoneUtil->isValidNumber($phoneProto)) {
+				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)) {
 					return TRUE;
 				}
 			}
