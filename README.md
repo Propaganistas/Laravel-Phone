@@ -1,6 +1,6 @@
 # Laravel Phone Validator
 
-Adds a phone validator to Laravel 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
+Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
 
 ### Installation
 
@@ -9,10 +9,8 @@ Adds a phone validator to Laravel 5 based on the [PHP port](https://github.com/g
     ```json
     "propaganistas/laravel-phone": "~2.0"
     ```
-    
-    If you need the Laravel 4 version, you can point at version `~1.2` or head over to the `Laravel4` branch.
 
-2. Run the Composer update comand
+2. Run the Composer update command
 
     ```bash
     $ composer update
