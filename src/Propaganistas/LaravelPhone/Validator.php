@@ -1,5 +1,8 @@
 <?php namespace Propaganistas\LaravelPhone;
 
+use libphonenumber\PhoneNumberUtil;
+use libphonenumber\NumberParseException;
+
 class Validator
 {
 	/**
@@ -28,14 +31,14 @@ class Validator
 
 		// Now try each country during validation.
 		foreach ($countries as $country) {
-			$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+			$phoneUtil = PhoneNumberUtil::getInstance();
 			try {
 				$phoneProto = $phoneUtil->parse($value, $country);
 				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)) {
 					return TRUE;
 				}
 			}
-			catch (\libphonenumber\NumberParseException $e) {}
+			catch (NumberParseException $e) {}
 		}
 
 		return FALSE;
