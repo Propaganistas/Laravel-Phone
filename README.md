@@ -16,7 +16,7 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
     $ composer update
     ```
 
-3. In your `app/config/app.php` add `'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider',` to the end of the `$providers` array
+3. In your app config, add `'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'` to the end of the `$providers` array
 
     ```php
     'providers' => [
@@ -30,7 +30,7 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
 4. In your languages directory, add for each language an extra language line for the validator:
 
     ```php
-    "phone" => "The :attribute field contains an invalid number.",
+"phone" => "The :attribute field contains an invalid number.",
     ```
 
 ### Usage
@@ -40,9 +40,7 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 - You either specify *ISO 3166-1 compliant* country codes yourself as parameters for the validator, e.g.:
 
     ```php
-    public static $rules = [
-        'phonefield'  => 'phone:US,BE',
-    ];
+'phonefield'  => 'phone:US,BE',
     ```
 
   The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
@@ -50,10 +48,8 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 - Or you don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [CountryList package by monarobase](https://github.com/Monarobase/country-list). The country field has to be named similar to the phone field but with `_country` appended:
 
     ```php
-    public static $rules = [
-        'phonefield'          => 'phone',
-        'phonefield_country'  => 'required_with:phonefield',
-    ];
+'phonefield'          => 'phone',
+'phonefield_country'  => 'required_with:phonefield',
     ```
 
   If using the CountryList package, you could then use the following in the form view:
@@ -62,6 +58,14 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 {{ Form::text('phonefield') }}
 {{ Form::select('phonefield_country', Countries::getList(App::getLocale(), 'php', 'cldr')) }}
     ```
+
+To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
+
+```php
+'phonefield'  => 'phone:US,BE,mobile,landline',
+```
+
+Supported types include `mobile`, `landline`, `voip`, `pager`, `uan`, `voicemail` and `emergency`.
 
 ### Display
 Format a fetched phone value using the helper function:

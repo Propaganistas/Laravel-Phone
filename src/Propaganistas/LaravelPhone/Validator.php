@@ -2,6 +2,7 @@
 
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberType;
 
 class Validator
 {
@@ -11,21 +12,55 @@ class Validator
 	public function phone($attribute, $value, $parameters, $validator)
 	{
 		$data = $validator->getData();
-		// Check if we should validate using a default country or a *_country field.
-		if (!empty($parameters)) {
-			$countries = $parameters;
-		}
-		elseif (isset($data[$attribute.'_country'])) {
-			$countries = array($data[$attribute.'_country']);
-		}
-		else {
-			return FALSE;
+		$countries = array();
+		$types = array();
+
+		// Explode the parameters in appropriate arrays.
+		foreach ($parameters as $parameter) {
+			if ($this->phone_country($parameter)) {
+				// Extract countries.
+				$countries[] = $parameter;
+			}
+			else {
+				// Check if we should only allow specific phone number types.
+				switch ($parameter) {
+					case 'landline':
+						$types[] = PhoneNumberType::FIXED_LINE;
+						$types[] = PhoneNumberType::FIXED_LINE_OR_MOBILE;
+						break;
+					case 'mobile':
+						$types[] = PhoneNumberType::MOBILE;
+						$types[] = PhoneNumberType::FIXED_LINE_OR_MOBILE;
+						break;
+					case 'voip':
+						$types[] = PhoneNumberType::VOIP;
+						break;
+					case 'pager':
+						$types[] = PhoneNumberType::PAGER;
+						break;
+					case 'uan':
+						$types[] = PhoneNumberType::UAN;
+						break;
+					case 'emergency':
+						$types[] = PhoneNumberType::EMERGENCY;
+						break;
+					case 'voicemail':
+						$types[] = PhoneNumberType::VOICEMAIL;
+						break;
+					default:
+						break;
+				}
+			}
 		}
 
-		// Filter out invalid countries.
-		foreach ($countries as $key => $country) {
-			if (!$this->phone_country($country)) {
-				unset($countries[$key]);
+		if (empty($countries)) {
+			// Check for the existence of a country field.
+			if (isset($data[$attribute.'_country']) && $this->phone_country($data[$attribute.'_country'])) {
+				$countries = array($data[$attribute.'_country']);
+			}
+			else {
+				// No phone country found; validation cannot proceed.
+				return FALSE;
 			}
 		}
 
@@ -34,7 +69,8 @@ class Validator
 			$phoneUtil = PhoneNumberUtil::getInstance();
 			try {
 				$phoneProto = $phoneUtil->parse($value, $country);
-				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)) {
+				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)
+					&& (empty($types) || in_array($phoneUtil->getNumberType($phoneProto), $types))) {
 					return TRUE;
 				}
 			}
