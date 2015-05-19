@@ -9,7 +9,7 @@ class Validator
 	/**
 	 * Validates a phone number field using libphonenumber.
 	 */
-	public function phone($attribute, $value, $parameters, $validator)
+	public function validatePhone($attribute, $value, $parameters, $validator)
 	{
 		$data = $validator->getData();
 		$countries = array();
