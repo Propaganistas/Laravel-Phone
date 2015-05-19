@@ -18,7 +18,7 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->app['validator']->extend('phone', 'Propaganistas\LaravelPhone\Validator@validatePhone');
+		$this->app['validator']->extend('phone', 'Propaganistas\LaravelPhone\Validator@phone');
 	}
 
 	/**
