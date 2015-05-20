@@ -52,11 +52,10 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 'phonefield_country'  => 'required_with:phonefield',
     ```
 
-  If using the CountryList package, you could then use the following in the form view:
+  If using the CountryList package, you could then use the following snippet to populate a country selection list:
 
     ```php
-{{ Form::text('phonefield') }}
-{{ Form::select('phonefield_country', Countries::getList(App::getLocale(), 'php', 'cldr')) }}
+Countries::getList(App::getLocale(), 'php', 'cldr'))
     ```
 
 To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
