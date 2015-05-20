@@ -37,7 +37,7 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
 
 To validate a field using the phone validator, use the `phone` keyword in your validation rules array. The phone validator is able to operate in two ways.
 
-- You either specify *ISO 3166-1 compliant* country codes yourself as parameters for the validator, e.g.:
+- You either specify [*ISO 3166-1 alpha-2 compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) country codes yourself as parameters for the validator, e.g.:
 
     ```php
 'phonefield'  => 'phone:US,BE',
