@@ -1,10 +1,10 @@
 # Laravel Phone Validator
 
 [![Build Status](https://travis-ci.org/Propaganistas/Laravel-Phone.svg)](https://travis-ci.org/Propaganistas/Laravel-Phone)
+[![Code Climate](https://codeclimate.com/github/Propaganistas/Laravel-Phone/badges/gpa.svg)](https://codeclimate.com/github/Propaganistas/Laravel-Phone)
 [![Latest Stable Version](https://poser.pugx.org/propaganistas/laravel-phone/v/stable)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
-[![Code Climate](https://codeclimate.com/github/Propaganistas/Laravel-Phone/badges/gpa.svg)](https://codeclimate.com/github/Propaganistas/Laravel-Phone)
 
 Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
 
