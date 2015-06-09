@@ -4,12 +4,12 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberType;
 
-class Validator
+trait PhoneValidatorTrait
 {
 	/**
 	 * Validates a phone number field using libphonenumber.
 	 */
-	public function phone($attribute, $value, $parameters, $validator)
+	public function validatePhone($attribute, $value, $parameters, $validator)
 	{
 		$data = $validator->getData();
 		$countries = array();
@@ -17,7 +17,7 @@ class Validator
 
 		// Explode the parameters in appropriate arrays.
 		foreach ($parameters as $parameter) {
-			if ($this->phone_country($parameter)) {
+			if ($this->isPhoneCountry($parameter)) {
 				// Extract countries.
 				$countries[] = $parameter;
 			}
@@ -55,7 +55,7 @@ class Validator
 
 		if (empty($countries)) {
 			// Check for the existence of a country field.
-			if (isset($data[$attribute.'_country']) && $this->phone_country($data[$attribute.'_country'])) {
+			if (isset($data[$attribute.'_country']) && $this->isPhoneCountry($data[$attribute.'_country'])) {
 				$countries = array($data[$attribute.'_country']);
 			}
 			else {
@@ -85,7 +85,7 @@ class Validator
 	 * country codes libphonenumber can handle.
 	 * If using a package based on umpirsky/country-list, invalidate the option 'ZZ => Unknown or invalid region'.
 	 */
-	public function phone_country($country)
+	public function isPhoneCountry($country)
 	{
 		return (strlen($country) === 2 && ctype_alpha($country) && ctype_upper($country) && $country != 'ZZ');
 	}
