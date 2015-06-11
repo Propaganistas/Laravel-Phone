@@ -67,10 +67,9 @@ Countries::getList(App::getLocale(), 'php', 'cldr'))
 To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
 
 ```php
-'phonefield'  => 'phone:US,BE,mobile,landline',
+'phonefield'  => 'phone:US,BE,mobile',
 ```
-
-Supported types include `mobile`, `landline`, `voip`, `pager`, `uan`, `voicemail` and `emergency`.
+The most common types are `mobile` and `fixed_line`, but feel free to use any of the types defined [here](https://github.com/giggsey/libphonenumber-for-php/blob/master/src/libphonenumber/PhoneNumberType.php).
 
 ### Display
 Format a fetched phone value using the helper function:
