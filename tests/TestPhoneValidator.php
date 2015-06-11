@@ -103,14 +103,30 @@ class PhoneValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function testValidatePhoneNoDefaultCountryNoCountryField()
 	{
+		$this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException');
+
 		// Validator with no country field or given country.
-		$this->assertFalse($this->performValidation(['value' => '016123456']));
+		$this->performValidation(['value' => '016123456']);
 
 		// Validator with no country field or given country, wrong type.
-		$this->assertFalse($this->performValidation(['value' => '016123456', 'params' => 'mobile']));
+		$this->performValidation(['value' => '016123456', 'params' => 'mobile']);
 
 		// Validator with no country field or given country, correct type.
-		$this->assertFalse($this->performValidation(['value' => '0499123456', 'params' => 'mobile']));
+		$this->performValidation(['value' => '0499123456', 'params' => 'mobile']);
+
+		// Validator with no country field or given country, correct type, faulty parameter.
+		$this->performValidation(['value' => '0499123456', 'params' => 'mobile,xyz']);
+	}
+
+	public function testValidatePhoneFaultyParameters()
+	{
+		$this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\InvalidParameterException');
+
+		// Validator with given country, correct type, faulty parameter.
+		$this->performValidation(['value' => '016123456', 'params' => 'BE,mobile,xyz']);
+
+		// Validator with country field, correct type, faulty parameter.
+		$this->performValidation(['value' => '016123456', 'params' => 'mobile,xyz', 'country' => 'BE']);
 	}
 
 	public function testPhoneFormatHelperFunction()
