@@ -15,6 +15,9 @@
         "illuminate/validation": "~4.0|~5.0",
         "giggsey/libphonenumber-for-php": "~7.0"
     },
+    "require-dev": {
+        "codeclimate/php-test-reporter": "dev-master"
+    },
     "suggest": {
         "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
     },
