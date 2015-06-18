@@ -24,7 +24,7 @@ class PhoneValidator {
 	 * Countries to validate against.
 	 * @var array
 	 */
-	protected $allowedCountries   = array();
+	protected $allowedCountries = array();
 
 	/**
 	 * Untransformed phone number types to validate against.
@@ -36,7 +36,7 @@ class PhoneValidator {
 	 * Transformed phone number types to validate against.
 	 * @var array
 	 */
-	protected $allowedTypes       = array();
+	protected $allowedTypes = array();
 
 	/**
 	 * Supplied validator parameters.
@@ -127,7 +127,7 @@ class PhoneValidator {
 		}
 		// Else use the supplied parameters.
 		else {
-			$this->allowedCountries = array_filter($this->parameters, function ($item) {
+			$this->allowedCountries = array_filter($this->parameters, function($item) {
 				return $this->isPhoneCountry($item);
 			});
 
@@ -143,12 +143,12 @@ class PhoneValidator {
 	protected function determineTypes()
 	{
 		// Get phone types.
-		$this->untransformedTypes = array_filter($this->parameters, function ($item) {
+		$this->untransformedTypes = array_filter($this->parameters, function($item) {
 			return $this->isPhoneType($item);
 		});
 
 		// Transform valid types to their namespaced class constant.
-		$this->allowedTypes = array_map(function ($item) {
+		$this->allowedTypes = array_map(function($item) {
 			return constant($this->constructPhoneTypeConstant($item));
 		}, $this->untransformedTypes);
 
