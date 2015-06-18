@@ -1,5 +1,0 @@
-{
-    "providers": [
-        "Propaganistas\\LaravelPhone\\LaravelPhoneServiceProvider"
-    ]
-}
