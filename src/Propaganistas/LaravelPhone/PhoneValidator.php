@@ -122,7 +122,7 @@ class PhoneValidator {
 		// Check for the existence of a country field.
 		$field = $this->attribute . '_country';
 		if (isset($this->data[$field])) {
-			$this->allowedCountries = ($this->isPhoneCountry($this->data[$field])) ? array($this->data[$field]) : null;
+			$this->allowedCountries = ($this->isPhoneCountry($this->data[$field])) ? array($this->data[$field]) : array();
 			// No exception should be thrown since empty country fields should validate to false.
 		}
 		// Else use the supplied parameters.
