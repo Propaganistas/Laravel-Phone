@@ -153,7 +153,7 @@ class PhoneValidator {
 		}, $this->untransformedTypes);
 
 		// Add in the unsure number type if applicable.
-		if (!empty(array_intersect(['FIXED_LINE', 'MOBILE'], $this->parameters))) {
+		if (array_intersect(['FIXED_LINE', 'MOBILE'], $this->parameters)) {
 			$this->allowedTypes[] = PhoneNumberType::FIXED_LINE_OR_MOBILE;
 		}
 	}
