@@ -58,8 +58,9 @@ class PhoneValidator {
 		$this->checkLeftoverParameters();
 
 		// Perform validation.
+		$phoneUtil = PhoneNumberUtil::getInstance();
+		
 		foreach ($this->allowedCountries as $country) {
-			$phoneUtil = PhoneNumberUtil::getInstance();
 			try {
 				$phoneProto = $phoneUtil->parse($value, $country);
 				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)
