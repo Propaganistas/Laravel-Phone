@@ -23,8 +23,19 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
     $ composer update
     ```
 
-3. In your app config, add `'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'` to the end of the `$providers` array
+3. In your app config, add the Service Provider to the end of the `$providers` array
 
+   **Laravel 5**
+     ```php
+    'providers' => [
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        ...
+        Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+    ],
+    ```
+    
+   **Laravel 4**
     ```php
     'providers' => [
         'Illuminate\Foundation\Providers\ArtisanServiceProvider',
