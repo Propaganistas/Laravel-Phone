@@ -29,9 +29,8 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	 */
 	public function register() {
 		// Make libphonenumber available in the IoC.
-		$this->app->singleton(PhoneNumberUtil::class, function ($app) {
+		$this->app->singleton('libphonenumber', function ($app) {
 			return PhoneNumberUtil::getInstance();
 		});
-		$this->app->alias(PhoneNumberUtil::class, 'libphonenumber');
 	}
 }
