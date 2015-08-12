@@ -1,6 +1,7 @@
 <?php namespace Propaganistas\LaravelPhone;
 
 use Illuminate\Support\ServiceProvider;
+use libphonenumber\PhoneNumberUtil;
 
 class LaravelPhoneServiceProvider extends ServiceProvider
 {
@@ -26,5 +27,11 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
-	public function register() {}
+	public function register() {
+		// Make libphonenumber available in the IoC.
+		$this->app->singleton(PhoneNumberUtil::class, function ($app) {
+			return PhoneNumberUtil::getInstance();
+		});
+		$this->app->alias(PhoneNumberUtil::class, 'libphonenumber');
+	}
 }
