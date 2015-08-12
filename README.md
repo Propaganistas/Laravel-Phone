@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
 
-Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://code.google.com/p/libphonenumber/) by [giggsey](https://github.com/giggsey).
+Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://github.com/googlei18n/libphonenumber) by [giggsey](https://github.com/giggsey).
 
 ### Installation
 
@@ -23,8 +23,19 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
     $ composer update
     ```
 
-3. In your app config, add `'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'` to the end of the `$providers` array
+3. In your app config, add the Service Provider to the end of the `$providers` array
 
+   **Laravel 5**
+     ```php
+    'providers' => [
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        ...
+        Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+    ],
+    ```
+    
+   **Laravel 4**
     ```php
     'providers' => [
         'Illuminate\Foundation\Providers\ArtisanServiceProvider',
