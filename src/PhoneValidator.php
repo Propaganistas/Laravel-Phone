@@ -57,17 +57,30 @@ class PhoneValidator {
 		$this->determineTypes();
 		$this->checkLeftoverParameters();
 
-		// Perform validation.
 		$phoneUtil = PhoneNumberUtil::getInstance();
-		
+
+		// Perform validation.
 		foreach ($this->allowedCountries as $country) {
 			try {
+				// For default countries or country field, the following throws NumberParseException if
+				// not parsed correctly against the supplied country.
+				// For automatic detection: tries to discover the country code using from the number itself.
 				$phoneProto = $phoneUtil->parse($value, $country);
-				if ($phoneUtil->isValidNumberForRegion($phoneProto, $country)
-						&& (empty($this->allowedTypes) || in_array($phoneUtil->getNumberType($phoneProto), $this->allowedTypes))
-				) {
-					return true;
+
+				// For automatic detection, the number should have a country code.
+				// Check if type is allowed.
+				if ($phoneProto->hasCountryCode() && empty($this->allowedTypes) || in_array($phoneUtil->getNumberType($phoneProto), $this->allowedTypes)) {
+
+					// Automatic detection:
+					if ($country == 'ZZ') {
+						// Validate if the international phone number is valid for its contained country.
+						return $phoneUtil->isValidNumber($phoneProto);
+					}
+
+					// Force validation of number against the specified country.
+					return $phoneUtil->isValidNumberForRegion($phoneProto, $country);
 				}
+
 			} catch (NumberParseException $e) {
 				// Proceed to default validation error.
 			}
@@ -126,6 +139,10 @@ class PhoneValidator {
 			$this->allowedCountries = ($this->isPhoneCountry($this->data[$field])) ? array($this->data[$field]) : array();
 			// No exception should be thrown since empty country fields should validate to false.
 		}
+		// Or if we need to parse for automatic detection.
+		elseif (in_array('AUTO', $this->parameters)) {
+			$this->allowedCountries = array('ZZ');
+		}
 		// Else use the supplied parameters.
 		else {
 			$this->allowedCountries = array_filter($this->parameters, function($item) {
@@ -166,7 +183,8 @@ class PhoneValidator {
 	 */
 	protected function checkLeftoverParameters()
 	{
-		$leftovers = array_diff($this->parameters, $this->allowedCountries, $this->untransformedTypes);
+		// Remove the automatic detection option if applicable.
+		$leftovers = array_diff($this->parameters, $this->allowedCountries, $this->untransformedTypes, array('AUTO'));
 		if (!empty($leftovers)) {
 			throw new InvalidParameterException(implode(', ', $leftovers));
 		}

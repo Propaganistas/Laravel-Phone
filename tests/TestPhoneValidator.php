@@ -101,6 +101,19 @@ class PhoneValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->performValidation(['value' => '016123456', 'params' => 'mobile', 'country' => 'NL']));
 	}
 
+
+	public function testValidatePhoneAutomaticDetectionFromInternationalInput()
+	{
+		// Validator with correct international input.
+		$this->assertTrue($this->performValidation(['value' => '+3216123456', 'params' => 'AUTO']));
+
+		// Validator with wrong international input.
+		$this->assertFalse($this->performValidation(['value' => '003216123456', 'params' => 'AUTO']));
+
+		// Validator with wrong international input.
+		$this->assertFalse($this->performValidation(['value' => '+321456', 'params' => 'AUTO']));
+	}
+
 	public function testValidatePhoneNoDefaultCountryNoCountryField()
 	{
 		$this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException');

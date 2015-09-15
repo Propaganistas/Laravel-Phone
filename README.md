@@ -53,7 +53,7 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
 
 ### Usage
 
-To validate a field using the phone validator, use the `phone` keyword in your validation rules array. The phone validator is able to operate in two ways.
+To validate a field using the phone validator, use the `phone` keyword in your validation rules array. The phone validator is able to operate in **three** ways.
 
 - You either specify [*ISO 3166-1 alpha-2 compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) country codes yourself as parameters for the validator, e.g.:
 
@@ -63,7 +63,7 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 
   The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
 
-- Or you don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [CountryList package by monarobase](https://github.com/Monarobase/country-list). The country field has to be named similar to the phone field but with `_country` appended:
+- You don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [CountryList package by monarobase](https://github.com/Monarobase/country-list). The country field has to be named similar to the phone field but with `_country` appended:
 
     ```php
 'phonefield'          => 'phone',
@@ -75,6 +75,14 @@ To validate a field using the phone validator, use the `phone` keyword in your v
     ```php
 Countries::getList(App::getLocale(), 'php', 'cldr'))
     ```
+
+- You instruct the validator to detect which country the number belongs to using the `AUTO` keyword:
+
+    ```php
+'phonefield'  => 'phone:AUTO',
+    ```
+
+  The validator will try to extract the country from the number itself and then check if the number is valid for that country. Note that this will only work when phone numbers are entered in *international format* (prefixed with a `+` sign, e.g. +32 ....). Leading double zeros will **NOT** be parsed correctly as this isn't an established consistency.
 
 To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
 
