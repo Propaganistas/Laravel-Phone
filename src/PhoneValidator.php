@@ -1,5 +1,6 @@
 <?php namespace Propaganistas\LaravelPhone;
 
+use Illuminate\Contracts\Validation\Validator;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberType;
@@ -28,21 +29,21 @@ class PhoneValidator
      *
      * @var array
      */
-    protected $allowedCountries = array();
+    protected $allowedCountries = [];
 
     /**
      * Untransformed phone number types to validate against.
      *
      * @var array
      */
-    protected $untransformedTypes = array();
+    protected $untransformedTypes = [];
 
     /**
      * Transformed phone number types to validate against.
      *
      * @var array
      */
-    protected $allowedTypes = array();
+    protected $allowedTypes = [];
 
     /**
      * Supplied validator parameters.
@@ -53,8 +54,16 @@ class PhoneValidator
 
     /**
      * Validates a phone number.
+     *
+     * @param  string                                     $attribute
+     * @param  mixed                                      $value
+     * @param  array                                      $parameters
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @return bool
+     * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
+     * @throws \Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException
      */
-    public function validatePhone($attribute, $value, $parameters, $validator)
+    public function validatePhone($attribute, $value, array $parameters, Validator $validator)
     {
         $this->attribute = $attribute;
         $this->data = $validator->getData();
@@ -102,7 +111,7 @@ class PhoneValidator
      * Checks if the supplied string is a valid country code using some arbitrary country validation.
      * If using a package based on umpirsky/country-list, invalidate the option 'ZZ => Unknown or invalid region'.
      *
-     * @param string $country
+     * @param  string $country
      * @return bool
      */
     public function isPhoneCountry($country)
@@ -113,7 +122,7 @@ class PhoneValidator
     /**
      * Checks if the supplied string is a valid phone number type.
      *
-     * @param string $type
+     * @param  string $type
      * @return bool
      */
     public function isPhoneType($type)
@@ -127,7 +136,7 @@ class PhoneValidator
     /**
      * Constructs the corresponding namespaced class constant for a phone number type.
      *
-     * @param string $type
+     * @param  string $type
      * @return string
      */
     protected function constructPhoneTypeConstant($type)
@@ -145,11 +154,11 @@ class PhoneValidator
         // Check for the existence of a country field.
         $field = $this->attribute . '_country';
         if (isset($this->data[$field])) {
-            $this->allowedCountries = ($this->isPhoneCountry($this->data[$field])) ? array($this->data[$field]) : array();
+            $this->allowedCountries = ($this->isPhoneCountry($this->data[$field])) ? [$this->data[$field]] : [];
             // No exception should be thrown since empty country fields should validate to false.
         } // Or if we need to parse for automatic detection.
         elseif (in_array('AUTO', $this->parameters)) {
-            $this->allowedCountries = array('ZZ');
+            $this->allowedCountries = ['ZZ'];
         } // Else use the supplied parameters.
         else {
             $this->allowedCountries = array_filter($this->parameters, function ($item) {
