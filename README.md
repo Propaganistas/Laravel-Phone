@@ -20,7 +20,7 @@ Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github
 2. Run the Composer update command
 
     ```bash
-    $ composer update
+    composer update
     ```
 
 3. In your app config, add the Service Provider to the end of the `$providers` array
