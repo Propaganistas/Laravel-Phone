@@ -95,8 +95,13 @@ class PhoneValidator
                         return $phoneUtil->isValidNumber($phoneProto);
                     }
 
-                    // Force validation of number against the specified country.
-                    return $phoneUtil->isValidNumberForRegion($phoneProto, $country);
+                    // Validate number against the specified country.  Return only if success.
+                    // If failure, continue loop to next specfied country
+                    $success = $phoneUtil->isValidNumberForRegion($phoneProto, $country);
+
+                    if ($success) {
+                        return true;
+                    }
                 }
 
             } catch (NumberParseException $e) {
@@ -104,6 +109,7 @@ class PhoneValidator
             }
         }
 
+        // All specified country validations have failed.
         return false;
     }
 
