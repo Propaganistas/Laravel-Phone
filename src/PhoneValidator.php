@@ -1,6 +1,5 @@
 <?php namespace Propaganistas\LaravelPhone;
 
-use Illuminate\Contracts\Validation\Validator;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberType;
@@ -55,15 +54,15 @@ class PhoneValidator
     /**
      * Validates a phone number.
      *
-     * @param  string                                     $attribute
-     * @param  mixed                                      $value
-     * @param  array                                      $parameters
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @param  string $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @param  object $validator
      * @return bool
      * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
      * @throws \Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException
      */
-    public function validatePhone($attribute, $value, array $parameters, Validator $validator)
+    public function validatePhone($attribute, $value, array $parameters, $validator)
     {
         $this->attribute = $attribute;
         $this->data = $validator->getData();
