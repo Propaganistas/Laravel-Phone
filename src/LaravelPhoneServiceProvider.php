@@ -7,13 +7,6 @@ class LaravelPhoneServiceProvider extends ServiceProvider
 {
 
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
@@ -34,5 +27,6 @@ class LaravelPhoneServiceProvider extends ServiceProvider
         $this->app->singleton('libphonenumber', function ($app) {
             return PhoneNumberUtil::getInstance();
         });
+        $this->app->alias('libphonenumber', 'libphonenumber\PhoneNumberUtil');
     }
 }

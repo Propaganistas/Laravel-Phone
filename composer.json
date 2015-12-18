@@ -15,8 +15,8 @@
         "illuminate/validation": "~4.0|~5.0",
         "giggsey/libphonenumber-for-php": "~7.0"
     },
-    "suggest": {
-        "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
+    "require-dev": {
+        "orchestra/testbench": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -25,6 +25,14 @@
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Propaganistas\\LaravelPhone\\Tests\\": "tests/"
+        }
+    },
+    "suggest": {
+        "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
     },
     "prefer-stable": true
 }

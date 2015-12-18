@@ -1,8 +1,8 @@
 <?php namespace Propaganistas\LaravelPhone;
 
-use libphonenumber\PhoneNumberUtil;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberType;
+use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException;
 use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
 
@@ -38,9 +38,9 @@ class PhoneValidator
     /**
      * PhoneValidator constructor.
      */
-    public function __construct()
+    public function __construct(PhoneNumberUtil $lib)
     {
-        $this->lib = PhoneNumberUtil::getInstance();
+        $this->lib = $lib;
     }
 
     /**
@@ -74,6 +74,33 @@ class PhoneValidator
 
         // All specified country validations have failed.
         return false;
+    }
+
+    /**
+     * Parses the supplied validator parameters.
+     *
+     * @param array $parameters
+     * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
+     */
+    protected function assignParameters(array $parameters)
+    {
+        $types = array();
+
+        foreach ($parameters as $parameter) {
+            if ($this->isPhoneCountry($parameter)) {
+                $this->countries[] = $parameter;
+            } elseif ($this->isPhoneType($parameter)) {
+                $types[] = $parameter;
+            } elseif ($parameter == 'AUTO') {
+                $this->autodetect = true;
+            } else {
+                // Force developers to write proper code.
+                throw new InvalidParameterException($parameter);
+            }
+        }
+
+        $this->types = $this->parseTypes($types);
+
     }
 
     /**
@@ -133,33 +160,6 @@ class PhoneValidator
     }
 
     /**
-     * Parses the supplied validator parameters.
-     *
-     * @param array $parameters
-     * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
-     */
-    protected function assignParameters(array $parameters)
-    {
-        $types = array();
-
-        foreach ($parameters as $parameter) {
-            if ($this->isPhoneCountry($parameter)) {
-                $this->countries[] = $parameter;
-            } elseif ($this->isPhoneType($parameter)) {
-                $types[] = $parameter;
-            } elseif ($parameter == 'AUTO') {
-                $this->autodetect = true;
-            } else {
-                // Force developers to write proper code.
-                throw new InvalidParameterException($parameter);
-            }
-        }
-
-        $this->types = $this->parseTypes($types);
-
-    }
-
-    /**
      * Parses the supplied phone number types.
      *
      * @param array $types
@@ -169,11 +169,11 @@ class PhoneValidator
     {
         // Transform types to their namespaced class constant.
         array_walk($types, function (&$type) {
-            $type = constant($this->constructPhoneTypeConstant($type));
+            $type = constant('\libphonenumber\PhoneNumberType::' . $type);
         });
 
         // Add in the unsure number type if applicable.
-        if (array_intersect(['FIXED_LINE', 'MOBILE'], $types)) {
+        if (array_intersect([PhoneNumberType::FIXED_LINE, PhoneNumberType::MOBILE], $types)) {
             $types[] = PhoneNumberType::FIXED_LINE_OR_MOBILE;
         }
 
@@ -203,18 +203,7 @@ class PhoneValidator
         // Legacy support.
         $type = ($type == 'LANDLINE' ? 'FIXED_LINE' : $type);
 
-        return defined($this->constructPhoneTypeConstant($type));
-    }
-
-    /**
-     * Constructs the corresponding namespaced class constant for a phone number type.
-     *
-     * @param  string $type
-     * @return string
-     */
-    protected function constructPhoneTypeConstant($type)
-    {
-        return '\libphonenumber\PhoneNumberType::' . $type;
+        return defined('\libphonenumber\PhoneNumberType::' . $type);
     }
 
 }
