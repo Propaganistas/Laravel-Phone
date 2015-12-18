@@ -9,6 +9,7 @@ php:
 
 before_script:
   - composer self-update
+  - if [ "$TRAVIS_PHP_VERSION" == "5.4" ]; then composer require orchestra/testbench ~2.0.0 --dev; fi
   - composer install --prefer-source --no-interaction --dev
 
 script:
