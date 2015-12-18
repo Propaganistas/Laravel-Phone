@@ -6,12 +6,7 @@ use Orchestra\Testbench\TestCase;
 class PhoneValidatorTest extends TestCase
 {
 
-    private $validator;
-
-    protected function getPackageProviders($app)
-    {
-        return ['Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'];
-    }
+    protected $validator;
 
     public function setUp()
     {
