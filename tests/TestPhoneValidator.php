@@ -46,8 +46,8 @@ class PhoneValidatorTest extends PHPUnit_Framework_TestCase {
 		// Validator with multiple country values, one correct.
 		$this->assertTrue($this->performValidation(['value' => '016123456', 'params' => 'BE,NL']));
 
-                // Validator with multiple country values, value correct for second country in list.
-                $this->assertTrue($this->performValidation(['value' => '016123456', 'params' => 'NL,BE']));
+		// Validator with multiple country values, value correct for second country in list.
+        $this->assertTrue($this->performValidation(['value' => '016123456', 'params' => 'NL,BE']));
 
 		// Validator with multiple wrong country values.
 		$this->assertFalse($this->performValidation(['value' => '016123456', 'params' => 'DE,NL']));
