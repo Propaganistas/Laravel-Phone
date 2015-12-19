@@ -76,13 +76,13 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 Countries::getList(App::getLocale(), 'php', 'cldr'))
     ```
 
-- You instruct the validator to detect which country the number belongs to using the `AUTO` keyword:
+- You instruct the validator to detect which country the number belongs to using the `AUTO` keyword (and optionally any fallback countries):
 
     ```php
-'phonefield'  => 'phone:AUTO',
+'phonefield'  => 'phone:AUTO,US',
     ```
 
-  The validator will try to extract the country from the number itself and then check if the number is valid for that country. Note that this will only work when phone numbers are entered in *international format* (prefixed with a `+` sign, e.g. +32 ....). Leading double zeros will **NOT** be parsed correctly as this isn't an established consistency.
+  The validator will try to extract the country from the number itself and then check if the number is valid for that country. If the country could not be guessed it will be validated using the fallback countries if provided. Note that country guessing will only work when phone numbers are entered in *international format* (prefixed with a `+` sign, e.g. +32 ....). Leading double zeros will **NOT** be parsed correctly as this isn't an established consistency.
 
 To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
 
