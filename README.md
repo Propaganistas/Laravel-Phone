@@ -95,7 +95,7 @@ The most common types are `mobile` and `fixed_line`, but feel free to use any of
 Format a fetched phone value using the helper function:
 
 ```php
-phone_format($phone_number, $country_code, $format = null)
+phone_format($phone_number, $country_code, $format = PhoneNumberFormat::INTERNATIONAL)
 ```
 
-The `$format` parameter is optional and should be a constant of `\libphonenumber\PhoneNumberFormat` (defaults to `\libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
+The `$format` parameter is optional and should be a constant of `libphonenumber\PhoneNumberFormat` (defaults to `libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
