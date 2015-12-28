@@ -22,6 +22,13 @@ class PhoneValidator
     protected $autodetect = false;
 
     /**
+     * Whether to allow lenient checking of numbers (i.e. landline without area codes)
+     *
+     * @var object
+     */
+    protected $lenient = false;
+
+    /**
      * Countries to validate against.
      *
      * @var array
@@ -93,6 +100,8 @@ class PhoneValidator
                 $types[] = $parameter;
             } elseif ($parameter == 'AUTO') {
                 $this->autodetect = true;
+            } elseif ($parameter = 'LENIENT') {
+                $this->lenient = true;
             } else {
                 // Force developers to write proper code.
                 throw new InvalidParameterException($parameter);
@@ -141,6 +150,11 @@ class PhoneValidator
             // For automatic detection, the number should have a country code.
             // Check if type is allowed.
             if ($phoneNumber->hasCountryCode() && (empty($this->types) || in_array($this->lib->getNumberType($phoneNumber), $this->types))) {
+
+                // Lenient validation:
+                if ($this->lenient) {
+                    return $this->lib->isPossibleNumber($phoneNumber);
+                }
 
                 // Automatic detection:
                 if ($this->autodetect) {
