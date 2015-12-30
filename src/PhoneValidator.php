@@ -100,7 +100,7 @@ class PhoneValidator
                 $types[] = $parameter;
             } elseif ($parameter == 'AUTO') {
                 $this->autodetect = true;
-            } elseif ($parameter = 'LENIENT') {
+            } elseif ($parameter == 'LENIENT') {
                 $this->lenient = true;
             } else {
                 // Force developers to write proper code.
@@ -147,14 +147,14 @@ class PhoneValidator
             // If no country was given, tries to discover the country code from the number itself.
             $phoneNumber = $this->lib->parse($number, $country);
 
+            // Lenient validation; doesn't need a country code.
+            if ($this->lenient) {
+                return $this->lib->isPossibleNumber($phoneNumber);
+            }
+
             // For automatic detection, the number should have a country code.
             // Check if type is allowed.
             if ($phoneNumber->hasCountryCode() && (empty($this->types) || in_array($this->lib->getNumberType($phoneNumber), $this->types))) {
-
-                // Lenient validation:
-                if ($this->lenient) {
-                    return $this->lib->isPossibleNumber($phoneNumber);
-                }
 
                 // Automatic detection:
                 if ($this->autodetect) {
