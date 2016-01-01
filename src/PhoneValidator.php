@@ -24,7 +24,7 @@ class PhoneValidator
     /**
      * Whether to allow lenient checking of numbers (i.e. landline without area codes).
      *
-     * @var object
+     * @var bool
      */
     protected $lenient = false;
 
@@ -117,7 +117,7 @@ class PhoneValidator
      * When using a country field, we should validate to false if country is empty so no exception
      * will be thrown.
      *
-     * @param $attribute
+     * @param string $attribute
      * @param $validator
      * @throws \Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException
      */
@@ -185,7 +185,7 @@ class PhoneValidator
     protected function parseTypes(array $types)
     {
         // Transform types to their namespaced class constant.
-        array_walk($types, function (&$type) {
+        array_walk($types, function(&$type) {
             $type = constant('\libphonenumber\PhoneNumberType::' . $type);
         });
 

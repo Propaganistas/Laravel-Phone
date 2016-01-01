@@ -6,7 +6,7 @@ use libphonenumber\PhoneNumberFormat;
 if (!function_exists('phone_format')) {
     /**
      * Formats a phone number and country for display.
-     * 
+     *
      * @param string   $phone
      * @param string   $country
      * @param int|null $format
