@@ -18,7 +18,9 @@ class PhoneValidatorTest extends TestCase
     private function performValidation($data)
     {
         $rule = 'phone' . (isset($data['rule']) ? ':' . $data['rule'] : '');
-        $validator = $this->validator->make(array_only($data, ['field', 'field_country']), ['field' => $rule]);
+        $validator = $this->validator->make(
+            array_only($data, ['field', 'field_country']), ['field' => $rule]
+        );
 
         return $validator->passes();
     }
@@ -128,6 +130,15 @@ class PhoneValidatorTest extends TestCase
 
         // Validator with no country field or given country, correct type, faulty parameter.
         $this->performValidation(['field' => '0499123456', 'rule' => 'mobile,xyz']);
+    }
+
+    public function testValidatePhoneLenient()
+    {
+        // Validator with no AU area code, lenient off
+        $this->assertFalse($this->performValidation(['field' => '88885555', 'rule' => 'AU']));
+
+        // Validator with no AU area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '88885555', 'rule' => 'AU,lenient']));
     }
 
     public function testValidatePhoneFaultyParameters()
