@@ -134,11 +134,35 @@ class PhoneValidatorTest extends TestCase
 
     public function testValidatePhoneLenient()
     {
-        // Validator with no AU area code, lenient off
+        // Validator with AU area code, lenient off
         $this->assertFalse($this->performValidation(['field' => '88885555', 'rule' => 'AU']));
 
-        // Validator with no AU area code, lenient on
-        $this->assertTrue($this->performValidation(['field' => '88885555', 'rule' => 'AU,lenient']));
+        // Validator with AU area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '88885555', 'rule' => 'LENIENT,AU']));
+
+        // Validator with correct country field supplied, lenient on
+        $this->assertTrue($this->performValidation(['field' => '88885555', 'rule' => 'LENIENT', 'field_country' => 'AU']));
+
+        // Validator with wrong country field supplied, lenient on
+        $this->assertTrue($this->performValidation(['field' => '88885555', 'rule' => 'LENIENT', 'field_country' => 'BE']));
+
+        // Validator with no area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '+16502530000', 'rule' => 'LENIENT']));
+
+        // Validator with US area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '+16502530000', 'rule' => 'LENIENT,US']));
+
+        // Validator with no area code, lenient off
+        $this->assertFalse($this->performValidation(['field' => '6502530000', 'rule' => 'LENIENT']));
+
+        // Validator with US area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '6502530000', 'rule' => 'LENIENT,US']));
+
+        // Validator with US area code, lenient off
+        $this->assertFalse($this->performValidation(['field' => '2530000', 'rule' => 'LENIENT']));
+
+        // Validator with US area code, lenient on
+        $this->assertTrue($this->performValidation(['field' => '2530000', 'rule' => 'LENIENT,US']));
     }
 
     public function testValidatePhoneFaultyParameters()

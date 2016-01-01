@@ -91,10 +91,10 @@ To specify constraints on the number type, just append the allowed types to the 
 ```
 The most common types are `mobile` and `fixed_line`, but feel free to use any of the types defined [here](https://github.com/giggsey/libphonenumber-for-php/blob/master/src/libphonenumber/PhoneNumberType.php).
 
-You can also enable more lenient validation (for example, landlines without area codes) by using the LENIENT parameter, e.g.:
+You can also enable more lenient validation (for example, fixed lines without area codes) by using the `LENIENT` parameter. This feature inherently doesn't play well with country autodetection and number type validation, so use such combo at own risk.
 
 ```php
-'phonefield'  => 'phone:AU,LENIENT',
+'phonefield'  => 'phone:LENIENT,US',
 ```
 
 ### Display
