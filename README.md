@@ -98,7 +98,7 @@ You can also enable more lenient validation (for example, fixed lines without ar
 ```
 
 ### Display
-Format a fetched phone value using the helper function:
+Format a fetched phone value using the helper function. `$country_code` is the country the phone number belongs to.
 
 ```php
 phone_format($phone_number, $country_code, $format = PhoneNumberFormat::INTERNATIONAL)
