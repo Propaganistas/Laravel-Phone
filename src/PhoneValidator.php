@@ -123,7 +123,7 @@ class PhoneValidator
      */
     protected function checkCountries($attribute, $validator)
     {
-        $data = $validator->getData();
+        $data = array_dot($validator->getData());
         $countryField = $attribute . '_country';
 
         if (isset($data[$countryField])) {

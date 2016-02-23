@@ -18,8 +18,16 @@ class PhoneValidatorTest extends TestCase
     private function performValidation($data)
     {
         $rule = 'phone' . (isset($data['rule']) ? ':' . $data['rule'] : '');
-        $validator = $this->validator->make(
-            array_only($data, ['field', 'field_country']), ['field' => $rule]
+
+        $input = array_only($data, ['field', 'field_country']);
+        $input['nested']['field'] = $input['field'];
+        if (isset($input['field_country'])) {
+            $input['nested']['field_country'] = $input['field_country'];
+        }
+
+        $validator = $this->validator->make($input,
+            ['field' => $rule,
+             'nested.field' => $rule]
         );
 
         return $validator->passes();
