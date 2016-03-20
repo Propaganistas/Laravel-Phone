@@ -29,6 +29,13 @@ class PhoneValidator
     protected $lenient = false;
 
     /**
+     * The field to use for country if not passed as a parameter.
+     *
+     * @var null|string
+     */
+    protected $countryField = null;
+
+    /**
      * Countries to validate against.
      *
      * @var array
@@ -63,7 +70,13 @@ class PhoneValidator
      */
     public function validatePhone($attribute, $value, array $parameters, $validator)
     {
-        $this->assignParameters(array_map('strtoupper', $parameters));
+        $countryField = $this->checkCountryField($parameters, $validator);
+
+        $filterCountryFieldCallback = function ($value) use ($countryField) {
+            return $value !== $countryField;
+        };
+
+        $this->assignParameters(array_map('strtoupper', array_filter($parameters, $filterCountryFieldCallback)));
 
         $this->checkCountries($attribute, $validator);
 
@@ -81,6 +94,27 @@ class PhoneValidator
 
         // All specified country validations have failed.
         return false;
+    }
+
+    /**
+     * Parses parameters to find one that matches a field for country input.
+     *
+     * @param array $parameters
+     * @param object $validator
+     *
+     * @return null|string
+     */
+    public function checkCountryField(array $parameters, $validator)
+    {
+        $data = array_dot($validator->getData());
+
+        foreach ($parameters as $parameter) {
+            if (isset($data[$parameter])) {
+                return $this->countryField = $parameter;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -124,7 +158,7 @@ class PhoneValidator
     protected function checkCountries($attribute, $validator)
     {
         $data = array_dot($validator->getData());
-        $countryField = $attribute . '_country';
+        $countryField = ($this->countryField == false ? $attribute . '_country' : $this->countryField);
 
         if (isset($data[$countryField])) {
             $this->countries = array($data[$countryField]);

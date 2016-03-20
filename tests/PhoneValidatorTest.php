@@ -19,7 +19,7 @@ class PhoneValidatorTest extends TestCase
     {
         $rule = 'phone' . (isset($data['rule']) ? ':' . $data['rule'] : '');
 
-        $input = array_only($data, ['field', 'field_country']);
+        $input = array_except($data, ['rule']);
         $input['nested']['field'] = $input['field'];
         if (isset($input['field_country'])) {
             $input['nested']['field_country'] = $input['field_country'];
@@ -102,6 +102,24 @@ class PhoneValidatorTest extends TestCase
 
         // Validator with wrong country field supplied, wrong type.
         $this->assertFalse($this->performValidation(['field' => '016123456', 'rule' => 'mobile', 'field_country' => 'NL'
+        ]));
+    }
+
+    public function testValidatePhoneWithCustomCountryField()
+    {
+        // Validator with correct country field supplied, correct type.
+        $this->assertTrue($this->performValidation(['field' => '0499123456', 'rule' => 'mobile,country_code', 'country_code' => 'BE']));
+
+        // Validator with correct country field supplied, wrong type.
+        $this->assertFalse($this->performValidation(['field' => '016123456', 'rule' => 'mobile,country_code', 'country_code' => 'BE'
+        ]));
+
+        // Validator with wrong country field supplied, correct type.
+        $this->assertFalse($this->performValidation(['field' => '0499123456', 'rule' => 'mobile,country_code', 'country_code' => 'NL'
+        ]));
+
+        // Validator with wrong country field supplied, wrong type.
+        $this->assertFalse($this->performValidation(['field' => '016123456', 'rule' => 'mobile,country_code', 'country_code' => 'NL'
         ]));
     }
 
