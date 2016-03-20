@@ -1,38 +1,43 @@
 {
-    "name": "propaganistas/laravel-phone",
-    "description": "Adds a phone validator to Laravel based on Google's libphonenumber API.",
-    "keywords": ["laravel", "libphonenumber", "validation", "phone"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Propaganistas",
-            "email": "Propaganistas@users.noreply.github.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "~4.0|~5.0",
-        "illuminate/validation": "~4.0|~5.0",
-        "giggsey/libphonenumber-for-php": "~7.0"
+  "name": "propaganistas/laravel-phone",
+  "description": "Adds a phone validator to Laravel based on Google's libphonenumber API.",
+  "keywords": [
+    "laravel",
+    "libphonenumber",
+    "validation",
+    "phone"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Propaganistas",
+      "email": "Propaganistas@users.noreply.github.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/support": "~4.0|~5.0",
+    "illuminate/validation": "~4.0|~5.0",
+    "giggsey/libphonenumber-for-php": "~7.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Propaganistas\\LaravelPhone\\": "src/"
     },
-    "require-dev": {
-        "orchestra/testbench": "^3.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Propaganistas\\LaravelPhone\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Propaganistas\\LaravelPhone\\Tests\\": "tests/"
-        }
-    },
-    "suggest": {
-        "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
-    },
-    "prefer-stable": true
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Propaganistas\\LaravelPhone\\Tests\\": "tests/"
+    }
+  },
+  "suggest": {
+    "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
+  },
+  "prefer-stable": true
 }

@@ -3,8 +3,8 @@
 class Laravel4 extends PhoneValidatorTest
 {
 
-    protected function getPackageProviders()
-    {
-        return ['Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'];
-    }
+	protected function getPackageProviders()
+	{
+		return ['Propaganistas\LaravelPhone\LaravelPhoneServiceProvider'];
+	}
 }
