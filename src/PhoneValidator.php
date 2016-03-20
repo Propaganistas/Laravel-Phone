@@ -15,6 +15,13 @@ class PhoneValidator
 	protected $lib;
 
 	/**
+	 * Dotted validator data.
+	 *
+	 * @var array
+	 */
+	protected $data;
+
+	/**
 	 * Whether the country should be auto-detected.
 	 *
 	 * @var bool
@@ -31,7 +38,7 @@ class PhoneValidator
 	/**
 	 * The field to use for country if not passed as a parameter.
 	 *
-	 * @var null|string
+	 * @var string|null
 	 */
 	protected $countryField = null;
 
@@ -70,15 +77,11 @@ class PhoneValidator
 	 */
 	public function validatePhone($attribute, $value, array $parameters, $validator)
 	{
-		$countryField = $this->checkCountryField($parameters, $validator);
+		$this->data = array_dot($validator->getData());
 
-		$filterCountryFieldCallback = function($value) use ($countryField) {
-			return $value !== $countryField;
-		};
+		$this->assignParameters($parameters);
 
-		$this->assignParameters(array_map('strtoupper', array_filter($parameters, $filterCountryFieldCallback)));
-
-		$this->checkCountries($attribute, $validator);
+		$this->checkCountries($attribute);
 
 		// If autodetecting, let's first try without a country.
 		// Otherwise use provided countries as default.
@@ -97,27 +100,6 @@ class PhoneValidator
 	}
 
 	/**
-	 * Parses parameters to find one that matches a field for country input.
-	 *
-	 * @param array  $parameters
-	 * @param object $validator
-	 *
-	 * @return null|string
-	 */
-	public function checkCountryField(array $parameters, $validator)
-	{
-		$data = array_dot($validator->getData());
-
-		foreach ($parameters as $parameter) {
-			if (isset($data[$parameter])) {
-				return $this->countryField = $parameter;
-			}
-		}
-
-		return null;
-	}
-
-	/**
 	 * Parses the supplied validator parameters.
 	 *
 	 * @param array $parameters
@@ -128,17 +110,23 @@ class PhoneValidator
 		$types = array();
 
 		foreach ($parameters as $parameter) {
-			if ($this->isPhoneCountry($parameter)) {
-				$this->countries[] = $parameter;
-			} elseif ($this->isPhoneType($parameter)) {
-				$types[] = $parameter;
-			} elseif ($parameter == 'AUTO') {
-				$this->autodetect = true;
-			} elseif ($parameter == 'LENIENT') {
-				$this->lenient = true;
+			if ($this->isInputField($parameter)) {
+				$this->countryField = $parameter;
 			} else {
-				// Force developers to write proper code.
-				throw new InvalidParameterException($parameter);
+				$parameter = strtoupper($parameter);
+
+				if ($this->isPhoneCountry($parameter)) {
+					$this->countries[] = $parameter;
+				} elseif ($this->isPhoneType($parameter)) {
+					$types[] = $parameter;
+				} elseif ($parameter == 'AUTO') {
+					$this->autodetect = true;
+				} elseif ($parameter == 'LENIENT') {
+					$this->lenient = true;
+				} else {
+					// Force developers to write proper code.
+					throw new InvalidParameterException($parameter);
+				}
 			}
 		}
 
@@ -152,16 +140,14 @@ class PhoneValidator
 	 * will be thrown.
 	 *
 	 * @param string $attribute
-	 * @param        $validator
 	 * @throws \Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException
 	 */
-	protected function checkCountries($attribute, $validator)
+	protected function checkCountries($attribute)
 	{
-		$data = array_dot($validator->getData());
-		$countryField = ($this->countryField == false ? $attribute . '_country' : $this->countryField);
+		$countryField = (is_null($this->countryField) ? $attribute . '_country' : $this->countryField);
 
-		if (isset($data[$countryField])) {
-			$this->countries = array($data[$countryField]);
+		if ($value = $this->isInputField($countryField)) {
+			$this->countries = array($value);
 		} elseif (!$this->autodetect && !$this->lenient && empty($this->countries)) {
 			throw new NoValidCountryFoundException;
 		}
@@ -231,9 +217,16 @@ class PhoneValidator
 		return $types;
 	}
 
-	public function isCountryField($field)
+	/**
+	 * Checks if the given field is an actual input field and returns the value if applicable.
+	 * Null otherwise.
+	 *
+	 * @param string $field
+	 * @return mixed|null
+	 */
+	public function isInputField($field)
 	{
-
+		return isset($this->data[$field]) ? $this->data[$field] : null;
 	}
 
 	/**
