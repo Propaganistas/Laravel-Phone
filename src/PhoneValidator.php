@@ -128,9 +128,7 @@ class PhoneValidator
 		$types = array();
 
 		foreach ($parameters as $parameter) {
-			if ($fieldValue = $this->isInputField($parameter)) {
-				$parameter = $fieldValue;
-			} elseif ($this->isPhoneCountry($parameter)) {
+			if ($this->isPhoneCountry($parameter)) {
 				$this->countries[] = $parameter;
 			} elseif ($this->isPhoneType($parameter)) {
 				$types[] = $parameter;
