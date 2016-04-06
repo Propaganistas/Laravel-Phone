@@ -12,11 +12,16 @@ if (!function_exists('phone_format')) {
 	 * @param int|null $format
 	 * @return string
 	 */
-	function phone_format($phone, $country, $format = PhoneNumberFormat::INTERNATIONAL)
-	{
-		$lib = App::make('libphonenumber');
-		$phoneNumber = $lib->parse($phone, $country);
+	function phone_format($phone, $country = null, $format = PhoneNumberFormat::INTERNATIONAL)
+    	{
+        	$lib = App::make('libphonenumber');
 
-		return $lib->format($phoneNumber, $format);
-	}
+        	if (!$country) {
+        	  $country = App::getLocale();
+        	}
+
+        	$phoneNumber = $lib->parse($phone, $country);
+
+        	return $lib->format($phoneNumber, $format);
+    	}
 }
