@@ -106,7 +106,7 @@ You can also enable more lenient validation (for example, fixed lines without ar
 Format a fetched phone value using the helper function. `$country_code` is the country the phone number belongs to.
 
 ```php
-phone_format($phone_number, $country_code, $format = PhoneNumberFormat::INTERNATIONAL)
+phone_format($phone_number, $country_code = null, $format = PhoneNumberFormat::INTERNATIONAL)
 ```
-
+If no `$country_code` was given, the current application locale will be used as default.
 The `$format` parameter is optional and should be a constant of `libphonenumber\PhoneNumberFormat` (defaults to `libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
