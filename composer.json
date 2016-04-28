@@ -18,7 +18,8 @@
     "php": ">=5.4.0",
     "illuminate/support": "~4.0|~5.0",
     "illuminate/validation": "~4.0|~5.0",
-    "giggsey/libphonenumber-for-php": "~7.0"
+    "giggsey/libphonenumber-for-php": "~7.0",
+    "julien-c/iso3166": "~2.0"
   },
   "require-dev": {
     "orchestra/testbench": "^3.1"

@@ -1,5 +1,6 @@
 <?php namespace Propaganistas\LaravelPhone;
 
+use Iso3166\Codes as ISO3166;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
@@ -230,15 +231,14 @@ class PhoneValidator
 	}
 
 	/**
-	 * Checks if the supplied string is a valid country code using some arbitrary country validation.
-	 * If using a package based on umpirsky/country-list, invalidate the option 'ZZ => Unknown or invalid region'.
+	 * Checks if the supplied string is a valid country code.
 	 *
 	 * @param  string $country
 	 * @return bool
 	 */
 	public function isPhoneCountry($country)
 	{
-		return (strlen($country) === 2 && ctype_alpha($country) && ctype_upper($country) && $country != 'ZZ');
+		return ISO3166::isValid($country);
 	}
 
 	/**
