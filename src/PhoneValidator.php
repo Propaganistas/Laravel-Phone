@@ -147,8 +147,8 @@ class PhoneValidator
 	{
 		$countryField = (is_null($this->countryField) ? $attribute . '_country' : $this->countryField);
 
-		if ($value = $this->isInputField($countryField)) {
-			$this->countries = array($value);
+		if ($this->isInputField($countryField)) {
+			$this->countries = array(array_get($this->data, $countryField));
 		} elseif (!$this->autodetect && !$this->lenient && empty($this->countries)) {
 			throw new NoValidCountryFoundException;
 		}
@@ -219,15 +219,14 @@ class PhoneValidator
 	}
 
 	/**
-	 * Checks if the given field is an actual input field and returns the value if applicable.
-	 * Null otherwise.
+	 * Checks if the given field is an actual input field.
 	 *
 	 * @param string $field
-	 * @return mixed|null
+	 * @return bool
 	 */
 	public function isInputField($field)
 	{
-		return isset($this->data[$field]) ? $this->data[$field] : null;
+		return ! is_null(array_get($this->data, $field));
 	}
 
 	/**
