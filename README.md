@@ -7,49 +7,40 @@
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
 
-Adds a phone validator to Laravel 4 and 5 based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://github.com/googlei18n/libphonenumber) by [giggsey](https://github.com/giggsey).
+Adds a phone validator to Laravel 4|5 and Lumen based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://github.com/googlei18n/libphonenumber) by [giggsey](https://github.com/giggsey).
 
 ### Installation
 
-1. In the `require` key of `composer.json` file add the following
+Run the following command to install the latest version of the package
 
-    ```json
-    "propaganistas/laravel-phone": "~2.0"
-    ```
+```bash
+composer require propaganistas/laravel-phone
+```
 
-2. Run the Composer update command
+**Laravel**
 
-    ```bash
-    composer update
-    ```
+In your app config, add the Service Provider to the `$providers` array
 
-3. In your app config, add the Service Provider to the end of the `$providers` array
+ ```php
+'providers' => [
+    ...
+    Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
+],
+```
 
-   **Laravel 5**
-     ```php
-    'providers' => [
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        ...
-        Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
-    ],
-    ```
-    
-   **Laravel 4**
-    ```php
-    'providers' => [
-        'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-        'Illuminate\Auth\AuthServiceProvider',
-        ...
-        'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider',
-    ],
-    ```
+In your languages directory, add for each language an extra language line for the validator:
 
-4. In your languages directory, add for each language an extra language line for the validator:
-
-    ```php
+```php
 "phone" => "The :attribute field contains an invalid number.",
-    ```
+```
+
+**Lumen**
+
+In `bootstrap/app.php`, register the Service Provider
+
+```php
+$app->register(Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class);
+```
 
 ### Usage
 
