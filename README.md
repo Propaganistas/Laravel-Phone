@@ -26,6 +26,11 @@ In your app config, add the Service Provider to the `$providers` array
     ...
     Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
 ],
+
+'aliases' => [
+    ...
+    'Phone' => Propaganistas\LaravelPhone\LaravelPhoneFacade::class
+]
 ```
 
 In your languages directory, add for each language an extra language line for the validator:

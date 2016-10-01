@@ -13,6 +13,7 @@
     <testsuites>
         <testsuite name="Package Test Suite">
             <file>./tests/Laravel5.php</file>
+            <file>./tests/FacadeTest.php</file>
         </testsuite>
     </testsuites>
     <filter>
