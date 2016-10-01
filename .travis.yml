@@ -1,25 +1,18 @@
 language: php
 
-matrix:
-    include:
-        - php: 5.4
-          env: PHPUNIT=laravel4.phpunit.xml
-          before_script: composer require orchestra/testbench ~2.0.0
-        - php: 5.5
-          env: PHPUNIT=phpunit.xml
-        - php: 5.6
-          env: PHPUNIT=phpunit.xml
-        - php: 7.0
-          env: PHPUNIT=phpunit.xml
-        - php: hhvm
-          env: PHPUNIT=phpunit.xml
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
 
 before_script:
-  - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'xdebug.enable = On' >> /etc/hhvm/php.ini; fi
+  - composer install
 
 script:
-  - phpunit --coverage-clover=coverage.clover --configuration $PHPUNIT
+  - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

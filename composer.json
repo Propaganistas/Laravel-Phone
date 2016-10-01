@@ -17,13 +17,14 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "illuminate/support": "~4.0|~5.0",
-    "illuminate/validation": "~4.0|~5.0",
-    "giggsey/libphonenumber-for-php": "~7.0",
-    "julien-c/iso3166": "~2.0"
+    "illuminate/support": "^4.0|^5.0",
+    "illuminate/validation": "^4.0|^5.0",
+    "giggsey/libphonenumber-for-php": "^7.0",
+    "julien-c/iso3166": "^2.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^3.1"
+    "orchestra/testbench": "^2.0|^3.0",
+    "phpunit/phpunit": "^4.0|^5.0"
   },
   "autoload": {
     "psr-4": {
@@ -40,6 +41,5 @@
   },
   "suggest": {
     "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
-  },
-  "prefer-stable": true
+  }
 }

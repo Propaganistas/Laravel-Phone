@@ -1,14 +1,12 @@
-<?php
+<?php namespace Propaganistas\LaravelPhone;
 
-namespace Propaganistas\LaravelPhone;
+use Illuminate\Support\Facades\Facade;
 
-/**
- * Class LaravelPhoneFacade
- * @package Propaganistas\LaravelPhone
- */
-class LaravelPhoneFacade extends \Illuminate\Support\Facades\Facade
+class LaravelPhoneFacade extends Facade
 {
     /**
+     * Get the registered name of the component.
+     *
      * @return string
      */
     protected static function getFacadeAccessor()

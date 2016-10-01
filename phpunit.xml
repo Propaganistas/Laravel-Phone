@@ -12,16 +12,12 @@
 >
     <testsuites>
         <testsuite name="Package Test Suite">
-            <file>./tests/Laravel5.php</file>
-            <file>./tests/FacadeTest.php</file>
+            <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
-            <exclude>
-                <file>./src/LaravelPhoneServiceProvider.php</file>
-            </exclude>
         </whitelist>
     </filter>
     <logging>
