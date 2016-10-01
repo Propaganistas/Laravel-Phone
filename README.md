@@ -26,11 +26,6 @@ In your app config, add the Service Provider to the `$providers` array
     ...
     Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
 ],
-
-'aliases' => [
-    ...
-    'Phone' => Propaganistas\LaravelPhone\LaravelPhoneFacade::class
-]
 ```
 
 In your languages directory, add for each language an extra language line for the validator:
@@ -98,11 +93,11 @@ You can also enable more lenient validation (for example, fixed lines without ar
 'phonefield'  => 'phone:LENIENT,US',
 ```
 
-### Display
-Format a fetched phone value using the helper function. `$country_code` is the country the phone number belongs to.
+### Helper function
+Format a fetched phone value using the `phone()` helper function. `$country_code` is the country the phone number belongs to.
 
 ```php
-phone_format($phone_number, $country_code = null, $format = PhoneNumberFormat::INTERNATIONAL)
+phone($phone_number, $country_code = null, $format = PhoneNumberFormat::INTERNATIONAL)
 ```
 If no `$country_code` was given, the current application locale will be used as default.
 The `$format` parameter is optional and should be a constant of `libphonenumber\PhoneNumberFormat` (defaults to `libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
