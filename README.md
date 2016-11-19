@@ -1,4 +1,4 @@
-# Laravel Phone Validator
+# Laravel Phone
 
 [![Build Status](https://travis-ci.org/Propaganistas/Laravel-Phone.svg?branch=master)](https://travis-ci.org/Propaganistas/Laravel-Phone)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Propaganistas/Laravel-Phone/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Propaganistas/Laravel-Phone/?branch=master)
@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
 
-Adds a phone validator to Laravel 4|5 and Lumen based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://github.com/googlei18n/libphonenumber) by [giggsey](https://github.com/giggsey).
+Adds a phone validator & formatter to Laravel 4 & 5 and Lumen based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [Google's libphonenumber API](https://github.com/googlei18n/libphonenumber) by [giggsey](https://github.com/giggsey).
 
 ### Installation
 
@@ -42,7 +42,7 @@ In `bootstrap/app.php`, register the Service Provider
 $app->register(Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class);
 ```
 
-### Usage
+### Validator
 
 To validate a field using the phone validator, use the `phone` keyword in your validation rules array. The phone validator is able to operate in **three** ways.
 
@@ -93,11 +93,11 @@ You can also enable more lenient validation (for example, fixed lines without ar
 'phonefield'  => 'phone:LENIENT,US',
 ```
 
-### Helper function
-Format a fetched phone value using the `phone()` helper function. `$country_code` is the country the phone number belongs to.
+### Formatter
+Format a phone number using the `phone()` helper function. `$country_code` is the country the phone number belongs to.
 
 ```php
 phone($phone_number, $country_code = null, $format = PhoneNumberFormat::INTERNATIONAL)
 ```
-If no `$country_code` was given, the current application locale will be used as default.
-The `$format` parameter is optional and should be a constant of `libphonenumber\PhoneNumberFormat` (defaults to `libphonenumber\PhoneNumberFormat::INTERNATIONAL`) 
+Always try to provide a `$country_code` in order for the phone number to be recognized correctly. If no `$country_code` was given, the current application locale will be used as a sensible default.
+The `$format` parameter defines the output format and is optional. The format defaults to international format but can be any constant of `libphonenumber\PhoneNumberFormat`.
