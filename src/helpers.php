@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberFormat;
 
-if (! function_exists('phone_format')) {
+if (! function_exists('phone')) {
     /**
      * Get the PhoneNumberUtil or format a phone number for display.
      *
