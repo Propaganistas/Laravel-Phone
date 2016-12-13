@@ -11,14 +11,14 @@ class PhoneValidatorTest extends TestCase
 
     protected $validator;
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders()
     {
         return [
             'Propaganistas\LaravelPhone\LaravelPhoneServiceProvider',
         ];
     }
 
-    protected function getPackageAliases($app)
+    protected function getPackageAliases()
     {
         return [
             'Phone' => 'Propaganistas\LaravelPhone\LaravelPhoneFacade',
@@ -252,11 +252,10 @@ class PhoneValidatorTest extends TestCase
         ]));
     }
 
-    /**
-     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException
-     */
     public function testValidatePhoneNoDefaultCountryNoCountryField()
     {
+        $this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\NoValidCountryFoundException');
+
         // Validator with no country field or given country.
         $this->performValidation([
             'field' => '016123456',
@@ -346,11 +345,10 @@ class PhoneValidatorTest extends TestCase
         ]));
     }
 
-    /**
-     * @expectedException \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
-     */
     public function testValidatePhoneFaultyParameters()
     {
+        $this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\InvalidParameterException');
+
         // Validator with given country, correct type, faulty parameter.
         $this->performValidation([
             'field' => '016123456',
