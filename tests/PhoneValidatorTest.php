@@ -347,7 +347,7 @@ class PhoneValidatorTest extends TestCase
 
     public function testValidatePhoneFaultyParameters()
     {
-        $this->expectException('Propaganistas\LaravelPhone\Exceptions\InvalidParameterException');
+        $this->setExpectedException('Propaganistas\LaravelPhone\Exceptions\InvalidParameterException');
 
         // Validator with given country, correct type, faulty parameter.
         $this->performValidation([
