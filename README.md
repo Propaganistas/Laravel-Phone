@@ -54,7 +54,7 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 
   The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
 
-- You don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [CountryList package by monarobase](https://github.com/Monarobase/country-list). Make sure the country field is named similar as the phone field but with *_country* appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
+- You don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [Laravel-Intl](https://github.com/Propaganistas/Laravel-Intl) package. Make sure the country field is named similar as the phone field but with *_country* appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
 
     ```php
 'phonefield'            => 'phone',
@@ -66,10 +66,10 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 'custom_country_field'  => 'required_with:phonefield',
     ```
 
-  If using the CountryList package, you could then use the following snippet to populate a country selection list:
+  If using [Laravel-Intl](https://github.com/Propaganistas/Laravel-Intl), you could then use the following snippet to populate a country selection list. It will automatically present translated country names according to your application locale:
 
     ```php
-Countries::getList(App::getLocale(), 'php', 'cldr'))
+Country::all()
     ```
 
 - You instruct the validator to detect which country the number belongs to using the `AUTO` keyword (and optionally any fallback countries):
