@@ -40,6 +40,6 @@
         }
     },
     "suggest": {
-        "monarobase/country-list": "Adds a compatible (and fully translated) country list API."
+        "propaganistas/laravel-intl": "Adds internationalization functions, including a compatible and fully translated country list API."
     }
 }
