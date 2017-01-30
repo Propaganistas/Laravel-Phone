@@ -1,39 +1,30 @@
 language: php
 
-php:
-  - 5.4
-  - 5.5.9
-  - 5.6.4
-  - 7.0
-  - 7.1
-  - hhvm
-  
-env:
-  - ILLUMINATE_VERSION=4.0.*
-  - ILLUMINATE_VERSION=4.1.*
-  - ILLUMINATE_VERSION=4.2.*
-  - ILLUMINATE_VERSION=5.0.*
-  - ILLUMINATE_VERSION=5.1.*
-  - ILLUMINATE_VERSION=5.2.*
-  - ILLUMINATE_VERSION=5.3.*
-  - ILLUMINATE_VERSION=5.4.*
-
 matrix:
-  exclude:
-    # 5.1 and up require >=PHP 5.5
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.1.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.2.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.3.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.4.*
-    # 5.3 and up require >=PHP 5.6.4
-    - php: 5.5.9
-      env: ILLUMINATE_VERSION=5.3.*
-    - php: 5.5.9
-      env: ILLUMINATE_VERSION=5.4.*
+  # Test lowest possible PHP version for all Laravel releases
+  - php: 5.4
+    env: ILLUMINATE_VERSION=4.0.*
+  - php: 5.4
+    env: ILLUMINATE_VERSION=4.1.*
+  - php: 5.4
+    env: ILLUMINATE_VERSION=4.2.*
+  - php: 5.4
+    env: ILLUMINATE_VERSION=5.0.*
+  - php: 5.5.9
+    env: ILLUMINATE_VERSION=5.1.*
+  - php: 5.5.9
+    env: ILLUMINATE_VERSION=5.2.*
+  - php: 5.6.4
+    env: ILLUMINATE_VERSION=5.3.*
+  - php: 5.6.4
+    env: ILLUMINATE_VERSION=5.4.*
+  # Test remaining PHP versions on the latest release
+  - php: 7.0
+    env: ILLUMINATE_VERSION=5.4.*
+  - php: 7.1
+    env: ILLUMINATE_VERSION=5.4.*
+  - php: hhvm
+    env: ILLUMINATE_VERSION=5.4.*
 
 before_install:
   - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
