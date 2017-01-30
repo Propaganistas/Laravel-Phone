@@ -40,7 +40,7 @@ before_install:
   - composer require "illuminate/validation:${ILLUMINATE_VERSION}" --no-update
   
 install:
-  - composer update --prefer-dist --no-suggest --no-interaction
+  - composer install --prefer-dist --no-suggest --no-interaction
 
 before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'xdebug.enable = On' >> /etc/hhvm/php.ini; fi
