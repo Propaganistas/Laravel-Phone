@@ -1,5 +1,9 @@
 language: php
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+          
 matrix:
   include:
     # Test lowest possible PHP version for all Laravel releases
@@ -11,13 +15,13 @@ matrix:
       env: ILLUMINATE_VERSION=4.2.*
     - php: 5.4
       env: ILLUMINATE_VERSION=5.0.*
-    - php: 5.5.9
+    - php: 5.5
       env: ILLUMINATE_VERSION=5.1.*
-    - php: 5.5.9
+    - php: 5.5
       env: ILLUMINATE_VERSION=5.2.*
-    - php: 5.6.4
+    - php: 5.6
       env: ILLUMINATE_VERSION=5.3.*
-    - php: 5.6.4
+    - php: 5.6
       env: ILLUMINATE_VERSION=5.4.*
     # Test remaining PHP versions on the latest release
     - php: 7.0
