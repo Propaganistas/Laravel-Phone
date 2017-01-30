@@ -35,10 +35,15 @@ matrix:
     - php: 5.5.9
       env: ILLUMINATE_VERSION=5.4.*
 
+before_install:
+  - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
+  - composer require "illuminate/validation:${ILLUMINATE_VERSION}" --no-update
+  
+install:
+  - composer update --prefer-source --no-interaction --dev
+
 before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'xdebug.enable = On' >> /etc/hhvm/php.ini; fi
-  - composer update ${COMPOSER_FLAGS} --no-interaction
-  - composer show laravel/framework*
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.clover
