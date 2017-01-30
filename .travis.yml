@@ -1,16 +1,45 @@
 language: php
 
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - hhvm
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+          
+matrix:
+  include:
+    # Test lowest possible PHP version for all Laravel releases
+    - php: 5.4
+      env: ILLUMINATE_VERSION=4.0.*
+    - php: 5.4
+      env: ILLUMINATE_VERSION=4.1.*
+    - php: 5.4
+      env: ILLUMINATE_VERSION=4.2.*
+    - php: 5.4
+      env: ILLUMINATE_VERSION=5.0.*
+    - php: 5.5
+      env: ILLUMINATE_VERSION=5.1.*
+    - php: 5.5
+      env: ILLUMINATE_VERSION=5.2.*
+    - php: 5.6
+      env: ILLUMINATE_VERSION=5.3.*
+    - php: 5.6
+      env: ILLUMINATE_VERSION=5.4.*
+    # Test remaining PHP versions on the latest release
+    - php: 7.0
+      env: ILLUMINATE_VERSION=5.4.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.4.*
+    - php: hhvm
+      env: ILLUMINATE_VERSION=5.4.*
+
+before_install:
+  - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
+  - composer require "illuminate/validation:${ILLUMINATE_VERSION}" --no-update
+  
+install:
+  - travis_wait composer install --prefer-dist --no-suggest --no-interaction
 
 before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'xdebug.enable = On' >> /etc/hhvm/php.ini; fi
-  - composer install
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.clover
