@@ -49,7 +49,7 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 - You either specify [*ISO 3166-1 alpha-2 compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) country codes yourself as parameters for the validator, e.g.:
 
     ```php
-'phonefield'  => 'phone:US,BE',
+    'phonefield'  => 'phone:US,BE',
     ```
 
   The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
@@ -57,25 +57,25 @@ To validate a field using the phone validator, use the `phone` keyword in your v
 - You don't specify any parameters but you plug in a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. The easiest method by far is to install the [Laravel-Intl](https://github.com/Propaganistas/Laravel-Intl) package. Make sure the country field is named similar as the phone field but with *_country* appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
 
     ```php
-'phonefield'            => 'phone',
-'phonefield_country'    => 'required_with:phonefield',
+    'phonefield'            => 'phone',
+    'phonefield_country'    => 'required_with:phonefield',
     ```
 
     ```php
-'phonefield'            => 'phone:custom_country_field',
-'custom_country_field'  => 'required_with:phonefield',
+    'phonefield'            => 'phone:custom_country_field',
+    'custom_country_field'  => 'required_with:phonefield',
     ```
 
   If using [Laravel-Intl](https://github.com/Propaganistas/Laravel-Intl), you could then use the following snippet to populate a country selection list. It will automatically present translated country names according to your application locale:
 
     ```php
-Country::all()
+    Country::all()
     ```
 
 - You instruct the validator to detect which country the number belongs to using the `AUTO` keyword (and optionally any fallback countries):
 
     ```php
-'phonefield'  => 'phone:AUTO,US',
+    'phonefield'  => 'phone:AUTO,US',
     ```
 
   The validator will try to extract the country from the number itself and then check if the number is valid for that country. If the country could not be guessed it will be validated using the fallback countries if provided. Note that country guessing will only work when phone numbers are entered in *international format* (prefixed with a `+` sign, e.g. +32 ....). Leading double zeros will **NOT** be parsed correctly as this isn't an established consistency.
