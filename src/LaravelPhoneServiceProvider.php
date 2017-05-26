@@ -1,5 +1,6 @@
 <?php namespace Propaganistas\LaravelPhone;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use libphonenumber\PhoneNumberUtil;
 
@@ -13,7 +14,11 @@ class LaravelPhoneServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['validator']->extend('phone', 'Propaganistas\LaravelPhone\PhoneValidator@validatePhone');
+        $extend = version_compare(Application::VERSION, '5.4.18', '>=')
+            ? 'extendDependent'
+            : 'extend';
+
+        $this->app['validator']->{$extend}('phone', 'Propaganistas\LaravelPhone\PhoneValidator@validatePhone');
     }
 
     /**
