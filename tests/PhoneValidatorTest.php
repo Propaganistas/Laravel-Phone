@@ -6,6 +6,7 @@ use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 use Orchestra\Testbench\TestCase;
 use Phone;
+use Propaganistas\LaravelPhone\LaravelPhoneServiceProvider;
 
 class PhoneValidatorTest extends TestCase
 {
@@ -336,7 +337,7 @@ class PhoneValidatorTest extends TestCase
 
     public function testValidatePhoneWithArrayInput()
     {
-        if (version_compare(Application::VERSION, '5.4.18', '>=')) {
+        if (LaravelPhoneServiceProvider::canUseDependentValidation()) {
             // Validator with correct country value.
             $this->assertTrue($this->validator->make(
                 [

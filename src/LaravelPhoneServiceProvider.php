@@ -1,12 +1,11 @@
 <?php namespace Propaganistas\LaravelPhone;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use libphonenumber\PhoneNumberUtil;
+use ReflectionClass;
 
 class LaravelPhoneServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application events.
      *
@@ -14,9 +13,7 @@ class LaravelPhoneServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $extend = version_compare(Application::VERSION, '5.4.18', '>=')
-            ? 'extendDependent'
-            : 'extend';
+        $extend = static::canUseDependentValidation() ? 'extendDependent' : 'extend';
 
         $this->app['validator']->{$extend}('phone', 'Propaganistas\LaravelPhone\PhoneValidator@validatePhone');
     }
@@ -33,5 +30,17 @@ class LaravelPhoneServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('libphonenumber', 'libphonenumber\PhoneNumberUtil');
+    }
+
+    /**
+     * Determine whether we can register a dependent validator.
+     *
+     * @return bool
+     */
+    public static function canUseDependentValidation()
+    {
+        $validator = new ReflectionClass('\Illuminate\Validation\Factory');
+
+        return $validator->hasMethod('extendDependent');
     }
 }
