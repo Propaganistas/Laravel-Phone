@@ -19,7 +19,7 @@ composer require propaganistas/laravel-phone
 
 **Laravel**
 
-In your app config, add the Service Provider to the `$providers` array
+In your app config, add the Service Provider to the `$providers` array *(only for Laravel 5.4 or below)*:
 
  ```php
 'providers' => [

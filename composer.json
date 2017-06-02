@@ -40,5 +40,12 @@
     },
     "suggest": {
         "propaganistas/laravel-intl": "Adds internationalization functions, including a compatible and fully translated country list API."
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Propaganistas\\LaravelPhone\\LaravelPhoneServiceProvider"
+            ]
+        }
     }
 }
