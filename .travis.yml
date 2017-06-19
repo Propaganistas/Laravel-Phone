@@ -43,7 +43,7 @@ before_install:
   - if [ -n "$ILLUMINATE_VERSION" ] ; then composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update; fi
   
 install:
-  - travis_wait travis_retry composer install --no-interaction --prefer-dist --no-suggest
+  - travis_wait 30 travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 script:
   # Re-enable XDebug.
