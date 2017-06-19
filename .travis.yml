@@ -9,7 +9,8 @@ php:
   - 7.1
   
 env:
-  - ILLUMINATE_VERSION=""
+  global:
+    - ILLUMINATE_VERSION=""
 
 cache:
   directories:
