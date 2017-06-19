@@ -1,33 +1,30 @@
 language: php
 
+php:
+  - 5.4
+  - 5.5
+  - 5.5.9
+  - 5.6
+  - 7.0
+  - 7.1
+
 cache:
   directories:
     - $HOME/.composer/cache
           
 matrix:
+  fast_finish: true
   include:
-    # Test lowest possible PHP version for all Laravel releases
-    - php: 5.4
-      env: ILLUMINATE_VERSION=4.0.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=4.1.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=4.2.*
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.0.*
-    - php: 5.5
-      env: ILLUMINATE_VERSION=5.1.*
-    - php: 5.5
-      env: ILLUMINATE_VERSION=5.2.*
-    - php: 5.6
-      env: ILLUMINATE_VERSION=5.3.*
-    - php: 5.6
-      env: ILLUMINATE_VERSION=5.4.*
-    # Test remaining PHP versions on the latest release
-    - php: 7.0
-      env: ILLUMINATE_VERSION=5.4.*
-    - php: 7.1
-      env: ILLUMINATE_VERSION=5.4.*
+    - env: ILLUMINATE_VERSION=4.0.*
+    - env: ILLUMINATE_VERSION=4.1.*
+    - env: ILLUMINATE_VERSION=4.2.*
+    - env: ILLUMINATE_VERSION=5.0.*
+    - env: ILLUMINATE_VERSION=5.1.*
+    - env: ILLUMINATE_VERSION=5.2.*
+    - env: ILLUMINATE_VERSION=5.3.*
+    - env: ILLUMINATE_VERSION=5.4.*
+
+sudo: false
 
 before_install:
   - composer self-update
@@ -38,7 +35,7 @@ before_install:
   - composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update
   
 install:
-  - travis_wait travis_retry composer update --prefer-stable --prefer-dist --no-suggest --no-interaction
+  - travis_wait travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 script:
   # Re-enable XDebug.
