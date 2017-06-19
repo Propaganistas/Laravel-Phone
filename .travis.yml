@@ -31,14 +31,22 @@ matrix:
 
 before_install:
   - composer self-update
+  # Disable XDebug to speed up Composer.
+  - cp $HOME/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini /tmp
+  - phpenv config-rm xdebug.ini
+  # Require a specific Illuminate version.
   - composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update
   
 install:
   - travis_retry composer update --prefer-stable --prefer-dist --no-suggest --no-interaction
 
 script:
+  # Re-enable XDebug.
+  - phpenv config-add /tmp/xdebug.ini
+  # Run the tests.
   - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 after_script:
+  # Send test results to Scrutinizer.
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
