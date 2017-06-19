@@ -7,10 +7,6 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  
-env:
-  global:
-    - ILLUMINATE_VERSION=""
 
 cache:
   directories:
@@ -36,7 +32,7 @@ before_install:
   - cp $HOME/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini /tmp
   - phpenv config-rm xdebug.ini
   # Require a specific Illuminate version.
-  - composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update
+  - if [ -n "$ILLUMINATE_VERSION" ] ; then composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update; fi
   
 install:
   - travis_wait travis_retry composer install --no-interaction --prefer-dist --no-suggest
