@@ -15,14 +15,22 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - env: ILLUMINATE_VERSION=4.0.*
-    - env: ILLUMINATE_VERSION=4.1.*
-    - env: ILLUMINATE_VERSION=4.2.*
-    - env: ILLUMINATE_VERSION=5.0.*
-    - env: ILLUMINATE_VERSION=5.1.*
-    - env: ILLUMINATE_VERSION=5.2.*
-    - env: ILLUMINATE_VERSION=5.3.*
-    - env: ILLUMINATE_VERSION=5.4.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=4.0.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=4.1.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=4.2.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.0.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.1.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.2.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.3.*
+    - php: 7.1
+      env: ILLUMINATE_VERSION=5.4.*
 
 sudo: false
 
