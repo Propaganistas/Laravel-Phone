@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberFormat;
+use Illuminate\Support\Facades\Validator;
 
 if (! function_exists('phone')) {
     /**
@@ -18,13 +19,36 @@ if (! function_exists('phone')) {
         }
 
         $phone = $arguments[0];
-        $country = isset($arguments[1]) ? $arguments[1] : App::getLocale();
+        
+        $countries = isset($arguments[1]) ? (is_array($arguments[1]) ? $arguments[1] : [$arguments[1]]) : [];
+        
         $format = isset($arguments[2]) ? $arguments[2] : PhoneNumberFormat::INTERNATIONAL;
 
-        return $lib->format(
-            $lib->parse($phone, $country),
-            $format
-        );
+        $validator = null;
+
+        for($i = 0; $i < sizeof($countries); $i++)
+        {
+            if($countries[$i] === null)
+            {
+                return $lib->format(
+                    $lib->parse($phone, App::getLocale()),
+                    $format
+                );
+            }
+
+            $validator = Validator::make(['phone' => $phone], [
+                'phone' => 'required|phone:' . $countries[$i],
+            ]);
+
+            if (!$validator->fails()) {
+                return $lib->format(
+                    $lib->parse($phone, $countries[$i]),
+                    $format
+                );
+            }
+        }
+
+        return $lib;
     }
 }
 
@@ -32,15 +56,15 @@ if (! function_exists('phone_format')) {
     /**
      * Formats a phone number and country for display.
      *
-     * @param string   $phone
-     * @param string   $country
-     * @param int|null $format
+     * @param string          $phone
+     * @param string|string[] $countries
+     * @param int|null        $format
      * @return string
      *
      * @deprecated 2.8.0
      */
-    function phone_format($phone, $country = null, $format = PhoneNumberFormat::INTERNATIONAL)
+    function phone_format($phone, $countries = null, $format = PhoneNumberFormat::INTERNATIONAL)
     {
-        return phone($phone, $country, $format);
+        return phone($phone, $countries, $format);
     }
 }
