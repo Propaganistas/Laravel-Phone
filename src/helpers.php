@@ -1,46 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use libphonenumber\PhoneNumberFormat;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 if (! function_exists('phone')) {
     /**
-     * Get the PhoneNumberUtil or format a phone number for display.
+     * Get a PhoneNumber instance or a formatted string.
      *
-     * @return \libphonenumber\PhoneNumberUtil|string
+     * @param string       $number
+     * @param string|array $country
+     * @param string       $format
+     * @return string|Propaganistas\LaravelPhone\PhoneNumber
      */
-    function phone()
+    function phone($number, $country = [], $format = null)
     {
-        $lib = App::make('libphonenumber');
+        $phone = PhoneNumber::make($number, $country);
 
-        if (! $arguments = func_get_args()) {
-            return $lib;
+        if (! is_null($format)) {
+            return $phone->format($format);
         }
 
-        $phone = $arguments[0];
-        $country = isset($arguments[1]) ? $arguments[1] : App::getLocale();
-        $format = isset($arguments[2]) ? $arguments[2] : PhoneNumberFormat::INTERNATIONAL;
-
-        return $lib->format(
-            $lib->parse($phone, $country),
-            $format
-        );
-    }
-}
-
-if (! function_exists('phone_format')) {
-    /**
-     * Formats a phone number and country for display.
-     *
-     * @param string   $phone
-     * @param string   $country
-     * @param int|null $format
-     * @return string
-     *
-     * @deprecated 2.8.0
-     */
-    function phone_format($phone, $country = null, $format = PhoneNumberFormat::INTERNATIONAL)
-    {
-        return phone($phone, $country, $format);
+        return $phone;
     }
 }

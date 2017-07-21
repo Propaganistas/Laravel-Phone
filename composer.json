@@ -1,6 +1,6 @@
 {
     "name": "propaganistas/laravel-phone",
-    "description": "Adds a phone validator to Laravel and Lumen based on Google's libphonenumber API.",
+    "description": "Adds phone number functionality to Laravel and Lumen based on Google's libphonenumber API.",
     "keywords": [
         "laravel",
         "lumen",
@@ -16,14 +16,15 @@
         }
     ],
     "require": {
-        "illuminate/support": "^4.0|^5.0",
-        "illuminate/validation": "^4.0|^5.0",
+        "php": ">=5.5",
+        "illuminate/support": "^5.0",
+        "illuminate/validation": "^5.0",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0",
         "julien-c/iso3166": "^2.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^2.0|^3.0",
-        "phpunit/phpunit": "^4.0|^5.2"
+        "orchestra/testbench": "*",
+        "phpunit/phpunit": "^4.0|^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +45,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Propaganistas\\LaravelPhone\\LaravelPhoneServiceProvider"
+                "Propaganistas\\LaravelPhone\\PhoneServiceProvider"
             ]
         }
     }

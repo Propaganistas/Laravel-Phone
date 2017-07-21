@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
@@ -14,13 +13,7 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-      env: ILLUMINATE_VERSION=4.0.*
-    - php: 7.1
-      env: ILLUMINATE_VERSION=4.1.*
-    - php: 7.1
-      env: ILLUMINATE_VERSION=4.2.*
-    - php: 7.1
+    - php: 5.6
       env: ILLUMINATE_VERSION=5.0.*
     - php: 7.1
       env: ILLUMINATE_VERSION=5.1.*
