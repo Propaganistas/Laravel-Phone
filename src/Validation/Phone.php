@@ -4,7 +4,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
-use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use libphonenumber\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Traits\ParsesCountries;
 use Propaganistas\LaravelPhone\Traits\ParsesTypes;
