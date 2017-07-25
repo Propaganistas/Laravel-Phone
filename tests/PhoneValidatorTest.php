@@ -231,6 +231,34 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
+    public function it_validates_with_auto_and_country_field_and_fallback_country()
+    {
+        // Validator with correct country in custom field.
+        $this->assertTrue($this->validator->make(
+            ['field' => '012345678', 'country' => 'BE'],
+            ['field' => 'phone:AUTO,US,country']
+        )->passes());
+
+        // Validator with correct country as fallback country.
+        $this->assertTrue($this->validator->make(
+            ['field' => '012345678', 'country' => 'US'],
+            ['field' => 'phone:AUTO,BE,country']
+        )->passes());
+
+        // Validator with wrong field value and fallback country, but internationally formatted.
+        $this->assertTrue($this->validator->make(
+            ['field' => '+3212345678', 'country' => 'US'],
+            ['field' => 'phone:AUTO,CH,country']
+        )->passes());
+
+        // Validator with wrong field value and fallback country, and not internationally formatted.
+        $this->assertFalse($this->validator->make(
+            ['field' => '012345678', 'country' => 'US'],
+            ['field' => 'phone:AUTO,CH,country']
+        )->passes());
+    }
+
+    /** @test */
     public function it_throws_an_exception_for_invalid_parameters()
     {
         $this->expectException(InvalidParameterException::class);

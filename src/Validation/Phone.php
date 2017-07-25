@@ -106,16 +106,18 @@ class Phone
                                 ->intersect(array_keys(Arr::dot($data)))
                                 ->first() ?: "${attribute}_country";
 
-        // Attempt to retrieve the field's value. If no field is present, this will be null.
-        $inputCountry = Arr::get($data, $inputField);
+        // Attempt to retrieve the field's value.
+        if ($inputCountry = Arr::get($data, $inputField)) {
+            $parameters[] = $inputCountry;
+        }
 
-        $countries = static::parseCountries($inputCountry ? [$inputCountry] : $parameters);
+        $countries = static::parseCountries($parameters);
         $types = static::parseTypes($parameters);
 
         // Force developers to write proper code.
         // Since the static parsers return a validated array with preserved keys, we can safely diff against the keys.
         // Unfortunately we can't use $collection->diffKeys() as it's not available yet in earlier 5.* versions.
-        $leftovers = array_diff_key($parameters, $types, $inputCountry ? [] : $countries);
+        $leftovers = array_diff_key($parameters, $types, $countries);
         $leftovers = array_diff($leftovers, ['AUTO', 'LENIENT', $inputField]);
 
         if (! empty($leftovers)) {
