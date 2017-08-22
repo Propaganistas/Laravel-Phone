@@ -269,6 +269,17 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:BE,xyz,mobile,abc']
         )->passes();
     }
+
+    /** @test */
+    public function it_throws_an_exception_for_ambiguous_parameters()
+    {
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('mobile');
+
+        $this->validator->make(
+            ['mobile' => '0470123456', 'mobile_country' => 'BE'],
+            ['mobile' => 'phone:mobile']
+        )->passes();
     }
 
     /** @test */

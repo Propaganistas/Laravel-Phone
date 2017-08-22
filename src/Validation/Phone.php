@@ -108,6 +108,11 @@ class Phone
 
         // Attempt to retrieve the field's value.
         if ($inputCountry = Arr::get($data, $inputField)) {
+
+            if (static::isValidType($inputField)) {
+                throw InvalidParameterException::ambiguous($inputField);
+            }
+
             $parameters[] = $inputCountry;
         }
 
