@@ -264,10 +264,11 @@ class PhoneValidatorTest extends TestCase
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('xyz,abc');
 
-        $this->assertFalse($this->validator->make(
+        $this->validator->make(
             ['field' => '0470123456'],
             ['field' => 'phone:BE,xyz,mobile,abc']
-        )->passes());
+        )->passes();
+    }
     }
 
     /** @test */
