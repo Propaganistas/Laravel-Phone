@@ -44,7 +44,7 @@ In your app config, add the Service Provider to the `$providers` array *(only fo
 In your languages directory, add for each language an extra language line for the validator:
 
 ```php
-"phone" => "The :attribute field contains an invalid number.",
+'phone' => 'The :attribute field contains an invalid number.',
 ```
 
 ### Lumen
