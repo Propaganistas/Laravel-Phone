@@ -251,7 +251,11 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
 
         // Last resort: try to detect it from an international number.
         if ($this->numberLooksInternational()) {
-            $instance = $this->lib->parse($this->number, null);
+            $countries[] = null;
+        }
+
+        foreach ($countries as $country) {
+            $instance = $this->lib->parse($this->number, $country);
 
             if ($this->lib->isValidNumber($instance)) {
                 return $this->lib->getRegionCodeForNumber($instance);
