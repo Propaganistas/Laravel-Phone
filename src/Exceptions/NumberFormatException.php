@@ -1,6 +1,8 @@
 <?php namespace Propaganistas\LaravelPhone\Exceptions;
 
-class NumberFormatException extends \Exception
+use Exception;
+
+class NumberFormatException extends Exception implements PhoneNumberException
 {
     /**
      * Invalid number format static constructor.
