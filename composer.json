@@ -17,14 +17,14 @@
     ],
     "require": {
         "php": ">=5.5",
-        "illuminate/support": ">=5.0,<5.6",
-        "illuminate/validation": ">=5.0,<5.6",
+        "illuminate/support": ">=5.0,<5.7",
+        "illuminate/validation": ">=5.0,<5.7",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0",
         "julien-c/iso3166": "^2.0"
     },
     "require-dev": {
         "orchestra/testbench": "*",
-        "phpunit/phpunit": "^4.0|^5.0"
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {

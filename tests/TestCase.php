@@ -13,32 +13,4 @@ abstract class TestCase extends BaseTestCase
     {
         return [PhoneServiceProvider::class];
     }
-
-    /**
-     * Fallback for PHPUnit < 5.2.
-     *
-     * @param string $exception
-     */
-    public function expectException($exception)
-    {
-        if (method_exists(parent::class, 'expectException')) {
-            parent::expectException($exception);
-        } else {
-            $this->setExpectedException($exception);
-        }
-    }
-
-    /**
-     * Fallback for PHPUnit < 5.2.
-     *
-     * @param string $exception
-     */
-    public function expectExceptionMessage($message)
-    {
-        if (method_exists(parent::class, 'expectExceptionMessage')) {
-            parent::expectExceptionMessage($message);
-        } else {
-            $this->setExpectedException($this->getExpectedException(), $message);
-        }
-    }
 }

@@ -1,7 +1,6 @@
 <?php namespace Propaganistas\LaravelPhone\Tests;
 
 use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
 use Propaganistas\LaravelPhone\PhoneServiceProvider;
 use Propaganistas\LaravelPhone\Rules\Phone as Rule;
 
@@ -258,24 +257,28 @@ class PhoneValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
+     * @expectedExceptionMessage xyz,abc
+     */
     public function it_throws_an_exception_for_invalid_parameters()
     {
-        $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('xyz,abc');
-
         $this->validator->make(
             ['field' => '0470123456'],
             ['field' => 'phone:BE,xyz,mobile,abc']
         )->passes();
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
+     * @expectedExceptionMessage mobile
+     */
     public function it_throws_an_exception_for_ambiguous_parameters()
     {
-        $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('mobile');
-
         $this->validator->make(
             ['mobile' => '0470123456', 'mobile_country' => 'BE'],
             ['mobile' => 'phone:mobile']

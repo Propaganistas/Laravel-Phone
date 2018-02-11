@@ -2,9 +2,6 @@
 
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
-use Propaganistas\LaravelPhone\Exceptions\NumberFormatException;
-use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class PhoneNumberTest extends TestCase
@@ -107,12 +104,14 @@ class PhoneNumberTest extends TestCase
         $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
+     * @expectedExceptionMessage 012345678
+     */
     public function it_throws_an_exception_when_formatting_non_international_number_without_given_country()
     {
-        $this->expectException(NumberParseException::class);
-        $this->expectExceptionMessage('012345678');
-
         $object = new PhoneNumber('012345678');
         $object->format(PhoneNumberFormat::NATIONAL);
     }
@@ -128,12 +127,14 @@ class PhoneNumberTest extends TestCase
         );
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberFormatException
+     * @expectedExceptionMessage foo
+     */
     public function it_throws_an_exception_for_invalid_formats()
     {
-        $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessage('foo');
-
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
         $object->format('foo');
@@ -203,22 +204,26 @@ class PhoneNumberTest extends TestCase
         $this->assertEquals('+3212345678', $object->formatForMobileDialingInCountry('US'));
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\CountryCodeException
+     * @expectedExceptionMessage foo
+     */
     public function it_throws_an_exception_when_an_invalid_country_is_provided_for_formatting_for_dialing()
     {
-        $this->expectException(CountryCodeException::class);
-        $this->expectExceptionMessage('foo');
-
         $object = new PhoneNumber('+3212345678');
         $object->formatForCountry('foo');
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\CountryCodeException
+     * @expectedExceptionMessage foo
+     */
     public function it_throws_an_exception_when_an_invalid_country_is_provided_for_formatting_for_mobile_dialing()
     {
-        $this->expectException(CountryCodeException::class);
-        $this->expectExceptionMessage('foo');
-
         $object = new PhoneNumber('+3212345678');
         $object->formatForMobileDialingInCountry('foo');
     }
@@ -232,12 +237,14 @@ class PhoneNumberTest extends TestCase
         $this->assertFalse(PhoneNumber::isValidFormat('foo'));
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
+     * @expectedExceptionMessage 45678
+     */
     public function it_throws_an_exception_when_the_number_could_not_be_parsed()
     {
-        $this->expectException(NumberParseException::class);
-        $this->expectExceptionMessage('45678');
-
         $object = new PhoneNumber('45678');
         $object = $object->ofCountry('BE');
         $object->formatRFC3966();
