@@ -46,7 +46,7 @@ install:
 
 before_script:
   # Show some package versions
-  - composer show illuminate/support
+  - composer show laravel/framework
   - composer show orchestra/testbench
   - composer show phpunit/phpunit
   
