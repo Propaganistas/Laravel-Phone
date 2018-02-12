@@ -40,14 +40,16 @@ before_install:
   - if [ -n "$ILLUMINATE_VERSION" ] ; then composer require illuminate/support:${ILLUMINATE_VERSION} illuminate/validation:${ILLUMINATE_VERSION} --no-update; fi
   - if [ -n "$TESTBENCH_VERSION" ] ; then composer require orchestra/testbench:${TESTBENCH_VERSION} --no-update; fi
   - if [ -n "$PHPUNIT_VERSION" ] ; then composer require phpunit/phpunit:${PHPUNIT_VERSION} --no-update; fi
+  
+install:
+  - travis_wait 60 travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+before_script:
   # Show some package versions
   - composer show illuminate/support
   - composer show orchestra/testbench
   - composer show phpunit/phpunit
   
-install:
-  - travis_wait 60 travis_retry composer install --no-interaction --prefer-dist --no-suggest
-
 script:
   # Re-enable XDebug.
   - phpenv config-add /tmp/xdebug.ini
