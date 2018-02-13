@@ -125,6 +125,9 @@ class Phone
         $leftovers = array_diff_key($parameters, $types, $countries);
         $leftovers = array_diff($leftovers, ['AUTO', 'LENIENT', $inputField]);
 
+        // Invalid country field values should just validate to false, so exclude from leftovers.
+        $leftovers = array_diff($leftovers, [$inputCountry]);
+
         if (! empty($leftovers)) {
             throw InvalidParameterException::parameters($leftovers);
         }

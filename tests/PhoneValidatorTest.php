@@ -286,6 +286,15 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
+    public function it_doesnt_throw_an_exception_for_an_invalid_country_field_value()
+    {
+        $this->assertFalse($this->validator->make(
+            ['field' => '012345678', 'field_country' => 'foo'],
+            ['field' => 'phone']
+        )->passes());
+    }
+
+    /** @test */
     public function it_validates_lenient()
     {
         // Validator with AU area code, lenient off
