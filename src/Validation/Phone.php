@@ -113,7 +113,12 @@ class Phone
                 throw InvalidParameterException::ambiguous($inputField);
             }
 
-            $parameters[] = $inputCountry;
+            // Invalid country field values should just validate to false, and this is exactly what
+            // we're getting when simply excluding invalid values.
+            // This will also prevent parameter hijacking through the country field.
+            if (static::isValidCountryCode($inputCountry)) {
+                $parameters[] = $inputCountry;
+            }
         }
 
         $countries = static::parseCountries($parameters);
@@ -124,9 +129,6 @@ class Phone
         // Unfortunately we can't use $collection->diffKeys() as it's not available yet in earlier 5.* versions.
         $leftovers = array_diff_key($parameters, $types, $countries);
         $leftovers = array_diff($leftovers, ['AUTO', 'LENIENT', $inputField]);
-
-        // Invalid country field values should just validate to false, so exclude from leftovers.
-        $leftovers = array_diff($leftovers, [$inputCountry]);
 
         if (! empty($leftovers)) {
             throw InvalidParameterException::parameters($leftovers);

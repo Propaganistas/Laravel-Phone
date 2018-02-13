@@ -514,4 +514,13 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:BE,' . PhoneNumberType::MOBILE])->passes()
         );
     }
+
+    /** @test */
+    public function it_prevents_parameter_hijacking_through_the_country_field()
+    {
+        $this->assertFalse($this->validator->make(
+            ['field' => '0470123456', 'field_country' => 'mobile'],
+            ['field' => 'phone:BE,fixed_line'])->passes()
+        );
+    }
 }
