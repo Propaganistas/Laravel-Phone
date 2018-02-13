@@ -505,4 +505,13 @@ class PhoneValidatorTest extends TestCase
         $expected = 'phone:BE,toll_free,6,my_field,AUTO,LENIENT';
         $this->assertEquals($expected, (string) $actual);
     }
+
+    /** @test */
+    public function it_validates_with_stringified_type_constant()
+    {
+        $this->assertTrue($this->validator->make(
+            ['field' => '0470123456'],
+            ['field' => 'phone:BE,' . PhoneNumberType::MOBILE])->passes()
+        );
+    }
 }

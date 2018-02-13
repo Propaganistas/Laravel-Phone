@@ -38,8 +38,8 @@ trait ParsesTypes
         return Collection::make(is_array($types) ? $types : func_get_args())
                          ->map(function ($type) {
                              // If the type equals a constant's value, just return it.
-                             if (in_array($type, static::$types, true)) {
-                                 return $type;
+                             if (is_numeric($type) && in_array($type, static::$types)) {
+                                 return (int) $type;
                              }
 
                              // Otherwise we'll assume the type is the constant's name.

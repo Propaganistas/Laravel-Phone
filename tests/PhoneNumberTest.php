@@ -286,8 +286,10 @@ class PhoneNumberTest extends TestCase
     public function it_can_verify_types()
     {
         $this->assertTrue(PhoneNumber::isValidType(PhoneNumberType::MOBILE));
+        $this->assertTrue(PhoneNumber::isValidType((string) PhoneNumberType::MOBILE));
         $this->assertTrue(PhoneNumber::isValidType('mobile'));
         $this->assertFalse(PhoneNumber::isValidType(99999));
+        $this->assertFalse(PhoneNumber::isValidType('99999'));
         $this->assertFalse(PhoneNumber::isValidType('foo'));
     }
 
