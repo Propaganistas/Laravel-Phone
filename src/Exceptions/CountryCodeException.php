@@ -1,6 +1,8 @@
 <?php namespace Propaganistas\LaravelPhone\Exceptions;
 
-class CountryCodeException extends \Exception
+use Exception;
+
+class CountryCodeException extends Exception implements PhoneNumberException
 {
     /**
      * Invalid country code static constructor.

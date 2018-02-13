@@ -1,8 +1,9 @@
 <?php namespace Propaganistas\LaravelPhone\Exceptions;
 
+use Exception;
 use libphonenumber\NumberParseException as libNumberParseException;
 
-class NumberParseException extends libNumberParseException
+class NumberParseException extends Exception implements PhoneNumberException
 {
     /**
      * Country specification required static constructor.

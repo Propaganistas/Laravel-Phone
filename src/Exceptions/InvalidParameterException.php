@@ -1,8 +1,9 @@
 <?php namespace Propaganistas\LaravelPhone\Exceptions;
 
+use Exception;
 use Illuminate\Support\Collection;
 
-class InvalidParameterException extends \Exception
+class InvalidParameterException extends Exception implements PhoneNumberException
 {
     /**
      * Ambiguous parameter static constructor.
