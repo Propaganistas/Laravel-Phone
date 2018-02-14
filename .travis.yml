@@ -12,7 +12,7 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 7.2
+    - php: 7.0 # Laravel 5.0 requires Mcrypt, but it is deprecated as of PHP 7.1
       env: ILLUMINATE_VERSION=5.0.* TESTBENCH_VERSION=3.0.* PHPUNIT_VERSION=4.*
     - php: 7.2
       env: ILLUMINATE_VERSION=5.1.* TESTBENCH_VERSION=3.1.* PHPUNIT_VERSION=5.*
