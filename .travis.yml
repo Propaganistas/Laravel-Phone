@@ -1,8 +1,6 @@
 language: php
 
 php:
-  - 5.5
-  - 5.6
   - 7.0
   - 7.1
   - 7.2
@@ -14,17 +12,17 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
+    - php: 7.0 # Laravel 5.0 requires Mcrypt, but it is deprecated as of PHP 7.1
       env: ILLUMINATE_VERSION=5.0.* TESTBENCH_VERSION=3.0.* PHPUNIT_VERSION=4.*
-    - php: 7.1
+    - php: 7.2
       env: ILLUMINATE_VERSION=5.1.* TESTBENCH_VERSION=3.1.* PHPUNIT_VERSION=5.*
-    - php: 7.1
+    - php: 7.2
       env: ILLUMINATE_VERSION=5.2.* TESTBENCH_VERSION=3.2.* PHPUNIT_VERSION=5.*
-    - php: 7.1
+    - php: 7.2
       env: ILLUMINATE_VERSION=5.3.* TESTBENCH_VERSION=3.3.* PHPUNIT_VERSION=5.*
-    - php: 7.1
+    - php: 7.2
       env: ILLUMINATE_VERSION=5.4.* TESTBENCH_VERSION=3.4.* PHPUNIT_VERSION=5.*
-    - php: 7.1
+    - php: 7.2
       env: ILLUMINATE_VERSION=5.5.* TESTBENCH_VERSION=3.5.* PHPUNIT_VERSION=6.*
     - php: 7.2
       env: ILLUMINATE_VERSION=5.6.* TESTBENCH_VERSION=3.6.* PHPUNIT_VERSION=7.*
@@ -32,7 +30,6 @@ matrix:
 sudo: false
 
 before_install:
-  - composer self-update
   # Disable XDebug to speed up Composer.
   - cp $HOME/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini /tmp
   - phpenv config-rm xdebug.ini
