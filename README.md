@@ -19,8 +19,6 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
     - [Formatting](#formatting)
     - [Number information](#number-information)
     - [Helper function](#helper-function)
-    
-Looking for the documentation of version `2.*`? Click [here](https://github.com/Propaganistas/Laravel-Phone/tree/v2).
 
 ## Installation
 
