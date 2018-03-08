@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JsonSerializable;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Exceptions\NumberFormatException;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
@@ -293,6 +294,11 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     public function isOfType($type)
     {
         $types = static::parseTypes($type);
+
+        // Add the unsure type when applicable.
+        if (array_intersect([PhoneNumberType::FIXED_LINE, PhoneNumberType::MOBILE], $types)) {
+            $types[] = PhoneNumberType::FIXED_LINE_OR_MOBILE;
+        }
 
         return in_array($this->getType(true), $types, true);
     }

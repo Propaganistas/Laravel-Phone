@@ -282,6 +282,16 @@ class PhoneNumberTest extends TestCase
         $this->assertTrue($object->isOfType(PhoneNumberType::MOBILE));
     }
 
+    /* @test */
+    public function it_adds_the_unsure_type()
+    {
+        // This number is of type FIXED_LINE_OR_MOBILE.
+        // Without the unsure type, the following check would fail.
+        $object = new PhoneNumber('8590332334');
+        $object = $object->ofCountry('IN');
+        $this->assertTrue($object->isOfType('fixed_line'));
+    }
+
     /** @test */
     public function it_can_verify_types()
     {
