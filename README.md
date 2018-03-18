@@ -11,6 +11,7 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
 
 ## Table of Contents
 
+- [Demo](#demo)
 - [Installation](#installation)
     - [Laravel](#laravel)
     - [Lumen](#lumen)
@@ -19,6 +20,10 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
     - [Formatting](#formatting)
     - [Number information](#number-information)
     - [Helper function](#helper-function)
+
+## Demo
+
+Check out the behavior of this package in the [demo](https://laravel-phone.herokuapp.com).
 
 ## Installation
 
