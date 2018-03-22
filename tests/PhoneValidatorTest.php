@@ -523,4 +523,23 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:BE,fixed_line'])->passes()
         );
     }
+
+    /** @test */
+    public function it_accepts_mixed_case_parameters()
+    {
+        $this->assertTrue($this->validator->make(
+            ['field' => '+32470123456'],
+            ['field' => 'phone:aUtO,mObIlE'])->passes()
+        );
+
+        $this->assertTrue($this->validator->make(
+            ['field' => '0470123456'],
+            ['field' => 'phone:bE,mObIlE'])->passes()
+        );
+
+        $this->assertFalse($this->validator->make(
+            ['field' => '0470123456'],
+            ['field' => 'phone:AuTo,MoBiLe'])->passes()
+        );
+    }
 }

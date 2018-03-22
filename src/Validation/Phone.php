@@ -101,6 +101,9 @@ class Phone
      */
     protected function extractParameters($attribute, array $parameters, array $data)
     {
+        $originalParameters = $parameters;
+        $parameters = array_map('strtolower', $parameters);
+
         // Discover if an input field was provided. If not, guess the field's name.
         $inputField = Collection::make($parameters)
                                 ->intersect(array_keys(Arr::dot($data)))
@@ -123,23 +126,19 @@ class Phone
 
         $countries = static::parseCountries($parameters);
         $types = static::parseTypes($parameters);
+        $auto = in_array('auto', $parameters);
+        $lenient = in_array('lenient', $parameters);
 
         // Force developers to write proper code.
         // Since the static parsers return a validated array with preserved keys, we can safely diff against the keys.
         // Unfortunately we can't use $collection->diffKeys() as it's not available yet in earlier 5.* versions.
-        $leftovers = array_diff_key($parameters, $types, $countries);
-        $leftovers = array_diff($leftovers, ['AUTO', 'LENIENT', $inputField]);
+        $leftovers = array_diff_key($parameters, $countries, $types);
+        $leftovers = array_diff($leftovers, ['auto', 'lenient', $inputField]);
 
         if (! empty($leftovers)) {
-            throw InvalidParameterException::parameters($leftovers);
+            throw InvalidParameterException::parameters(array_intersect_key($originalParameters, $leftovers));
         }
 
-        return [
-            $countries,
-            $types,
-            in_array('AUTO', $parameters),
-            in_array('LENIENT', $parameters),
-            $inputField,
-        ];
+        return [$countries, $types, $auto, $lenient, $inputField];
     }
 }
