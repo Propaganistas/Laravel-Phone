@@ -39,12 +39,13 @@ class Phone
     public function validate($attribute, $value, array $parameters, $validator)
     {
         $data = $validator->getData();
+        $validated = $validator->getRules();
 
         list(
             $countries,
             $types,
             $detect,
-            $lenient) = $this->extractParameters($attribute, $parameters, $data);
+            $lenient) = $this->extractParameters($attribute, $parameters, $data, $rules);
 
         // A "null" country is prepended:
         // 1. In case of auto-detection to have the validation run first without supplying a country.
@@ -96,10 +97,11 @@ class Phone
      * @param string $attribute
      * @param array  $parameters
      * @param array  $data
+     * @param array  $rules
      * @return array
      * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
      */
-    protected function extractParameters($attribute, array $parameters, array $data)
+    protected function extractParameters($attribute, array $parameters, array $data, array $rules = [])
     {
         $originalParameters = $parameters;
         $parameters = array_map('strtolower', $parameters);
@@ -133,7 +135,12 @@ class Phone
         // Since the static parsers return a validated array with preserved keys, we can safely diff against the keys.
         // Unfortunately we can't use $collection->diffKeys() as it's not available yet in earlier 5.* versions.
         $leftovers = array_diff_key($parameters, $countries, $types);
-        $leftovers = array_diff($leftovers, ['auto', 'lenient', $inputField]);
+        $leftovers = array_diff($leftovers, ['auto', 'lenient']);
+        
+        // Exclude the country input field from leftovers only if it is present or expected (by checking the validation rules).
+        if ($inputCountry || in_array($inputField, $rules)) {
+            $leftovers = array_diff($leftovers, [$inputField]);
+        }
 
         if (! empty($leftovers)) {
             throw InvalidParameterException::parameters(array_intersect_key($originalParameters, $leftovers));
