@@ -14,17 +14,4 @@ class InvalidParameterException extends \Exception
     {
         return new static('Ambiguous phone validation parameter: "' . $parameter . '". This parameter is recognized as an input field and as a phone type. Please rename the input field.');
     }
-
-    /**
-     * Invalid parameters static constructor.
-     *
-     * @param array|Collection $parameters
-     * @return static
-     */
-    public static function parameters($parameters)
-    {
-        $parameters = Collection::make($parameters);
-
-        return new static('Invalid phone validation parameters: "' . $parameters->implode(',') . '".');
-    }
 }
