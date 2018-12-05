@@ -39,13 +39,12 @@ class Phone
     public function validate($attribute, $value, array $parameters, $validator)
     {
         $data = $validator->getData();
-        $validated = $validator->getRules();
 
         list(
             $countries,
             $types,
             $detect,
-            $lenient) = $this->extractParameters($attribute, $parameters, $data, $rules);
+            $lenient) = $this->extractParameters($attribute, $parameters, $data);
 
         // A "null" country is prepended:
         // 1. In case of auto-detection to have the validation run first without supplying a country.
@@ -97,13 +96,11 @@ class Phone
      * @param string $attribute
      * @param array  $parameters
      * @param array  $data
-     * @param array  $rules
      * @return array
      * @throws \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
      */
-    protected function extractParameters($attribute, array $parameters, array $data, array $rules = [])
+    protected function extractParameters($attribute, array $parameters, array $data)
     {
-        $originalParameters = $parameters;
         $parameters = array_map('strtolower', $parameters);
 
         // Discover if an input field was provided. If not, guess the field's name.
@@ -118,34 +115,18 @@ class Phone
                 throw InvalidParameterException::ambiguous($inputField);
             }
 
-            // Invalid country field values should just validate to false, and this is exactly what
-            // we're getting when simply excluding invalid values.
+            // Invalid country field values should just validate to false.
             // This will also prevent parameter hijacking through the country field.
             if (static::isValidCountryCode($inputCountry)) {
                 $parameters[] = $inputCountry;
             }
         }
 
-        $countries = static::parseCountries($parameters);
-        $types = static::parseTypes($parameters);
-        $auto = in_array('auto', $parameters);
-        $lenient = in_array('lenient', $parameters);
-
-        // Force developers to write proper code.
-        // Since the static parsers return a validated array with preserved keys, we can safely diff against the keys.
-        // Unfortunately we can't use $collection->diffKeys() as it's not available yet in earlier 5.* versions.
-        $leftovers = array_diff_key($parameters, $countries, $types);
-        $leftovers = array_diff($leftovers, ['auto', 'lenient']);
-        
-        // Exclude the country input field from leftovers only if it is present or expected (by checking the validation rules).
-        if ($inputCountry || in_array($inputField, $rules)) {
-            $leftovers = array_diff($leftovers, [$inputField]);
-        }
-
-        if (! empty($leftovers)) {
-            throw InvalidParameterException::parameters(array_intersect_key($originalParameters, $leftovers));
-        }
-
-        return [$countries, $types, $auto, $lenient, $inputField];
+        return [
+            static::parseCountries($parameters),
+            static::parseTypes($parameters),
+            in_array('auto', $parameters),
+            in_array('lenient', $parameters)
+        ];
     }
 }
