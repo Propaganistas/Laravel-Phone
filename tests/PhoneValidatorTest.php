@@ -257,18 +257,27 @@ class PhoneValidatorTest extends TestCase
         )->passes());
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
-     * @expectedExceptionMessage xyz,abc
-     */
-    public function it_throws_an_exception_for_invalid_parameters()
+    /** @test */
+    public function it_ignores_invalid_parameters()
     {
-        $this->validator->make(
+        $this->assertTrue($this->validator->make(
             ['field' => '0470123456'],
             ['field' => 'phone:BE,xyz,mobile,abc']
-        )->passes();
+        )->passes());
+        
+        $this->assertFalse($this->validator->make(
+            ['field' => '012345678'],
+            ['field' => 'phone:BE,xyz,mobile,abc']
+        )->passes());
+    }
+    
+    /** @test */
+    public function it_ingores_invalid_country_field_value()
+    {
+        $this->assertFalse($this->validator->make(
+            ['field' => '012345678', 'field_country' => 'foo'],
+            ['field' => 'phone']
+        )->passes());
     }
 
     /**
@@ -283,15 +292,6 @@ class PhoneValidatorTest extends TestCase
             ['mobile' => '0470123456', 'mobile_country' => 'BE'],
             ['mobile' => 'phone:mobile']
         )->passes();
-    }
-
-    /** @test */
-    public function it_doesnt_throw_an_exception_for_an_invalid_country_field_value()
-    {
-        $this->assertFalse($this->validator->make(
-            ['field' => '012345678', 'field_country' => 'foo'],
-            ['field' => 'phone']
-        )->passes());
     }
 
     /** @test */
