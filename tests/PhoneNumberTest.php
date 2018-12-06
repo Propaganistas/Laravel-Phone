@@ -297,7 +297,7 @@ class PhoneNumberTest extends TestCase
     public function it_can_verify_types()
     {
         $this->assertTrue(PhoneNumber::isValidType(PhoneNumberType::MOBILE));
-        $this->assertTrue(PhoneNumber::isValidType((string)PhoneNumberType::MOBILE));
+        $this->assertTrue(PhoneNumber::isValidType((string) PhoneNumberType::MOBILE));
         $this->assertTrue(PhoneNumber::isValidType('mobile'));
         $this->assertFalse(PhoneNumber::isValidType(99999));
         $this->assertFalse(PhoneNumber::isValidType('99999'));
@@ -333,17 +333,17 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals($object->formatE164(), (string)$object);
+        $this->assertEquals($object->formatE164(), (string) $object);
     }
 
     /** @test */
     public function it_returns_the_original_number_when_unparsable_number_is_cast_to_string()
     {
         $object = new PhoneNumber('45678');
-        $this->assertEquals('45678', (string)$object);
+        $this->assertEquals('45678', (string) $object);
 
         $object = $object->ofCountry('BE');
-        $this->assertEquals('45678', (string)$object);
+        $this->assertEquals('45678', (string) $object);
     }
 
     /** @test */
@@ -352,7 +352,7 @@ class PhoneNumberTest extends TestCase
         // Test international landline number without country and format parameters.
         $actual = phone('+32 12 34 56 78');
         $expected = PhoneNumber::make('012345678', 'BE');
-        $this->assertEquals($expected, (string)$actual);
+        $this->assertEquals($expected, (string) $actual);
 
         // Test landline number without format parameter.
         $actual = phone('012345678', 'BE');
