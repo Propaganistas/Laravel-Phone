@@ -336,6 +336,16 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     }
 
     /**
+     * Get the PhoneNumberUtil instance.
+     *
+     * @return \libphonenumber\PhoneNumberUtil
+     */
+    public function getPhoneNumberUtilInstance()
+    {
+        return $this->lib;
+    }
+
+    /**
      * Convert the phone instance to JSON.
      *
      * @param  int $options
