@@ -263,6 +263,10 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
             }
         }
 
+        if ($countries = array_filter($countries)) {
+            throw NumberParseException::countryMismatch($this->number, $countries);
+        }
+
         throw NumberParseException::countryRequired($this->number);
     }
 

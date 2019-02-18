@@ -2,6 +2,7 @@
 
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberType;
+use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class PhoneNumberTest extends TestCase
@@ -108,7 +109,7 @@ class PhoneNumberTest extends TestCase
      * @test
      *
      * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
-     * @expectedExceptionMessage 012345678
+     * @expectedExceptionMessage Number requires a country to be specified
      */
     public function it_throws_an_exception_when_formatting_non_international_number_without_given_country()
     {
@@ -241,12 +242,37 @@ class PhoneNumberTest extends TestCase
      * @test
      *
      * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
-     * @expectedExceptionMessage 45678
+     * @expectedExceptionMessage Number requires a country to be specified.
      */
-    public function it_throws_an_exception_when_the_number_could_not_be_parsed()
+    public function it_throws_an_exception_when_the_country_is_missing()
     {
         $object = new PhoneNumber('45678');
+        $object->formatRFC3966();
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
+     * @expectedExceptionMessage Number does not match the provided country
+     */
+    public function it_throws_an_exception_when_the_country_is_mismatched()
+    {
+        $object = new PhoneNumber('4567');
         $object = $object->ofCountry('BE');
+        $object->formatRFC3966();
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \Propaganistas\LaravelPhone\Exceptions\NumberParseException
+     * @expectedExceptionMessage Number does not match the provided country
+     */
+    public function it_throws_an_exception_when_the_country_is_mismatched_2()
+    {
+        $object = new PhoneNumber('+15555555555');
+        $object = $object->ofCountry('US');
         $object->formatRFC3966();
     }
 
@@ -362,5 +388,22 @@ class PhoneNumberTest extends TestCase
         $actual = phone('012345678', 'BE', PhoneNumberFormat::NATIONAL);
         $expected = '012 34 56 78';
         $this->assertEquals($expected, $actual);
+    }
+
+    /** @test */
+    public function it_can_get_the_exceptions_number()
+    {
+        $exception = NumberParseException::countryRequired('12345');
+        $this->assertEquals('12345', $exception->getNumber());
+
+        $exception = NumberParseException::countryMismatch('12345', []);
+        $this->assertEquals('12345', $exception->getNumber());
+    }
+
+    /** @test */
+    public function it_can_get_the_exceptions_countries()
+    {
+        $exception = NumberParseException::countryMismatch('12345', ['BE', 'foo']);
+        $this->assertEquals(['BE', 'foo'], $exception->getCountries());
     }
 }
