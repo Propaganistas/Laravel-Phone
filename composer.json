@@ -16,9 +16,9 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "illuminate/support": ">=5.0,<5.8",
-        "illuminate/validation": ">=5.0,<5.8",
+        "php": ">=7.1",
+        "illuminate/support": ">=5.0,<5.9",
+        "illuminate/validation": ">=5.0,<5.9",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0",
         "league/iso3166": "^2.0"
     },

@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
+  - 7.3
 
 cache:
   directories:
@@ -12,22 +12,24 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 7.0 # Laravel 5.0 requires Mcrypt, but it is deprecated as of PHP 7.1
+    - php: 7.1
       env: ILLUMINATE_VERSION=5.0.* TESTBENCH_VERSION=3.0.* PHPUNIT_VERSION=4.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.1.* TESTBENCH_VERSION=3.1.* PHPUNIT_VERSION=5.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.2.* TESTBENCH_VERSION=3.2.* PHPUNIT_VERSION=5.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.3.* TESTBENCH_VERSION=3.3.* PHPUNIT_VERSION=5.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.4.* TESTBENCH_VERSION=3.4.* PHPUNIT_VERSION=5.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.5.* TESTBENCH_VERSION=3.5.* PHPUNIT_VERSION=6.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.6.* TESTBENCH_VERSION=3.6.* PHPUNIT_VERSION=7.*
-    - php: 7.2
+    - php: 7.3
       env: ILLUMINATE_VERSION=5.7.* TESTBENCH_VERSION=3.7.* PHPUNIT_VERSION=7.*
+    - php: 7.3
+      env: ILLUMINATE_VERSION=5.8.* TESTBENCH_VERSION=3.8.* PHPUNIT_VERSION=8.*
 
 sudo: false
 

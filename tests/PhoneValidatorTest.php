@@ -8,7 +8,7 @@ class PhoneValidatorTest extends TestCase
 {
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
