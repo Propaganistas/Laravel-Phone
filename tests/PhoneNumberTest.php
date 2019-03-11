@@ -370,6 +370,13 @@ class PhoneNumberTest extends TestCase
         $object = $object->ofCountry('BE');
         $this->assertEquals('45678', (string) $object);
     }
+    
+    /** @test */
+    public function it_returns_empty_string_when_null_is_cast_to_string()
+    {
+        $object = new PhoneNumber(null);
+        $this->assertEquals('', (string) $object);
+    }
 
     /** @test */
     public function it_has_a_helper_function()
