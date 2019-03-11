@@ -394,7 +394,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
         try {
             return $this->formatE164();
         } catch (Exception $exception) {
-            return $this->number;
+            return (string) $this->number;
         }
     }
 }
