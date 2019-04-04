@@ -413,4 +413,13 @@ class PhoneNumberTest extends TestCase
         $exception = NumberParseException::countryMismatch('12345', ['BE', 'foo']);
         $this->assertEquals(['BE', 'foo'], $exception->getCountries());
     }
+
+    /** @test */
+    public function it_doesnt_throw_for_antarctica()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('AQ','BE');
+
+        $this->assertEquals('BE', $object->getCountry());
+    }
 }

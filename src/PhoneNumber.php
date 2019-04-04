@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JsonSerializable;
+use libphonenumber\NumberParseException as libNumberParseException;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
@@ -238,11 +239,15 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     {
         $result = Collection::make($countries)
                             ->filter(function ($country) {
-                                $instance = $this->lib->parse($this->number, $country);
+                                try {
+                                    $instance = $this->lib->parse($this->number, $country);
 
-                                return $this->lenient
-                                    ? $this->lib->isPossibleNumber($instance, $country)
-                                    : $this->lib->isValidNumberForRegion($instance, $country);
+                                    return $this->lenient
+                                        ? $this->lib->isPossibleNumber($instance, $country)
+                                        : $this->lib->isValidNumberForRegion($instance, $country);
+                                } catch (libNumberParseException $e) {
+                                    return false;
+                                }
                             })->first();
 
         // If we got a new result, return it.
