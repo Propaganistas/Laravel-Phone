@@ -6,6 +6,8 @@ use Propaganistas\LaravelPhone\Traits\ParsesTypes;
 
 class Phone
 {
+    use ParsesTypes;
+    
     /**
      * The provided phone countries.
      *
