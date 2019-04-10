@@ -6,6 +6,8 @@ use Propaganistas\LaravelPhone\Traits\ParsesTypes;
 
 class Phone
 {
+    use ParsesTypes;
+    
     /**
      * The provided phone countries.
      *
@@ -141,7 +143,7 @@ class Phone
     {
         $parameters = implode(',', array_merge(
             $this->countries,
-            $this->types,
+            static::parseTypes($this->types),
             ($this->countryField ? [$this->countryField]: []),
             ($this->detect ? ['AUTO'] : []),
             ($this->lenient ? ['LENIENT'] : [])

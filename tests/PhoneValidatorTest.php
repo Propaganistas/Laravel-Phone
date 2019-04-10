@@ -484,8 +484,16 @@ class PhoneValidatorTest extends TestCase
         $actual = with(new Rule)->mobile();
         $expected = 'phone:1';
         $this->assertEquals($expected, (string) $actual);
+        
+        $actual = with(new Rule)->type('mobile');
+        $expected = 'phone:1';
+        $this->assertEquals($expected, (string) $actual);
 
         $actual = with(new Rule)->mobile()->fixedLine();
+        $expected = 'phone:1,0';
+        $this->assertEquals($expected, (string) $actual);
+        
+        $actual = with(new Rule)->type('mobile')->type('fixed_line');
         $expected = 'phone:1,0';
         $this->assertEquals($expected, (string) $actual);
 
@@ -502,7 +510,7 @@ class PhoneValidatorTest extends TestCase
         $this->assertEquals($expected, (string) $actual);
 
         $actual = with(new Rule)->detect()->lenient()->type('toll_free')->type(PhoneNumberType::VOIP)->country('BE')->countryField('my_field');
-        $expected = 'phone:BE,toll_free,6,my_field,AUTO,LENIENT';
+        $expected = 'phone:BE,3,6,my_field,AUTO,LENIENT';
         $this->assertEquals($expected, (string) $actual);
     }
 
