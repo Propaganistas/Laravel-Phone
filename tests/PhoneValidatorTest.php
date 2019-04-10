@@ -510,7 +510,7 @@ class PhoneValidatorTest extends TestCase
         $this->assertEquals($expected, (string) $actual);
 
         $actual = with(new Rule)->detect()->lenient()->type('toll_free')->type(PhoneNumberType::VOIP)->country('BE')->countryField('my_field');
-        $expected = 'phone:BE,toll_free,6,my_field,AUTO,LENIENT';
+        $expected = 'phone:BE,3,6,my_field,AUTO,LENIENT';
         $this->assertEquals($expected, (string) $actual);
     }
 
