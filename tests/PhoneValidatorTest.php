@@ -484,8 +484,16 @@ class PhoneValidatorTest extends TestCase
         $actual = with(new Rule)->mobile();
         $expected = 'phone:1';
         $this->assertEquals($expected, (string) $actual);
+        
+        $actual = with(new Rule)->type('mobile');
+        $expected = 'phone:1';
+        $this->assertEquals($expected, (string) $actual);
 
         $actual = with(new Rule)->mobile()->fixedLine();
+        $expected = 'phone:1,0';
+        $this->assertEquals($expected, (string) $actual);
+        
+        $actual = with(new Rule)->type('mobile')->type('fixed_line');
         $expected = 'phone:1,0';
         $this->assertEquals($expected, (string) $actual);
 
