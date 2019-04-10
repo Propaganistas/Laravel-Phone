@@ -141,7 +141,7 @@ class Phone
     {
         $parameters = implode(',', array_merge(
             $this->countries,
-            $this->types,
+            $this->parseTypes($this->types),
             ($this->countryField ? [$this->countryField]: []),
             ($this->detect ? ['AUTO'] : []),
             ($this->lenient ? ['LENIENT'] : [])
