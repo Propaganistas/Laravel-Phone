@@ -402,4 +402,21 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
             return (string) $this->number;
         }
     }
+
+    /**
+     * Check if the phone number is valid.
+     *
+     * @return boolean
+     */
+    public function isValidNumber()
+    {
+        try {
+            return $this->lib->isValidNumber(
+                $this->getPhoneNumberInstance(),
+                $this->getCountry()
+            );
+        } catch(Exception $exception) {
+            return false;
+        }
+    }
 }

@@ -422,4 +422,27 @@ class PhoneNumberTest extends TestCase
 
         $this->assertEquals('BE', $object->getCountry());
     }
+
+    /** @test */
+    public function it_can_check_the_phone_number_validity()
+    {
+        $object = new PhoneNumber('012345678');
+        $this->assertFalse($object->isValidNumber());
+
+        $object = new PhoneNumber('+3212345678');
+        $this->assertTrue($object->isValidNumber());
+
+        $object = new PhoneNumber('2025550145');
+        $object = $object->ofCountry('US');
+        $this->assertTrue($object->isValidNumber());
+
+        $object = new PhoneNumber('+12025550145');
+        $this->assertTrue($object->isValidNumber());
+
+        $object = new PhoneNumber('+972527481234');
+        $this->assertTrue($object->isValidNumber());
+
+        $object = new PhoneNumber('+1012345678');
+        $this->assertFalse($object->isValidNumber());
+    }
 }
