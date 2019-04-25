@@ -5,6 +5,7 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
 use libphonenumber\NumberParseException as libNumberParseException;
 use libphonenumber\PhoneNumberFormat;
@@ -20,7 +21,8 @@ use Serializable;
 
 class PhoneNumber implements Jsonable, JsonSerializable, Serializable
 {
-    use ParsesCountries,
+    use Macroable,
+        ParsesCountries,
         ParsesFormats,
         ParsesTypes;
 
