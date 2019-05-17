@@ -550,4 +550,28 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:AuTo,MoBiLe'])->passes()
         );
     }
+    
+    /** @test */
+    public function it_validates_mixed_case_input_names()
+    {
+        $this->assertTrue($this->validator->make(
+            ['Field' => '0470123456'],
+            ['Field' => 'phone:be,mobile'])->passes()
+        );
+        
+        $this->assertTrue($this->validator->make(
+            ['Field' => '0470123456', 'Field_Country' => 'BE'],
+            ['Field' => 'phone:mobile'])->passes()
+        );
+
+        $this->assertTrue($this->validator->make(
+            ['field' => '0470123456', 'Country_Code' => 'BE'],
+            ['field' => 'phone:mobile,Country_Code'])->passes()
+        );
+        
+        $this->assertTrue($this->validator->make(
+            ['field' => '0470123456', 'Country_Code' => 'BE'],
+            ['field' => 'phone:mobile,country_code'])->passes()
+        );
+    }
 }
