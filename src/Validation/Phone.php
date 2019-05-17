@@ -101,8 +101,6 @@ class Phone
      */
     protected function extractParameters($attribute, array $parameters, array $data)
     {
-        $parameters = array_map('strtolower', $parameters);
-
         // Discover if an input field was provided. If not, guess the field's name.
         $inputField = Collection::make($parameters)
                                 ->intersect(array_keys(Arr::dot($data)))
@@ -121,6 +119,8 @@ class Phone
                 $parameters[] = $inputCountry;
             }
         }
+        
+        $parameters = array_map('strtolower', $parameters);
 
         return [
             static::parseCountries($parameters),
