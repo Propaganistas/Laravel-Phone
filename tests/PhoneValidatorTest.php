@@ -569,7 +569,7 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:mobile,Country_Code'])->passes()
         );
         
-        $this->assertTrue($this->validator->make(
+        $this->assertFalse($this->validator->make(
             ['field' => '0470123456', 'Country_Code' => 'BE'],
             ['field' => 'phone:mobile,country_code'])->passes()
         );
