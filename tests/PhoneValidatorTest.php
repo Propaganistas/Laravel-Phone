@@ -560,7 +560,7 @@ class PhoneValidatorTest extends TestCase
         );
         
         $this->assertTrue($this->validator->make(
-            ['Field' => '0470123456', 'Field_Country' => 'BE'],
+            ['Field' => '0470123456', 'Field_country' => 'BE'],
             ['Field' => 'phone:mobile'])->passes()
         );
 
