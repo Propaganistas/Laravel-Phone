@@ -1,8 +1,9 @@
 <?php namespace Propaganistas\LaravelPhone\Tests;
 
 use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\PhoneServiceProvider;
 use Propaganistas\LaravelPhone\Rules\Phone as Rule;
+use Propaganistas\LaravelPhone\PhoneServiceProvider;
+use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
 
 class PhoneValidatorTest extends TestCase
 {
@@ -64,8 +65,8 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone'])->passes()
         );
     }
-/*
-    /** @test */
+    /*
+        /** @test */
     public function it_validates_with_default_countries_with_type()
     {
         // Validator with correct country value, correct type.
@@ -264,13 +265,13 @@ class PhoneValidatorTest extends TestCase
             ['field' => '0470123456'],
             ['field' => 'phone:BE,xyz,mobile,abc']
         )->passes());
-        
+
         $this->assertFalse($this->validator->make(
             ['field' => '012345678'],
             ['field' => 'phone:BE,xyz,mobile,abc']
         )->passes());
     }
-    
+
     /** @test */
     public function it_ingores_invalid_country_field_value()
     {
@@ -280,14 +281,12 @@ class PhoneValidatorTest extends TestCase
         )->passes());
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \Propaganistas\LaravelPhone\Exceptions\InvalidParameterException
-     * @expectedExceptionMessage mobile
-     */
+    /** @test */
     public function it_throws_an_exception_for_ambiguous_parameters()
     {
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('mobile');
+
         $this->validator->make(
             ['mobile' => '0470123456', 'mobile_country' => 'BE'],
             ['mobile' => 'phone:mobile']
@@ -484,7 +483,7 @@ class PhoneValidatorTest extends TestCase
         $actual = with(new Rule)->mobile();
         $expected = 'phone:1';
         $this->assertEquals($expected, (string) $actual);
-        
+
         $actual = with(new Rule)->type('mobile');
         $expected = 'phone:1';
         $this->assertEquals($expected, (string) $actual);
@@ -492,7 +491,7 @@ class PhoneValidatorTest extends TestCase
         $actual = with(new Rule)->mobile()->fixedLine();
         $expected = 'phone:1,0';
         $this->assertEquals($expected, (string) $actual);
-        
+
         $actual = with(new Rule)->type('mobile')->type('fixed_line');
         $expected = 'phone:1,0';
         $this->assertEquals($expected, (string) $actual);
@@ -550,7 +549,7 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:AuTo,MoBiLe'])->passes()
         );
     }
-    
+
     /** @test */
     public function it_validates_mixed_case_input_names()
     {
@@ -558,7 +557,7 @@ class PhoneValidatorTest extends TestCase
             ['Field' => '0470123456'],
             ['Field' => 'phone:be,mobile'])->passes()
         );
-        
+
         $this->assertTrue($this->validator->make(
             ['Field' => '0470123456', 'Field_country' => 'BE'],
             ['Field' => 'phone:mobile'])->passes()
@@ -568,7 +567,7 @@ class PhoneValidatorTest extends TestCase
             ['field' => '0470123456', 'Country_Code' => 'BE'],
             ['field' => 'phone:mobile,Country_Code'])->passes()
         );
-        
+
         $this->assertFalse($this->validator->make(
             ['field' => '0470123456', 'Country_Code' => 'BE'],
             ['field' => 'phone:mobile,country_code'])->passes()
