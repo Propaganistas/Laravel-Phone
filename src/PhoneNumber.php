@@ -218,6 +218,16 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     }
 
     /**
+     * Get the countries associated with the phone number.
+     *
+     * @return array
+     */
+    public function getCountries()
+    {
+        return $this->countries;
+    }
+
+    /**
      * Check if the phone number is of (a) given country(ies).
      *
      * @param string|array $country
@@ -240,17 +250,17 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     protected function filterValidCountry($countries)
     {
         $result = Collection::make($countries)
-                            ->filter(function ($country) {
-                                try {
-                                    $instance = $this->lib->parse($this->number, $country);
+            ->filter(function ($country) {
+                try {
+                    $instance = $this->lib->parse($this->number, $country);
 
-                                    return $this->lenient
-                                        ? $this->lib->isPossibleNumber($instance, $country)
-                                        : $this->lib->isValidNumberForRegion($instance, $country);
-                                } catch (libNumberParseException $e) {
-                                    return false;
-                                }
-                            })->first();
+                    return $this->lenient
+                        ? $this->lib->isPossibleNumber($instance, $country)
+                        : $this->lib->isValidNumberForRegion($instance, $country);
+                } catch (libNumberParseException $e) {
+                    return false;
+                }
+            })->first();
 
         // If we got a new result, return it.
         if ($result) {
