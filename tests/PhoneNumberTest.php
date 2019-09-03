@@ -330,7 +330,7 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
         $serialized = serialize($object);
-        $this->assertIsString($serialized);
+        $this->assertTrue(is_string($serialized));
 
         $unserialized = unserialize($serialized);
         $this->assertInstanceOf(PhoneNumber::class, $unserialized);
