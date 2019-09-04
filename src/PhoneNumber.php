@@ -218,16 +218,6 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     }
 
     /**
-     * Get the countries associated with the phone number.
-     *
-     * @return array
-     */
-    public function getCountries()
-    {
-        return $this->countries;
-    }
-
-    /**
      * Check if the phone number is of (a) given country(ies).
      *
      * @param string|array $country

@@ -18,28 +18,6 @@ class PhoneNumberTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_temporary_countries()
-    {
-        $object = new PhoneNumber('012345678');
-        $object = $object->ofCountry('BE');
-        $this->assertEquals(['BE'], $object->getCountries());
-
-        $object = $object->ofCountry(['NL', 'FR']);
-        $this->assertEquals(['BE', 'NL', 'FR'], $object->getCountries());
-
-        $object = $object->ofCountry('AU', 'CH');
-        $this->assertEquals(['BE', 'NL', 'FR', 'AU', 'CH'], $object->getCountries());
-    }
-
-    /** @test */
-    public function it_will_filter_invalid_countries()
-    {
-        $object = new PhoneNumber('012345678');
-        $object = $object->ofCountry('BE', 'foo', 23);
-        $this->assertEquals(['BE'], $object->getCountries());
-    }
-
-    /** @test */
     public function it_can_return_the_country()
     {
         $object = new PhoneNumber('012345678');
@@ -47,6 +25,14 @@ class PhoneNumberTest extends TestCase
         $this->assertEquals('BE', $object->getCountry());
 
         $object = new PhoneNumber('+3212345678');
+        $this->assertEquals('BE', $object->getCountry());
+    }
+
+    /** @test */
+    public function it_will_ignore_invalid_countries()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('BE', 'foo', 23);
         $this->assertEquals('BE', $object->getCountry());
     }
 
@@ -84,11 +70,11 @@ class PhoneNumberTest extends TestCase
 
         $object = PhoneNumber::make('012345678', 'BE');
         $this->assertEquals('+3212345678', (string) $object);
-        $this->assertEquals(['BE'], $object->getCountries());
+        $this->assertEquals('BE', $object->getCountry());
 
         $object = PhoneNumber::make('012345678', ['BE', 'NL']);
         $this->assertEquals('+3212345678', (string) $object);
-        $this->assertEquals(['BE', 'NL'], $object->getCountries());
+        $this->assertEquals('BE', $object->getCountry());
     }
 
     /** @test */
