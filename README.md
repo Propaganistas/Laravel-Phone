@@ -44,7 +44,7 @@ If you don't use auto-discovery, open up your app config and add the Service Pro
 ],
 ```
 
-In your languages directory, add for each language an extra language line for the validator:
+In your languages directory, add an extra line for each language file:
 
 ```php
 'phone' => 'The :attribute field contains an invalid number.',
