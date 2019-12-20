@@ -71,7 +71,7 @@ To validate a phone number, use the `phone` keyword in your validation rules arr
 
   The validator will check if the number is valid in at least one of provided countries, so feel free to add as many country codes as you like.
 
-- You provide a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. Make sure the country field is named similar as the phone field but with *_country* appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
+- You provide a dedicated country input field (keyed by *ISO 3166-1 compliant* country codes) to allow end users to supply a country on their own. Make sure the country field has the same name as the phone field but with *_country* appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
 
     ```php
     'phonefield'            => 'phone',
