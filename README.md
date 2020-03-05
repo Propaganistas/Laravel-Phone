@@ -1,6 +1,6 @@
 # Laravel Phone
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Propaganistas/Laravel-Phone/tests)
+![Tests](https://github.com/Propaganistas/Laravel-Phone/workflows/Tests/badge.svg?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/propaganistas/laravel-phone/v/stable)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
