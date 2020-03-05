@@ -3,10 +3,11 @@ name: Tests
 on:
     push:
     pull_request:
+    schedule:
+        - cron: '0 0 * * 1'
 
 jobs:
     test:
-
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
