@@ -1,4 +1,4 @@
-name: Test
+name: Tests
 
 on:
     push:
@@ -26,14 +26,18 @@ jobs:
                         phpunit: 7.*
                     -   laravel: 5.8.*
                         testbench: 3.8.*
-                        phpunit: 8.*
+                        phpunit: 7.*
                     -   laravel: 6.*
                         testbench: 4.*
                         phpunit: 8.*
                     -   laravel: 7.*
                         testbench: 5.*
                         phpunit: 9.*
-
+                exclude:
+                    - laravel: 6.*
+                      php: 7.1
+                    - laravel: 7.*
+                      php: 7.1
 
         name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
