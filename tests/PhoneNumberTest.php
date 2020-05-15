@@ -409,4 +409,19 @@ class PhoneNumberTest extends TestCase
 
         $this->assertEquals('BE', $object->getCountry());
     }
+
+    /** @test */
+    public function it_formats_lenient_number_with_country_code_detection()
+    {
+        $this->assertEquals('+491244614038', PhoneNumber::make('+49(0)12-44 614038')
+            ->lenient()
+            ->formatE164());
+    }
+
+    /** @test */
+    public function it_throws_exception_on_not_valid_phone_with_country_code_detection()
+    {
+        $this->expectException(NumberParseException::class);
+        PhoneNumber::make('+49(0)12-44 614038')->formatE164();
+    }
 }
