@@ -245,7 +245,7 @@ class PhoneNumberTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_the_country_is_mismatched_2()
+    public function it_throws_an_exception_when_an_international_number_also_fails_with_provided_country()
     {
         $object = new PhoneNumber('+15555555555');
         $object = $object->ofCountry('US');
