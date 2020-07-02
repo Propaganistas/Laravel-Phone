@@ -97,8 +97,6 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('+3212345678');
         $object = $object->ofCountry('US');
-        
-        $object = new PhoneNumber('+3212345678');
         $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
     }
 
