@@ -1,29 +1,15 @@
 <?php namespace Propaganistas\LaravelPhone;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Validation\Rule;
 use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Rules;
 use Propaganistas\LaravelPhone\Validation;
-use ReflectionClass;
 
 class PhoneServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerValidator();
-
-        $this->registerRule();
-    }
-
-    /**
-     * Register the service provider.
+     * Register services.
      *
      * @return void
      */
@@ -35,38 +21,18 @@ class PhoneServiceProvider extends ServiceProvider
 
         $this->app->alias('libphonenumber', PhoneNumberUtil::class);
     }
-
+    
     /**
-     * Register the "phone" validator.
-     */
-    protected function registerValidator()
-    {
-        $extend = static::canUseDependentValidation() ? 'extendDependent' : 'extend';
-
-        $this->app['validator']->{$extend}('phone', Validation\Phone::class . '@validate');
-    }
-
-    /**
-     * Register the "phone" rule macro.
-     */
-    protected function registerRule()
-    {
-        if (class_exists('Illuminate\Validation\Rule') && class_uses(Rule::class, Macroable::class)) {
-            Rule::macro('phone', function () {
-                return new Rules\Phone;
-            });
-        }
-    }
-
-    /**
-     * Determine whether we can register a dependent validator.
+     * Bootstrap services.
      *
-     * @return bool
+     * @return void
      */
-    public static function canUseDependentValidation()
+    public function boot()
     {
-        $validator = new ReflectionClass('\Illuminate\Validation\Factory');
+        $this->app['validator']->extendDependent('phone', Validation\Phone::class . '@validate');
 
-        return $validator->hasMethod('extendDependent');
+        Rule::macro('phone', function () {
+            return new Rules\Phone;
+        });
     }
 }
