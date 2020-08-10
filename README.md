@@ -33,14 +33,7 @@ composer require propaganistas/laravel-phone
 
 ### Laravel
 
-If you don't use auto-discovery, open up your app config and add the Service Provider to the `$providers` array:
-
- ```php
-'providers' => [
-    ...
-    Propaganistas\LaravelPhone\PhoneServiceProvider::class,
-],
-```
+The Service Provider gets discovered automatically.
 
 In your languages directory, add an extra line for each language file:
 
