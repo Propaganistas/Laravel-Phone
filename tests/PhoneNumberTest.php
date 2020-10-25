@@ -18,6 +18,13 @@ class PhoneNumberTest extends TestCase
     }
 
     /** @test */
+    public function it_can_return_the_raw_number()
+    {
+        $object = new PhoneNumber('012 34 56 78');
+        $this->assertEquals('012 34 56 78', $object->getRawNumber());
+    }
+
+    /** @test */
     public function it_can_return_the_country()
     {
         $object = new PhoneNumber('012345678');

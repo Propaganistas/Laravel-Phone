@@ -315,6 +315,16 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     }
 
     /**
+     * Get the raw provided number.
+     *
+     * @return string
+     */
+    public function getRawNumber()
+    {
+    	return $this->number;
+    }
+
+    /**
      * Get the PhoneNumber instance of the current number.
      *
      * @return \libphonenumber\PhoneNumber
