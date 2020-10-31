@@ -13,15 +13,15 @@ class PhoneNumberTest extends TestCase
     public function it_can_construct()
     {
         $object = new PhoneNumber('012345678');
-        $this->assertInstanceOf(PhoneNumber::class, $object);
-        $this->assertEquals('012345678', (string) $object);
+        self::assertInstanceOf(PhoneNumber::class, $object);
+        self::assertEquals('012345678', (string) $object);
     }
 
     /** @test */
     public function it_can_return_the_raw_number()
     {
         $object = new PhoneNumber('012 34 56 78');
-        $this->assertEquals('012 34 56 78', $object->getRawNumber());
+        self::assertEquals('012 34 56 78', $object->getRawNumber());
     }
 
     /** @test */
@@ -29,10 +29,10 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('NL', 'FR', 'BE');
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
 
         $object = new PhoneNumber('+3212345678');
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
     }
 
     /** @test */
@@ -40,7 +40,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE', 'foo', 23);
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
     }
 
     /** @test */
@@ -48,11 +48,11 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('NL', 'FR', 'BE');
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
 
         $object = new PhoneNumber('+3212345678');
         $object->getCountry();
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
     }
 
     /** @test */
@@ -60,28 +60,28 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertTrue($object->isOfCountry('BE'));
-        $this->assertFalse($object->isOfCountry('US'));
+        self::assertTrue($object->isOfCountry('BE'));
+        self::assertFalse($object->isOfCountry('US'));
 
         $object = new PhoneNumber('+3212345678');
-        $this->assertTrue($object->isOfCountry('BE'));
-        $this->assertFalse($object->isOfCountry('US'));
+        self::assertTrue($object->isOfCountry('BE'));
+        self::assertFalse($object->isOfCountry('US'));
     }
 
     /** @test */
     public function it_can_make()
     {
         $object = PhoneNumber::make('012345678');
-        $this->assertInstanceOf(PhoneNumber::class, $object);
-        $this->assertEquals('012345678', (string) $object);
+        self::assertInstanceOf(PhoneNumber::class, $object);
+        self::assertEquals('012345678', (string) $object);
 
         $object = PhoneNumber::make('012345678', 'BE');
-        $this->assertEquals('+3212345678', (string) $object);
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('+3212345678', (string) $object);
+        self::assertEquals('BE', $object->getCountry());
 
         $object = PhoneNumber::make('012345678', ['BE', 'NL']);
-        $this->assertEquals('+3212345678', (string) $object);
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('+3212345678', (string) $object);
+        self::assertEquals('BE', $object->getCountry());
     }
 
     /** @test */
@@ -89,22 +89,22 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals('+3212345678', $object->format(PhoneNumberFormat::E164));
+        self::assertEquals('+3212345678', $object->format(PhoneNumberFormat::E164));
     }
 
     /** @test */
     public function it_can_format_international_numbers_without_given_country()
     {
         $object = new PhoneNumber('+3212345678');
-        $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
+        self::assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
     }
-    
+
     /** @test */
     public function it_can_format_international_numbers_with_wrong_country()
     {
         $object = new PhoneNumber('+3212345678');
         $object = $object->ofCountry('US');
-        $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
+        self::assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
     }
 
     /** @test */
@@ -122,7 +122,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals(
+        self::assertEquals(
             $object->format(PhoneNumberFormat::E164),
             $object->format('e164')
         );
@@ -144,7 +144,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals(
+        self::assertEquals(
             $object->format(PhoneNumberFormat::INTERNATIONAL),
             $object->formatInternational()
         );
@@ -155,7 +155,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals(
+        self::assertEquals(
             $object->format(PhoneNumberFormat::NATIONAL),
             $object->formatNational()
         );
@@ -166,7 +166,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals(
+        self::assertEquals(
             $object->format(PhoneNumberFormat::E164),
             $object->formatE164()
         );
@@ -177,7 +177,7 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals(
+        self::assertEquals(
             $object->format(PhoneNumberFormat::RFC3966),
             $object->formatRFC3966()
         );
@@ -188,9 +188,9 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals('012 34 56 78', $object->formatForCountry('BE'));
-        $this->assertEquals('00 32 12 34 56 78', $object->formatForCountry('NL'));
-        $this->assertEquals('011 32 12 34 56 78', $object->formatForCountry('US'));
+        self::assertEquals('012 34 56 78', $object->formatForCountry('BE'));
+        self::assertEquals('00 32 12 34 56 78', $object->formatForCountry('NL'));
+        self::assertEquals('011 32 12 34 56 78', $object->formatForCountry('US'));
     }
 
     /** @test */
@@ -198,9 +198,9 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals('012345678', $object->formatForMobileDialingInCountry('BE'));
-        $this->assertEquals('+3212345678', $object->formatForMobileDialingInCountry('NL'));
-        $this->assertEquals('+3212345678', $object->formatForMobileDialingInCountry('US'));
+        self::assertEquals('012345678', $object->formatForMobileDialingInCountry('BE'));
+        self::assertEquals('+3212345678', $object->formatForMobileDialingInCountry('NL'));
+        self::assertEquals('+3212345678', $object->formatForMobileDialingInCountry('US'));
     }
 
     /** @test */
@@ -225,10 +225,10 @@ class PhoneNumberTest extends TestCase
     /** @test */
     public function it_can_verify_formats()
     {
-        $this->assertTrue(PhoneNumber::isValidFormat(PhoneNumberFormat::E164));
-        $this->assertTrue(PhoneNumber::isValidFormat('e164'));
-        $this->assertFalse(PhoneNumber::isValidFormat(99999));
-        $this->assertFalse(PhoneNumber::isValidFormat('foo'));
+        self::assertTrue(PhoneNumber::isValidFormat(PhoneNumberFormat::E164));
+        self::assertTrue(PhoneNumber::isValidFormat('e164'));
+        self::assertFalse(PhoneNumber::isValidFormat(99999));
+        self::assertFalse(PhoneNumber::isValidFormat('foo'));
     }
 
     /** @test */
@@ -267,13 +267,13 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals('fixed_line', $object->getType());
-        $this->assertEquals(PhoneNumberType::FIXED_LINE, $object->getType(true));
+        self::assertEquals('fixed_line', $object->getType());
+        self::assertEquals(PhoneNumberType::FIXED_LINE, $object->getType(true));
 
         $object = new PhoneNumber('0470123456');
         $object = $object->ofCountry('BE');
-        $this->assertEquals('mobile', $object->getType());
-        $this->assertEquals(PhoneNumberType::MOBILE, $object->getType(true));
+        self::assertEquals('mobile', $object->getType());
+        self::assertEquals(PhoneNumberType::MOBILE, $object->getType(true));
     }
 
     /** @test */
@@ -281,17 +281,17 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertTrue($object->isOfType('fixed_line'));
-        $this->assertTrue($object->isOfType(PhoneNumberType::FIXED_LINE));
-        $this->assertFalse($object->isOfType('mobile'));
-        $this->assertFalse($object->isOfType(PhoneNumberType::MOBILE));
+        self::assertTrue($object->isOfType('fixed_line'));
+        self::assertTrue($object->isOfType(PhoneNumberType::FIXED_LINE));
+        self::assertFalse($object->isOfType('mobile'));
+        self::assertFalse($object->isOfType(PhoneNumberType::MOBILE));
 
         $object = new PhoneNumber('0470123456');
         $object = $object->ofCountry('BE');
-        $this->assertFalse($object->isOfType('fixed_line'));
-        $this->assertFalse($object->isOfType(PhoneNumberType::FIXED_LINE));
-        $this->assertTrue($object->isOfType('mobile'));
-        $this->assertTrue($object->isOfType(PhoneNumberType::MOBILE));
+        self::assertFalse($object->isOfType('fixed_line'));
+        self::assertFalse($object->isOfType(PhoneNumberType::FIXED_LINE));
+        self::assertTrue($object->isOfType('mobile'));
+        self::assertTrue($object->isOfType(PhoneNumberType::MOBILE));
     }
 
     /* @test */
@@ -301,18 +301,18 @@ class PhoneNumberTest extends TestCase
         // Without the unsure type, the following check would fail.
         $object = new PhoneNumber('8590332334');
         $object = $object->ofCountry('IN');
-        $this->assertTrue($object->isOfType('fixed_line'));
+        self::assertTrue($object->isOfType('fixed_line'));
     }
 
     /** @test */
     public function it_can_verify_types()
     {
-        $this->assertTrue(PhoneNumber::isValidType(PhoneNumberType::MOBILE));
-        $this->assertTrue(PhoneNumber::isValidType((string) PhoneNumberType::MOBILE));
-        $this->assertTrue(PhoneNumber::isValidType('mobile'));
-        $this->assertFalse(PhoneNumber::isValidType(99999));
-        $this->assertFalse(PhoneNumber::isValidType('99999'));
-        $this->assertFalse(PhoneNumber::isValidType('foo'));
+        self::assertTrue(PhoneNumber::isValidType(PhoneNumberType::MOBILE));
+        self::assertTrue(PhoneNumber::isValidType((string) PhoneNumberType::MOBILE));
+        self::assertTrue(PhoneNumber::isValidType('mobile'));
+        self::assertFalse(PhoneNumber::isValidType(99999));
+        self::assertFalse(PhoneNumber::isValidType('99999'));
+        self::assertFalse(PhoneNumber::isValidType('foo'));
     }
 
     /** @test */
@@ -321,8 +321,8 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
 
-        $this->assertEquals('"+3212345678"', $object->toJson());
-        $this->assertEquals('"+3212345678"', json_encode($object));
+        self::assertEquals('"+3212345678"', $object->toJson());
+        self::assertEquals('"+3212345678"', json_encode($object));
     }
 
     /** @test */
@@ -331,13 +331,13 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
         $serialized = serialize($object);
-        $this->assertTrue(is_string($serialized));
+        self::assertTrue(is_string($serialized));
 
         $unserialized = unserialize($serialized);
-        $this->assertInstanceOf(PhoneNumber::class, $unserialized);
+        self::assertInstanceOf(PhoneNumber::class, $unserialized);
 
-        $this->assertEquals('+3212345678', (string) $unserialized);
-        $this->assertEquals('BE', $unserialized->getCountry());
+        self::assertEquals('+3212345678', (string) $unserialized);
+        self::assertEquals('BE', $unserialized->getCountry());
     }
 
     /** @test */
@@ -345,24 +345,24 @@ class PhoneNumberTest extends TestCase
     {
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('BE');
-        $this->assertEquals($object->formatE164(), (string) $object);
+        self::assertEquals($object->formatE164(), (string) $object);
     }
 
     /** @test */
     public function it_returns_the_original_number_when_unparsable_number_is_cast_to_string()
     {
         $object = new PhoneNumber('45678');
-        $this->assertEquals('45678', (string) $object);
+        self::assertEquals('45678', (string) $object);
 
         $object = $object->ofCountry('BE');
-        $this->assertEquals('45678', (string) $object);
+        self::assertEquals('45678', (string) $object);
     }
 
     /** @test */
     public function it_returns_empty_string_when_null_is_cast_to_string()
     {
         $object = new PhoneNumber(null);
-        $this->assertEquals('', (string) $object);
+        self::assertEquals('', (string) $object);
     }
 
     /** @test */
@@ -371,34 +371,34 @@ class PhoneNumberTest extends TestCase
         // Test international landline number without country and format parameters.
         $actual = phone('+32 12 34 56 78');
         $expected = PhoneNumber::make('012345678', 'BE');
-        $this->assertEquals($expected, (string) $actual);
+        self::assertEquals($expected, (string) $actual);
 
         // Test landline number without format parameter.
         $actual = phone('012345678', 'BE');
         $expected = PhoneNumber::make('012345678', 'BE');
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         // Test landline number with format parameter.
         $actual = phone('012345678', 'BE', PhoneNumberFormat::NATIONAL);
         $expected = '012 34 56 78';
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /** @test */
     public function it_can_get_the_exceptions_number()
     {
         $exception = NumberParseException::countryRequired('12345');
-        $this->assertEquals('12345', $exception->getNumber());
+        self::assertEquals('12345', $exception->getNumber());
 
         $exception = NumberParseException::countryMismatch('12345', []);
-        $this->assertEquals('12345', $exception->getNumber());
+        self::assertEquals('12345', $exception->getNumber());
     }
 
     /** @test */
     public function it_can_get_the_exceptions_countries()
     {
         $exception = NumberParseException::countryMismatch('12345', ['BE', 'foo']);
-        $this->assertEquals(['BE', 'foo'], $exception->getCountries());
+        self::assertEquals(['BE', 'foo'], $exception->getCountries());
     }
 
     /** @test */
@@ -407,6 +407,6 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('012345678');
         $object = $object->ofCountry('AQ','BE');
 
-        $this->assertEquals('BE', $object->getCountry());
+        self::assertEquals('BE', $object->getCountry());
     }
 }
