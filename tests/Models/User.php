@@ -3,13 +3,10 @@
 namespace Propaganistas\LaravelPhone\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Propaganistas\LaravelPhone\Models\HasPhoneNumber;
 use Propaganistas\LaravelPhone\Models\PhoneNumberCast;
 
-class User extends Model implements HasPhoneNumber
+class User extends Model
 {
-    protected $table = 'users';
-
     protected $fillable = [
         'contact_number',
         'contact_number_country',
@@ -18,19 +15,9 @@ class User extends Model implements HasPhoneNumber
     ];
 
     protected $casts = [
-        'contact_number' => PhoneNumberCast::class,
-        'emergency_number' => PhoneNumberCast::class
+        'contact_number' => PhoneNumberCast::class . ':contact_number_country',
+        'emergency_number' => PhoneNumberCast::class . ':emergency_number_country',
     ];
 
     public $timestamps = false;
-
-    public function getPhoneNumberCountryColumn($field)
-    {
-        switch ($field) {
-            case 'contact_number':
-                return 'contact_number_country';
-            case 'emergency_number':
-                return 'emergency_number_country';
-        }
-    }
 }

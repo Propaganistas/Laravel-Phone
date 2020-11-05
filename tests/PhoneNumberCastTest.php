@@ -22,7 +22,8 @@ class PhoneNumberCastTest extends TestCase
     public function it_can_cast_phone_number()
     {
         $model = Inquiry::create([
-            'mobile_number' => PhoneNumber::make('09123456789', 'PH'),
+            'mobile_number' => '09123456789',
+            'mobile_number_country' => 'PH',
         ]);
 
         $this->assertEquals('09123456789', $model->mobile_number->getRawNumber());
@@ -33,8 +34,10 @@ class PhoneNumberCastTest extends TestCase
     public function it_can_cast_multiple_phone_number()
     {
         $model = User::create([
-            'contact_number' => PhoneNumber::make('09123456789', 'PH'),
-            'emergency_number' => PhoneNumber::make('012345678', 'BE'),
+            'contact_number' => '09123456789',
+            'contact_number_country' => 'PH',
+            'emergency_number' => '012345678',
+            'emergency_number_country' => 'BE',
         ]);
 
         $this->assertEquals('09123456789', $model->contact_number->getRawNumber());
