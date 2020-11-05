@@ -1,6 +1,9 @@
-<?php namespace Propaganistas\LaravelPhone;
+<?php
+
+namespace Propaganistas\LaravelPhone;
 
 use Exception;
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -14,12 +17,13 @@ use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Exceptions\NumberFormatException;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use Propaganistas\LaravelPhone\Models\PhoneNumberCast;
 use Propaganistas\LaravelPhone\Traits\ParsesCountries;
 use Propaganistas\LaravelPhone\Traits\ParsesFormats;
 use Propaganistas\LaravelPhone\Traits\ParsesTypes;
 use Serializable;
 
-class PhoneNumber implements Jsonable, JsonSerializable, Serializable
+class PhoneNumber implements Castable, Jsonable, JsonSerializable, Serializable
 {
     use Macroable,
         ParsesCountries,
@@ -172,7 +176,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function formatForCountry($country)
     {
-        if (! static::isValidCountryCode($country)) {
+        if (!static::isValidCountryCode($country)) {
             throw CountryCodeException::invalid($country);
         }
 
@@ -192,7 +196,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function formatForMobileDialingInCountry($country, $removeFormatting = false)
     {
-        if (! static::isValidCountryCode($country)) {
+        if (!static::isValidCountryCode($country)) {
             throw CountryCodeException::invalid($country);
         }
 
@@ -210,7 +214,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function getCountry()
     {
-        if (! $this->country) {
+        if (!$this->country) {
             $this->country = $this->filterValidCountry($this->countries);
         }
 
@@ -321,7 +325,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function getRawNumber()
     {
-    	return $this->number;
+        return $this->number;
     }
 
     /**
@@ -354,6 +358,18 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
         $this->lenient = true;
 
         return $this;
+    }
+
+    /**
+     * Get the name of the caster class to use when casting from / to this cast target.
+     *
+     * @param  array  $arguments
+     * @return string
+     * @return string|\Illuminate\Contracts\Database\Eloquent\CastsAttributes|\Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes
+     */
+    public static function castUsing(array $arguments)
+    {
+        return new PhoneNumberCast($arguments);
     }
 
     /**
