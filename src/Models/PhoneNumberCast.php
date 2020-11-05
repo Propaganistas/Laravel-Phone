@@ -3,11 +3,26 @@
 namespace Propaganistas\LaravelPhone\Models;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Propaganistas\LaravelPhone\Exceptions\InvalidCastException;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Propaganistas\LaravelPhone\Traits\ParsesCountries;
 
 class PhoneNumberCast implements CastsAttributes
 {
+    use ParsesCountries;
+
+    /** @var array */
+    protected $countries = [];
+
+    /**
+     * @param string|array $country
+     */
+    public function __construct($country)
+    {
+        $this->countries = is_array($country)
+            ? $country
+            : func_get_args();
+    }
+
     /**
      * Cast the given value.
      *
@@ -20,7 +35,7 @@ class PhoneNumberCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return PhoneNumber::make($value, $this->resolvePhoneCountry($model, $key, $attributes));
+        return PhoneNumber::make($value, $this->resolvePhoneCountry($attributes));
     }
 
     /**
@@ -35,22 +50,23 @@ class PhoneNumberCast implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
-        $phoneNumber = $value instanceof PhoneNumber
-            ? $value
-            : $this->get($model, $key, $value, $attributes);
-
-        return [
-            $key => $phoneNumber->getRawNumber(),
-            $model->getPhoneNumberCountryColumn($key) => $phoneNumber->getCountry(),
-        ];
+        return $value instanceof PhoneNumber
+            ? $value->getRawNumber()
+            : $value;
     }
 
-    protected function resolvePhoneCountry($model, $key, $attributes)
+    protected function resolvePhoneCountry($attributes)
     {
-        if (!$model instanceof HasPhoneNumber) {
-            throw InvalidCastException::invalid($model, $key);
+        $parsedCountries = $this->parseCountries($this->countries);
+
+        $countryColumns = array_diff($this->countries, $parsedCountries);
+
+        foreach ($countryColumns as $countryColumn) {
+            if ($country = $attributes[$countryColumn]) {
+                $parsedCountries[] = $country;
+            }
         }
 
-        return $attributes[$model->getPhoneNumberCountryColumn($key)];
+        return $parsedCountries;
     }
 }
