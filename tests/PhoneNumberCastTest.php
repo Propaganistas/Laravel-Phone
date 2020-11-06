@@ -3,8 +3,8 @@
 namespace Propaganistas\LaravelPhone\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
+use Propaganistas\LaravelPhone\Models\PhoneNumberCast;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use Propaganistas\LaravelPhone\Tests\Models\Inquiry;
 use Propaganistas\LaravelPhone\Tests\Models\User;
 
 class PhoneNumberCastTest extends TestCase
@@ -15,36 +15,71 @@ class PhoneNumberCastTest extends TestCase
         parent::setUp();
 
         $this->createUsersTable();
-        $this->createInquiriesTable();
     }
 
     /** @test */
-    public function it_can_cast_phone_number()
-    {
-        $model = Inquiry::create([
-            'mobile_number' => '09123456789',
-            'mobile_number_country' => 'PH',
-        ]);
-
-        $this->assertEquals('09123456789', $model->mobile_number->getRawNumber());
-        $this->assertEquals('PH', $model->mobile_number->getCountry());
-    }
-
-    /** @test */
-    public function it_can_cast_multiple_phone_number()
+    public function it_can_cast()
     {
         $model = User::create([
             'contact_number' => '09123456789',
             'contact_number_country' => 'PH',
-            'emergency_number' => '012345678',
-            'emergency_number_country' => 'BE',
         ]);
 
-        $this->assertEquals('09123456789', $model->contact_number->getRawNumber());
+        $this->assertEquals('+639123456789', (string) $model->contact_number);
         $this->assertEquals('PH', $model->contact_number->getCountry());
+    }
 
-        $this->assertEquals('012345678', $model->emergency_number->getRawNumber());
-        $this->assertEquals('BE', $model->emergency_number->getCountry());
+    /** @test */
+    public function it_can_cast_with_PhoneNumber_class()
+    {
+        $modelClass = new class () extends User
+        {
+            protected $casts = ['contact_number' => PhoneNumber::class . ':contact_number_country'];
+        };
+
+        $model = $modelClass::create([
+            'contact_number' => '09123456789',
+            'contact_number_country' => 'PH',
+        ]);
+
+        $this->assertEquals('+639123456789', (string) $model->contact_number);
+        $this->assertEquals('PH', $model->contact_number->getCountry());
+    }
+
+    /** @test */
+    public function it_can_cast_with_default_country()
+    {
+        $modelClass = new class () extends User
+        {
+            protected $casts = ['contact_number' => PhoneNumberCast::class . ':PH'];
+        };
+
+        $model = $modelClass::create(['contact_number' => '09123456789']);
+
+        $this->assertEquals('+639123456789', (string) $model->contact_number);
+        $this->assertEquals('PH', $model->contact_number->getCountry());
+    }
+
+    /** @test */
+    public function it_can_cast_with_default_country_and_target_column()
+    {
+        $modelClass = new class () extends User
+        {
+            protected $casts = ['contact_number' => PhoneNumberCast::class . ':PH,contact_number_country'];
+        };
+
+        $modelUsesDefaultCountry = $modelClass::create(['contact_number' => '09123456789']);
+
+        $this->assertEquals('+639123456789', (string) $modelUsesDefaultCountry->contact_number);
+        $this->assertEquals('PH', $modelUsesDefaultCountry->contact_number->getCountry());
+
+        $modelUsesCountryColumn = $modelClass::create([
+            'contact_number' => '012345678',
+            'contact_number_country' => 'BE',
+        ]);
+
+        $this->assertEquals('+3212345678', (string) $modelUsesCountryColumn->contact_number);
+        $this->assertEquals('BE', $modelUsesCountryColumn->contact_number->getCountry());
     }
 
     private function createUsersTable()
@@ -52,18 +87,7 @@ class PhoneNumberCastTest extends TestCase
         $this->app['db']->connection()->getSchemaBuilder()->create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('contact_number');
-            $table->char('contact_number_country', 2);
-            $table->string('emergency_number');
-            $table->char('emergency_number_country', 2);
-        });
-    }
-
-    private function createInquiriesTable()
-    {
-        $this->app['db']->connection()->getSchemaBuilder()->create('inquiries', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('mobile_number');
-            $table->char('mobile_number_country', 2);
+            $table->char('contact_number_country', 2)->nullable();
         });
     }
 }
