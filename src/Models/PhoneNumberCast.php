@@ -62,7 +62,7 @@ class PhoneNumberCast implements CastsAttributes
         $countryColumns = array_diff($this->countries, $parsedCountries);
 
         foreach ($countryColumns as $countryColumn) {
-            if ($country = $attributes[$countryColumn]) {
+            if ($country = ($attributes[$countryColumn] ?? null)) {
                 $parsedCountries[] = $country;
             }
         }
