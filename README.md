@@ -18,6 +18,7 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
     - [Formatting](#formatting)
     - [Number information](#number-information)
     - [Helper function](#helper-function)
+- [Model Cast](#model-cast)
 
 ## Demo
 
@@ -151,4 +152,27 @@ The package exposes the `phone()` helper function that returns a `Propaganistas\
 
 ```php
 phone($number, $country = [], $format = null)
+```
+
+## Model Cast
+
+The `PhoneNumber` class can also be used as a cast for your Eloquent models attributes.
+
+```php
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    protected $casts = [
+        // Cast phone number with a default country.
+        'contact_number' => PhoneNumber::class . ':BE,PH',
+
+        // Cast phone number with a country defined in the model attribute 'contact_number_country'.
+        'contact_number' => PhoneNumber::class . ':contact_number_country',
+
+        // Cast phone number with a country defined in the model attribute 'contact_number_country', and defaults to a given country.
+        'contact_number' => PhoneNumber::class . ':PH,contact_number_country',
+    ];
+}
 ```
