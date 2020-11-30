@@ -48,9 +48,6 @@ jobs:
                 run: |
                     composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest --no-progress
-                    
-            -   name: Configure matchers
-                uses: mheap/phpunit-matcher-action@master
               
             -   name: Execute tests
                 run: vendor/bin/phpunit
