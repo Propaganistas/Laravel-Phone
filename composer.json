@@ -20,7 +20,7 @@
         "illuminate/support": "^6.0|^7.0|^8.0",
         "illuminate/validation": "^6.0|^7.0|^8.0",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0",
-        "league/iso3166": "^2.0"
+        "league/iso3166": "^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "*",
