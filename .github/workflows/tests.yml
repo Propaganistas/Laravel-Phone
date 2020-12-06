@@ -12,7 +12,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4]
+                php: [7.2, 7.3, 7.4, 8.0]
                 laravel: [6.*, 7.*, 8.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 exclude:
@@ -37,7 +37,12 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     extensions: dom, curl, json, intl, libxml, mbstring, pdo, pdo_sqlite, sqlite
-
+                    
+            -   name: Setup Problem Matchers
+                run: |
+                    echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+                    echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        
             -   name: Cache dependencies
                 uses: actions/cache@v1
                 with:
@@ -48,9 +53,6 @@ jobs:
                 run: |
                     composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest --no-progress
-                    
-            -   name: Configure matchers
-                uses: mheap/phpunit-matcher-action@master
               
             -   name: Execute tests
                 run: vendor/bin/phpunit --teamcity
