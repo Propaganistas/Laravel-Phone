@@ -200,12 +200,7 @@ You'll need:
   
 Example:
 
-* User input = `12/34.56.78`
-* Database columns
-  * `phone_normalized` = `12345678`
-  * `phone_national` = `012345678`
-  * `phone_e164` = `+3212345678`
-  
+* User input = `12/34.56.78`  
 * Observer method:
   ```php
   public function saving(User $user)
@@ -217,6 +212,10 @@ Example:
       }
   }
   ```
+* Database columns
+  * `phone_normalized` = `12345678`
+  * `phone_national` = `012345678`
+  * `phone_e164` = `+3212345678`
 * Search query:
   ```php
   // $search holds the search term
