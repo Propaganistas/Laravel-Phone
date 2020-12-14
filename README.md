@@ -173,7 +173,7 @@ Example:
 
 * User input = `012/45.65.78`
 * Database column
-  * `phone` = `+3212456578`
+  * `phone` (varchar) = `+3212456578`
 
 ### Presenting the phone number the way it was inputted
 
@@ -186,8 +186,8 @@ Example:
 
 * User input = `012/34.56.78`
 * Database columns
-  * `phone` = `012/34.56.78`
-  * `phone_country` = `BE`
+  * `phone` (varchar) = `012/34.56.78`
+  * `phone_country` (varchar) = `BE`
 
 ### Supporting searches
 
@@ -216,9 +216,9 @@ Example:
   }
   ```
 * Database columns
-  * `phone_normalized` = `12345678`
-  * `phone_national` = `012345678`
-  * `phone_e164` = `+3212345678`
+  * `phone_normalized` (varchar) = `12345678`
+  * `phone_national` (varchar) = `012345678`
+  * `phone_e164` (varchar) = `+3212345678`
 * Search query:
   ```php
   // $search holds the search term
