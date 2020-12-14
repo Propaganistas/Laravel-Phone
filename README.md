@@ -169,7 +169,8 @@ You'll need:
 Example:
 
 * User input = `012/45.65.78`
-* Database column = `+3212456578`
+* Database column
+  * `phone` = `+3212456578`
 
 ### Presenting the phone number the way it was inputted
 
@@ -182,8 +183,8 @@ Example:
 
 * User input = `012/34.56.78`
 * Database columns
-  * Phone number = `012/34.56.78`
-  * Phone country = `BE`
+  * `phone` = `012/34.56.78`
+  * `phone_country` = `BE`
 
 ### Supporting searches
 
@@ -199,10 +200,11 @@ You'll need:
   
 Example:
 
+* User input = `12/34.56.78`
 * Database columns
-  * Normalized input = `12345678`
-  * National formatted phone number = `012345678`
-  * E.164 formatted phone number = `+3212345678`
+  * `phone_normalized` = `12345678`
+  * `phone_national` = `012345678`
+  * `phone_e164` = `+3212345678`
   
 * Observer method:
   ```php
