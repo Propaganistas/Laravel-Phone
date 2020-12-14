@@ -156,7 +156,7 @@ phone($number, $country = [], $format = null)
 
 ## Database considerations
 
-> Disclaimer: this section touches a topic that is important to think about but is also highly custom to each and every application. It is therefore meant as a set of thought starters; support will **not** be provided.
+> Disclaimer: Phone number handling is quite different in each application. The topics mentioned below are therefore meant as a set of thought starters; support will **not** be provided.
 
 Storing phone numbers in a database has always been a speculative topic and there's simply no silver bullet. It all depends on your application's requirements. Here are some things to take into account, along with an implementation suggestion. Your ideal database setup will probably be a combination of some of the pointers detailed below.
 
