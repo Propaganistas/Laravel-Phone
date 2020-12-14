@@ -18,6 +18,7 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
     - [Formatting](#formatting)
     - [Number information](#number-information)
     - [Helper function](#helper-function)
+- [Database considerations](#database-considerations)
 
 ## Demo
 
@@ -103,7 +104,7 @@ You can also enable more lenient validation (for example, fixed lines without ar
 
 ## Utility PhoneNumber class
 
-A phone number can be wrapped in the `Propaganistas\LaravelPhone\PhoneNumber` class to enhance it with useful utility methods. It's safe to directly reference these objects in views or when saving to the database as they will degrade gracefully to the E164 format.
+A phone number can be wrapped in the `Propaganistas\LaravelPhone\PhoneNumber` class to enhance it with useful utility methods. It's safe to directly reference these objects in views or when saving to the database as they will degrade gracefully to the E.164 format.
 
 ```php
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -152,3 +153,74 @@ The package exposes the `phone()` helper function that returns a `Propaganistas\
 ```php
 phone($number, $country = [], $format = null)
 ```
+
+## Database considerations
+Storing phone numbers in a database has always been a speculative topic and there's simply no silver bullet as it all depends on your application's requirements. Here are some things to take into account, along with an implementation suggestion. Your ideal database setup will probably be a combination of some of the pointers detailed below:
+
+### Uniqueness
+
+The E.164 format globally and uniquely identifies a phone number across the world. It also inherently implies a specific country and can be supplied as-is to the `phone()` helper.
+
+You'll need:
+
+* One column to store the phone number
+* To format the phone number to E.164 before persisting it
+
+Example:
+
+* User input = `012/45.65.78`
+* Database column = `+3212456578`
+
+### Presenting the phone number the way it was inputted
+
+If you store formatted phone numbers the raw user input will unretrievably get lost. It may be beneficial to present your users with their very own inputted phone number, for example in terms of improved user experience. 
+
+You'll need:
+* Two columns to store the raw input and the correlated country
+
+Example:
+
+* User input = `012/34.56.78`
+* Database columns
+  * Phone number = `012/34.56.78`
+  * Phone country = `BE`
+
+### Supporting searches
+
+Searching through phone numbers can quickly become ridiculously complex and will always require deep understanding of the context and extent of your application. Here's _a_ possible approach covering quite a lot of "natural" use cases.
+
+You'll need:
+* Three additional columns to store searchable variants of the phone number:
+  * Normalized input (raw input with all non-alpha characters stripped)
+  * National formatted phone number (with all non-alpha characters stripped)
+  * E.164 formatted phone number
+* Probably a `saving()` observer (or equivalent) to prefill the variants before persistence
+* An extensive search query utilizing the searchable variants
+  
+Example:
+
+* Database columns
+  * Normalized input = `12345678`
+  * National formatted phone number = `012345678`
+  * E.164 formatted phone number = `+3212345678`
+  
+* Observer method:
+  ```php
+  public function saving(User $user)
+  {
+      if ($user->isDirty('phone') && $user->phone) {
+          $user->phone_normalized = preg_replace('[^0-9]', '', $user->phone);
+          $user->phone_national = preg_replace('[^0-9]', '', phone($user->phone, $user->phone_country)->formatNational());
+          $user->phone_e164 = phone($user->phone, $user->phone_country)->formatE164();
+      }
+  }
+  ```
+* Search query:
+  ```php
+  // $search holds the search term
+  User::where(function($query) use ($search) {
+    $query->where('phone_normalized', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
+          ->orWhere('phone_national', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
+          ->orWhere('phone_e164', 'LIKE', preg_replace('[^+0-9]', '', $search) . '%')
+  });
+  ```
