@@ -12,7 +12,4 @@ parameters:
     ignoreErrors:
         - '#Unsafe usage of new static#'
 
-    excludes_analyse:
-        - ./*/*/FileToBeExcluded.php
-
     checkMissingIterableValueType: false
