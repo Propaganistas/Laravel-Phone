@@ -28,7 +28,7 @@ trait ParsesFormats
      * Parse a phone format.
      *
      * @param string $format
-     * @return string
+     * @return string|null
      */
     protected static function parseFormat($format)
     {
