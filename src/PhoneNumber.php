@@ -145,7 +145,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     /**
      * Format the phone number in a given format.
      *
-     * @param string $format
+     * @param string|int $format
      * @return string
      * @throws \Propaganistas\LaravelPhone\Exceptions\NumberFormatException
      */

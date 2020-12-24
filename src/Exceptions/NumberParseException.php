@@ -37,7 +37,7 @@ class NumberParseException extends libNumberParseException
      * Country mismatch static constructor.
      *
      * @param string $number
-     * @param string|array $country
+     * @param string|array $countries
      * @return static
      */
     public static function countryMismatch($number, $countries)

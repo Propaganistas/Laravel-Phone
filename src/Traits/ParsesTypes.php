@@ -17,7 +17,7 @@ trait ParsesTypes
     /**
      * Determine whether the given type is valid.
      *
-     * @param string $type
+     * @param int|string $type
      * @return bool
      */
     public static function isValidType($type)
@@ -28,7 +28,7 @@ trait ParsesTypes
     /**
      * Parse a phone type into constant's value.
      *
-     * @param string|array $types
+     * @param int|string|array $types
      * @return array
      */
     protected static function parseTypes($types)
@@ -53,7 +53,7 @@ trait ParsesTypes
     /**
      * Parse a phone type into its string representation.
      *
-     * @param string|array $types
+     * @param int|string|array $types
      * @return array
      */
     protected static function parseTypesAsStrings($types)
