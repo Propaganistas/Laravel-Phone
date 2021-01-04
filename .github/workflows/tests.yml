@@ -58,4 +58,5 @@ jobs:
                 run: vendor/bin/phpunit --teamcity
 
             -   name: Run phpstan
+                if: ${{ matrix.php != '8.0' && matrix.laravel != '6.0' matrix.dependency-version != 'prefer-lowest' }}
                 run: vendor/bin/phpstan analyse
