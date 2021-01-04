@@ -18,6 +18,9 @@ jobs:
                 exclude:
                     -   laravel: 8.*
                         php: 7.2
+                    -   laravel: 6.*
+                        php: 8.0
+                        dependency-version: prefer-lowest
                 include:
                     -   laravel: 6.*
                         testbench: 4.*
@@ -58,5 +61,4 @@ jobs:
                 run: vendor/bin/phpunit --teamcity
 
             -   name: Run phpstan
-                if: ${{ matrix.php != '8.0' && matrix.laravel != '6.0' matrix.dependency-version != 'prefer-lowest' }}
                 run: vendor/bin/phpstan analyse
