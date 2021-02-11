@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "illuminate/contracts": "^8.0",
+        "illuminate/contracts": "^8.9",
         "illuminate/support": "^8.0",
         "illuminate/validation": "^8.0",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0",
