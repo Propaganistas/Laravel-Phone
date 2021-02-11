@@ -3,10 +3,11 @@
 namespace Propaganistas\LaravelPhone\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
-abstract class PhoneNumberCast implements CastsAttributes
+abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAttributes
 {
     /**
      * @var array

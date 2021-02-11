@@ -66,6 +66,18 @@ class E164PhoneNumberCastTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $model->phone;
     }
+
+    /** @test */
+    public function it_serializes()
+    {
+        $model = new ModelWithE164Cast();
+        $model->phone = '+32 12 34 56 78';
+        $this->assertEquals('+3212345678', $model->toArray()['phone']);
+
+        $model = new ModelWithE164Cast();
+        $model->phone = null;
+        $this->assertEquals(null, $model->toArray()['phone']);
+    }
 }
 
 class ModelWithE164Cast extends Model

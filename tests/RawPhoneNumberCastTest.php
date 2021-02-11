@@ -80,6 +80,18 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertIsObject($model->phone);
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
+
+    /** @test */
+    public function it_serializes()
+    {
+        $model = new ModelWithRawCast;
+        $model->phone = '012 34 56 78';
+        $this->assertEquals('012 34 56 78', $model->toArray()['phone']);
+
+        $model = new ModelWithRawCast;
+        $model->phone = null;
+        $this->assertEquals(null, $model->toArray()['phone']);
+    }
 }
 
 class ModelWithRawCast extends Model
