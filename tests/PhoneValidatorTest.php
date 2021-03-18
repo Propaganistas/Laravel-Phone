@@ -570,4 +570,13 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:mobile,country_code'])->passes()
         );
     }
+    
+    /** @test */
+    public function it_doesnt_validate_when_nullable()
+    {
+        $this->assertTrue($this->validator->make(
+            ['field' => null],
+            ['field' => ['nullable', 'phone:be']]
+        )->passes());
+    }
 }
