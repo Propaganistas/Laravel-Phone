@@ -572,7 +572,7 @@ class PhoneValidatorTest extends TestCase
     }
     
     /** @test */
-    public function it_doesnt_validate_when_nullable()
+    public function it_copes_with_nullable_validation_rule()
     {
         $this->assertTrue($this->validator->make(
             ['field' => null],
