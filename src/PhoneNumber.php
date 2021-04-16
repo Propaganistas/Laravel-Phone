@@ -339,7 +339,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      *
      * @return bool
      */
-    protected function numberLooksInternational()
+    public function numberLooksInternational()
     {
         return Str::startsWith($this->number, '+');
     }

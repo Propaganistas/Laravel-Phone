@@ -14,6 +14,7 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
     - [Laravel](#laravel)
     - [Lumen](#lumen)
 - [Validation](#validation)
+- [Attribute casting](#attribute-casting)
 - [Utility class](#utility-phonenumber-class)
     - [Formatting](#formatting)
     - [Number information](#number-information)
@@ -101,6 +102,49 @@ You can also enable more lenient validation (for example, fixed lines without ar
 'phonefield'       => 'phone:LENIENT,US',
 // 'phonefield'    => Rule::phone()->lenient()->country('US')
 ```
+
+## Attribute casting
+
+Two cast classes are provided for automatic casting of Eloquent model attributes:
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Propaganistas\LaravelPhone\Casts\RawPhoneNumberCast;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+
+class User extends Model
+{
+    public $casts = [
+        'phone' => RawPhoneNumberCast::class.':BE',
+        'another_phone' => E164PhoneNumberCast::class.':BE',
+    ];
+}
+```
+
+Both classes automatically cast the database value to a PhoneNumber object for further use in your application.
+
+```php
+$user->phone // PhoneNumber object or null
+```
+When setting a value, they both accept a string value or a PhoneNumber object. 
+The `RawPhoneNumberCast` mutates the database value to the raw input number, while the `E164PhoneNumberCast` writes a formatted E.164 phone number to the database.
+
+In case of `RawPhoneNumberCast`, the cast needs to be hinted about the phone country in order to properly parse the raw number into a phone object.
+In case of `E164PhoneNumberCast` and the value to be set is not already in some international format, the cast needs to be hinted about the phone country in order to properly mutate the value.
+
+Both classes accept cast parameters in the same way:
+1. When a similar named attribute exists, but suffixed with `_country` (e.g. phone_country), the cast will detect and use it automatically.
+2. Provide another attribute's name as a cast parameter
+3. Provide one or several country codes as cast parameters
+
+```php
+public $casts = [
+    'phone' => RawPhoneNumberCast::class.':country_field',
+    'another_phone' => E164PhoneNumberCast::class.':BE',
+];
+```
+
+In order to not encounter any unexpected issues when using these casts, please always validate any input using the [validation](#validation) rules previously described.
 
 ## Utility PhoneNumber class
 
