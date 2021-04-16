@@ -49,3 +49,6 @@ jobs:
               
             -   name: Execute tests
                 run: vendor/bin/phpunit --teamcity
+
+            -   name: Run phpstan
+                run: vendor/bin/phpstan analyse
