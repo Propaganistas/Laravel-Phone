@@ -11,8 +11,6 @@ Adds phone number functionality to Laravel and Lumen based on the [PHP port](htt
 
 - [Demo](#demo)
 - [Installation](#installation)
-    - [Laravel](#laravel)
-    - [Lumen](#lumen)
 - [Validation](#validation)
 - [Attribute casting](#attribute-casting)
 - [Utility class](#utility-phonenumber-class)
@@ -33,22 +31,12 @@ Run the following command to install the latest applicable version of the packag
 composer require propaganistas/laravel-phone
 ```
 
-### Laravel
-
 The Service Provider gets discovered automatically.
 
-In your languages directory, add an extra line for each language file:
+In your languages directory, add an extra translation in every `validation.php` language file:
 
 ```php
 'phone' => 'The :attribute field contains an invalid number.',
-```
-
-### Lumen
-
-In `bootstrap/app.php`, register the Service Provider
-
-```php
-$app->register(Propaganistas\LaravelPhone\PhoneServiceProvider::class);
 ```
 
 ## Validation
