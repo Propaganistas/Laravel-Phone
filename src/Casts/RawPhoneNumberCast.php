@@ -14,7 +14,7 @@ class RawPhoneNumberCast extends PhoneNumberCast
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return string|null
+     * @return \Propaganistas\LaravelPhone\PhoneNumber|null
      */
     public function get($model, string $key, $value, array $attributes)
     {
