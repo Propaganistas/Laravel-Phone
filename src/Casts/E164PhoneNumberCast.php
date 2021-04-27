@@ -14,7 +14,7 @@ class E164PhoneNumberCast extends PhoneNumberCast
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return mixed
+     * @return string|null
      */
     public function get($model, string $key, $value, array $attributes)
     {
