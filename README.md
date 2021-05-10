@@ -31,7 +31,7 @@ Run the following command to install the latest applicable version of the packag
 composer require propaganistas/laravel-phone
 ```
 
-The Service Provider gets discovered automatically.
+The Service Provider gets discovered automatically by Laravel.
 
 In your languages directory, add an extra translation in every `validation.php` language file:
 
