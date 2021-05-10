@@ -31,7 +31,11 @@ Run the following command to install the latest applicable version of the packag
 composer require propaganistas/laravel-phone
 ```
 
-The Service Provider gets discovered automatically.
+In Laravel, the Service Provider gets discovered automatically. For Lumen, register it into your `app.php` file:
+
+```php
+$app->register(Propaganistas\LaravelPhone\PhoneServiceProvider::class);
+```
 
 In your languages directory, add an extra translation in every `validation.php` language file:
 
