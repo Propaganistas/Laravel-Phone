@@ -134,6 +134,31 @@ public $casts = [
 
 In order to not encounter any unexpected issues when using these casts, please always validate any input using the [validation](#validation) rules previously described.
 
+#### ⚠️ Attribute assignment and `E164PhoneNumberCast`
+Due to the nature of `E164PhoneNumberCast` a valid country attribute is expected if the number is not passed in international format. Since casts are applied in the order of the given values, be sure to set the country attribute _before_ setting the phone number attribute. Otherwise `E164PhoneNumberCast` will encounter an empty country value and throw an unexpected exception.
+
+```php
+// Wrong
+$model->fill([
+    'phone' => '012 34 56 78',
+    'phone_country' => 'BE',
+]);
+
+// Correct
+$model->fill([
+    'phone_country' => 'BE',
+    'phone' => '012 34 56 78',
+]);
+
+// Wrong
+$model->phone = '012 34 56 78';
+$model->phone_country = 'BE';
+
+// Correct
+$model->phone_country = 'BE';
+$model->phone = '012 34 56 78';
+```
+
 ## Utility PhoneNumber class
 
 A phone number can be wrapped in the `Propaganistas\LaravelPhone\PhoneNumber` class to enhance it with useful utility methods. It's safe to directly reference these objects in views or when saving to the database as they will degrade gracefully to the E.164 format.
