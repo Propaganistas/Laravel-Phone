@@ -262,11 +262,10 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
             $countries[] = null;
         }
 
-        $validNumberMethod = $this->lenient ? 'isPossibleNumber' : 'isValidNumber';
         foreach ($countries as $country) {
             $instance = $this->lib->parse($this->number, $country);
 
-            if ($this->lib->$validNumberMethod($instance)) {
+            if (($this->lenient && $this->lib->isPossibleNumber($instance)) || $this->lib->isValidNumber($instance)) {
                 return $this->lib->getRegionCodeForNumber($instance);
             }
         }

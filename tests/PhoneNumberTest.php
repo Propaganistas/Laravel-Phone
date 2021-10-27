@@ -98,6 +98,25 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('+3212345678');
         $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
     }
+
+    /** @test */
+    public function it_can_format_lenient_international_numbers_without_given_country()
+    {
+        $object = new PhoneNumber('+49(0)12-44 614038');
+        $object->lenient();
+        $this->assertEquals('+491244614038', $object->formatE164());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_formatting_possible_international_numbers_without_given_country_not_marked_as_lenient()
+    {
+        $object = new PhoneNumber('+49(0)12-44 614038');
+
+        $this->expectException(NumberParseException::class);
+        $this->expectExceptionMessage('Number requires a country to be specified');
+
+        $object->formatE164();
+    }
     
     /** @test */
     public function it_can_format_international_numbers_with_wrong_country()
@@ -408,20 +427,5 @@ class PhoneNumberTest extends TestCase
         $object = $object->ofCountry('AQ','BE');
 
         $this->assertEquals('BE', $object->getCountry());
-    }
-
-    /** @test */
-    public function it_formats_lenient_number_with_country_code_detection()
-    {
-        $this->assertEquals('+491244614038', PhoneNumber::make('+49(0)12-44 614038')
-            ->lenient()
-            ->formatE164());
-    }
-
-    /** @test */
-    public function it_throws_exception_on_not_valid_phone_with_country_code_detection()
-    {
-        $this->expectException(NumberParseException::class);
-        PhoneNumber::make('+49(0)12-44 614038')->formatE164();
     }
 }
