@@ -9,10 +9,11 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+
         strategy:
             fail-fast: false
             matrix:
-                php: [7.3, 7.4, 8.0]
+                php: [7.3, 7.4, 8.0, 8.1]
                 laravel: [8.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 include:
@@ -22,33 +23,25 @@ jobs:
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
         steps:
-            -   name: Checkout code
-                uses: actions/checkout@v1
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: dom, curl, json, intl, libxml, mbstring, pdo, pdo_sqlite, sqlite
-                    
-            -   name: Setup Problem Matchers
-                run: |
-                    echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                    echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-        
-            -   name: Cache dependencies
-                uses: actions/cache@v1
-                with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php }}
+                extensions: dom, curl, json, libxml, mbstring, zip
+                tools: composer:v2
+                coverage: none
 
             -   name: Install dependencies
                 run: |
-                    composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest --no-progress
+                    composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
+                    composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-progress
               
             -   name: Execute tests
-                run: vendor/bin/phpunit --teamcity
+                run: vendor/bin/phpunit --verbose
 
             -   name: Run phpstan
                 run: vendor/bin/phpstan analyse
