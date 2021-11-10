@@ -32,7 +32,7 @@ trait ParsesFormats
      */
     protected static function parseFormat($format)
     {
-        static::loadFormats();
+        self::loadFormats();
 
         // If the format equals a constant's value, just return it.
         if (in_array($format, static::$formats, true)) {

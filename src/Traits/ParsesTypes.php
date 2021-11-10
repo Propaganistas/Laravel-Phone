@@ -33,7 +33,7 @@ trait ParsesTypes
      */
     protected static function parseTypes($types)
     {
-        static::loadTypes();
+        self::loadTypes();
 
         return Collection::make(is_array($types) ? $types : func_get_args())
                          ->map(function ($type) {
@@ -58,7 +58,7 @@ trait ParsesTypes
      */
     protected static function parseTypesAsStrings($types)
     {
-        static::loadTypes();
+        self::loadTypes();
 
         return array_keys(
             array_intersect(
