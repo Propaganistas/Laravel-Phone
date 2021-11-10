@@ -34,6 +34,11 @@ jobs:
           tools: composer:v2
           coverage: none
 
+      - name: Set PHPUnit for PHP8.1
+        if: ${{ matrix.php == '8.1' }}
+        run: |
+          composer require "phpunit/phpunit:^9.3" --no-interaction --no-update
+
       - name: Install dependencies
         run: |
           composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
