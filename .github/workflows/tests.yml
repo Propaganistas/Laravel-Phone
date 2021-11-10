@@ -1,47 +1,47 @@
 name: Tests
 
 on:
-    push:
-    pull_request:
-    schedule:
-        - cron: '0 0 * * 1'
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 1'
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        strategy:
-            fail-fast: false
-            matrix:
-                php: [7.3, 7.4, 8.0, 8.1]
-                laravel: [8.*]
-                dependency-version: [prefer-lowest, prefer-stable]
-                include:
-                    -   laravel: 8.*
-                        testbench: 6.*
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.3, 7.4, 8.0, 8.1 ]
+        laravel: [ 8.* ]
+        dependency-version: [ prefer-lowest, prefer-stable ]
+        include:
+          - laravel: 8.*
+            testbench: 6.*
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                php-version: ${{ matrix.php }}
-                extensions: dom, curl, json, libxml, mbstring, zip
-                tools: composer:v2
-                coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, json, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: none
 
-            -   name: Install dependencies
-                run: |
-                    composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
-                    composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-progress
-              
-            -   name: Execute tests
-                run: vendor/bin/phpunit --verbose
+      - name: Install dependencies
+        run: |
+          composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
+          composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-progress
 
-            -   name: Run phpstan
-                run: vendor/bin/phpstan analyse
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose
+
+      - name: Run phpstan
+        run: vendor/bin/phpstan analyse
