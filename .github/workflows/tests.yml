@@ -15,7 +15,7 @@ jobs:
       matrix:
         php: [ 7.3, 7.4, 8.0, 8.1 ]
         laravel: [ 8.* ]
-        phpunit: [ * ]
+        phpunit: [ '*' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 8.*
