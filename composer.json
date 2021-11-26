@@ -1,9 +1,8 @@
 {
     "name": "propaganistas/laravel-phone",
-    "description": "Adds phone number functionality to Laravel and Lumen based on Google's libphonenumber API.",
+    "description": "Adds phone number functionality to Laravel based on Google's libphonenumber API.",
     "keywords": [
         "laravel",
-        "lumen",
         "libphonenumber",
         "validation",
         "phone"
@@ -25,7 +24,7 @@
     },
     "require-dev": {
         "orchestra/testbench": "*",
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "^9.5.10",
         "nunomaduro/larastan": "^1.0"
     },
     "autoload": {
