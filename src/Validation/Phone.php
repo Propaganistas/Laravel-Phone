@@ -74,11 +74,12 @@ class Phone
                 $phoneNumberInstance = $phoneNumber->getPhoneNumberInstance();
 
                 // Country detection.
-                if ($detect && $this->lib->isValidNumber($phoneNumberInstance)) {
-                    return true;
+                // Will throw a NumberParseException if country could not be detected.
+                if ($detect && $country === null) {
+                    $country = $phoneNumber->getCountry();
                 }
 
-                // Default number+country validation.
+                // Number+country validation.
                 if ($this->lib->isValidNumberForRegion($phoneNumberInstance, $country)) {
                     return true;
                 }
