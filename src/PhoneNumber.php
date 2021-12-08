@@ -19,7 +19,7 @@ use Propaganistas\LaravelPhone\Traits\ParsesFormats;
 use Propaganistas\LaravelPhone\Traits\ParsesTypes;
 use Serializable;
 
-class PhoneNumber implements Jsonable, JsonSerializable, Serializable
+class PhoneNumber implements Jsonable, JsonSerializable
 {
     use Macroable,
         ParsesCountries,
@@ -370,9 +370,9 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     /**
      * Convert the phone instance into something JSON serializable.
      *
-     * @return string
+     * @return mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : mixed
     {
         return $this->formatE164();
     }
@@ -382,7 +382,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      *
      * @return string
      */
-    public function serialize()
+    public function __serialize()
     {
         return $this->formatE164();
     }
@@ -392,7 +392,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      *
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
         $this->lib = PhoneNumberUtil::getInstance();
         $this->number = $serialized;
