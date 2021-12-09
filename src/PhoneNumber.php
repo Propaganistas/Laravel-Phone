@@ -372,6 +372,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      *
      * @return string
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->formatE164();
@@ -381,21 +382,45 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      * Convert the phone instance into a string representation.
      *
      * @return string
+     *
+     * @deprecated PHP 8.1
      */
     public function serialize()
     {
-        return $this->formatE164();
+        return $this->__serialize()['number'];
     }
 
     /**
      * Reconstructs the phone instance from a string representation.
      *
-     * @param string $serialized
+     * @param string|array $serialized
+     *
+     * @deprecated PHP 8.1
      */
     public function unserialize($serialized)
     {
+       $this->__unserialize(is_array($serialized) ? $serialized : ['number' => $serialized]);
+    }
+    
+    /**
+     * Convert the phone instance into a string representation.
+     *
+     * @return array
+     */
+    public function __serialize()
+    {
+        return ['number' => $this->formatE164()];
+    }
+
+    /**
+     * Reconstructs the phone instance from a string representation.
+     *
+     * @param array $serialized
+     */
+    public function __unserialize(array $serialized)
+    {
         $this->lib = PhoneNumberUtil::getInstance();
-        $this->number = $serialized;
+        $this->number = $serialized['number'];
         $this->country = $this->lib->getRegionCodeForNumber($this->getPhoneNumberInstance());
     }
 
