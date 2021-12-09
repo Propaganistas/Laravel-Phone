@@ -393,7 +393,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
     /**
      * Reconstructs the phone instance from a string representation.
      *
-     * @param string $serialized
+     * @param string|array $serialized
      *
      * @deprecated PHP 8.1
      */
