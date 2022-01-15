@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone;
+<?php
+
+namespace Propaganistas\LaravelPhone;
 
 use Exception;
 use Illuminate\Contracts\Support\Jsonable;

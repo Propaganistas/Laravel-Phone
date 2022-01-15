@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Rules;
+<?php
+
+namespace Propaganistas\LaravelPhone\Rules;
 
 use libphonenumber\PhoneNumberType;
 use Propaganistas\LaravelPhone\Traits\ParsesCountries;

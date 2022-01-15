@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Exceptions;
+<?php
+
+namespace Propaganistas\LaravelPhone\Exceptions;
 
 use Illuminate\Support\Str;
 use libphonenumber\NumberParseException as libNumberParseException;

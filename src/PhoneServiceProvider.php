@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone;
+<?php
+
+namespace Propaganistas\LaravelPhone;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rule;

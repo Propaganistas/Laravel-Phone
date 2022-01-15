@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Traits;
+<?php
+
+namespace Propaganistas\LaravelPhone\Traits;
 
 use Illuminate\Support\Arr;
 use libphonenumber\PhoneNumberFormat;

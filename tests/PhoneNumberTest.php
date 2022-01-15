@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Tests;
+<?php
+
+namespace Propaganistas\LaravelPhone\Tests;
 
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberFormat;

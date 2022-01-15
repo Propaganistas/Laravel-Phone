@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Validation;
+<?php
+
+namespace Propaganistas\LaravelPhone\Validation;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

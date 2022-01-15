@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Tests;
+<?php
+
+namespace Propaganistas\LaravelPhone\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Propaganistas\LaravelPhone\PhoneServiceProvider;

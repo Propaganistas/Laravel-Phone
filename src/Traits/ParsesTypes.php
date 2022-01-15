@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Traits;
+<?php
+
+namespace Propaganistas\LaravelPhone\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -45,8 +47,8 @@ trait ParsesTypes
                              // Otherwise we'll assume the type is the constant's name.
                              return Arr::get(static::$resolvedTypes, strtoupper($type));
                          })
-                         ->reject(function ($value) {
-                             return is_null($value) || $value === false;
+                         ->filter(function ($value) {
+                             return is_numeric($value);
                          })->toArray();
     }
 

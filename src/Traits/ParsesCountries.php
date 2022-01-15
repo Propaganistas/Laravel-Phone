@@ -1,4 +1,6 @@
-<?php namespace Propaganistas\LaravelPhone\Traits;
+<?php
+
+namespace Propaganistas\LaravelPhone\Traits;
 
 use Illuminate\Support\Collection;
 use League\ISO3166\ISO3166;

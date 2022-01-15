@@ -14,22 +14,15 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 7.3, 7.4, 8.0, 8.1 ]
-        dependency-version: [ prefer-lowest, prefer-stable ] 
-        include:       
+        laravel: [ 8, 9 ]
+        stability: [ prefer-lowest, prefer-stable ]
+        exclude:
           - php: 7.3
-            laravel: 8.*
-            testbench: ^6.23
+            laravel: 9
           - php: 7.4
-            laravel: 8.*
-            testbench: ^6.23
-          - php: 8.0
-            laravel: 8.*
-            testbench: ^6.23
-          - php: 8.1
-            laravel: ^8.65
-            testbench: ^6.23
+            laravel: 9
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} (${{ matrix.stability }})
 
     steps:
       - name: Checkout code
@@ -42,15 +35,19 @@ jobs:
           extensions: dom, curl, json, libxml, mbstring, zip
           tools: composer:v2
           coverage: none
+      
+      - name: Patch testbench version
+        if: matrix.laravel == 8
+        run: |
+          composer require "orchestra/testbench=^6.23" --dev --no-interaction --no-update
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
-          composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-progress
+          composer require "illuminate/support=^${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
-
+        
       - name: Run phpstan
         run: vendor/bin/phpstan analyse
