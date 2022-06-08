@@ -35,6 +35,9 @@ trait ParsesCountries
     protected function parseCountries($countries)
     {
         return Collection::make(is_array($countries) ? $countries : func_get_args())
+                         ->reject(function ($value) {
+                             return is_null($value);
+                         })
                          ->map(function ($country) {
                              return strtoupper($country);
                          })

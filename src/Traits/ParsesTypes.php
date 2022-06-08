@@ -38,6 +38,9 @@ trait ParsesTypes
         self::loadTypes();
 
         return Collection::make(is_array($types) ? $types : func_get_args())
+                         ->reject(function ($value) {
+                             return is_null($value);
+                         })
                          ->map(function ($type) {
                              // If the type equals a constant's value, just return it.
                              if (is_numeric($type) && in_array($type, static::$resolvedTypes)) {
