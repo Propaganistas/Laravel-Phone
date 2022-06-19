@@ -39,6 +39,7 @@ trait ParsesTypes
 
         return Collection::make(is_array($types) ? $types : func_get_args())
                          ->reject(function ($value) {
+                             /** @phpstan-ignore-next-line */
                              return is_null($value);
                          })
                          ->map(function ($type) {

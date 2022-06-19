@@ -36,6 +36,7 @@ trait ParsesCountries
     {
         return Collection::make(is_array($countries) ? $countries : func_get_args())
                          ->reject(function ($value) {
+                             /** @phpstan-ignore-next-line */
                              return is_null($value);
                          })
                          ->map(function ($country) {
