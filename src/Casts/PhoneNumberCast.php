@@ -34,7 +34,7 @@ abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAtt
         // Discover if an attribute was provided. If not, default to _country.
         $inputField = Collection::make($parameters)
             ->intersect(array_keys(Arr::dot($attributes)))
-            ->first() ?: "${key}_country";
+            ->first() ?: "{$key}_country";
 
         // Attempt to retrieve the field's value.
         if ($inputCountry = Arr::get($attributes, $inputField)) {
