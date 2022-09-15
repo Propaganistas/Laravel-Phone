@@ -8,7 +8,7 @@ if (! function_exists('phone')) {
      *
      * @param string       $number
      * @param string|array $country
-     * @param string       $format
+     * @param string|int   $format
      * @return string|Propaganistas\LaravelPhone\PhoneNumber
      */
     function phone($number, $country = [], $format = null)
