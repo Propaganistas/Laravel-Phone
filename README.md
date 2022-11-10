@@ -217,7 +217,7 @@ $phone->equals('012/34.56.76', 'BE')       // true
 $phone->equals('+32 12 34 56 78')          // true
 $phone->equals( $anotherPhoneObject )      // true/false
 
-$phone->notEquals('045 67 89 10', 'BE')    // false
+$phone->notEquals('045 67 89 10', 'BE')    // true
 $phone->notEquals('+32 45 67 89 10')       // true
 $phone->notEquals( $anotherPhoneObject )   // true/false
 ```
