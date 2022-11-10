@@ -430,4 +430,58 @@ class PhoneNumberTest extends TestCase
 
         $this->assertEquals('BE', $object->getCountry());
     }
+
+    /** @test */
+    public function it_can_check_equality()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('AQ','BE');
+
+        $this->assertTrue($object->equals('012345678', 'BE'));
+        $this->assertTrue($object->equals('012345678', ['BE', 'NL']));
+        $this->assertTrue($object->equals('+3212345678'));
+        $this->assertTrue($object->equals(PhoneNumber::make('012345678', 'BE')));
+
+        $this->assertFalse($object->equals('012345679', 'BE'));
+        $this->assertFalse($object->equals('012345679', ['BE', 'NL']));
+        $this->assertFalse($object->equals('+3212345679'));
+        $this->assertFalse($object->equals(PhoneNumber::make('012345679', 'BE')));
+    }
+
+    /** @test */
+    public function it_can_check_inequality()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('AQ','BE');
+
+        $this->assertTrue($object->notEquals('012345679', 'BE'));
+        $this->assertTrue($object->notEquals('012345679', ['BE', 'NL']));
+        $this->assertTrue($object->notEquals('+3212345679'));
+        $this->assertTrue($object->notEquals(PhoneNumber::make('012345679', 'BE')));
+
+        $this->assertFalse($object->notEquals('012345678', 'BE'));
+        $this->assertFalse($object->notEquals('012345678', ['BE', 'NL']));
+        $this->assertFalse($object->notEquals('+3212345678'));
+        $this->assertFalse($object->notEquals(PhoneNumber::make('012345678', 'BE')));
+    }
+
+    /** @test */
+    public function it_doesnt_throw_for_invalid_numbers_when_checking_equality()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('AQ','BE');
+
+        $this->assertFalse($object->equals('1234'));
+        $this->assertFalse($object->equals('012345678', 'NL'));
+    }
+
+    /** @test */
+    public function it_doesnt_throw_for_invalid_numbers_when_checking_inequality()
+    {
+        $object = new PhoneNumber('012345678');
+        $object = $object->ofCountry('AQ','BE');
+
+        $this->assertTrue($object->notEquals('1234'));
+        $this->assertTrue($object->notEquals('012345678', 'NL'));
+    }
 }

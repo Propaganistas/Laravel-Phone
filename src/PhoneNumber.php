@@ -13,6 +13,7 @@ use libphonenumber\NumberParseException as libNumberParseException;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
+use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
 use Propaganistas\LaravelPhone\Exceptions\NumberFormatException;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
@@ -314,6 +315,38 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
         }
 
         return in_array($this->getType(true), $types, true);
+    }
+
+    /**
+     * Determine if two phone numbers are the same.
+     *
+     * @param string|static $number
+     * @param string|array|null $country
+     * @return bool
+     */
+    public function equals($number, $country = null)
+    {
+        try {
+            if (! $number instanceof static) {
+                $number = static::make($number, $country);
+            }
+
+            return $this->formatE164() === $number->formatE164();
+        } catch (NumberParseException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if two phone numbers are not the same.
+     *
+     * @param string|static $number
+     * @param string|array|null $country
+     * @return bool
+     */
+    public function notEquals($number, $country = null)
+    {
+        return ! $this->equals($number, $country);
     }
 
     /**

@@ -16,6 +16,7 @@ Adds phone number functionality to Laravel based on the [PHP port](https://githu
 - [Utility class](#utility-phonenumber-class)
     - [Formatting](#formatting)
     - [Number information](#number-information)
+    - [Equality comparison](#equality-comparison)
     - [Helper function](#helper-function)
 - [Database considerations](#database-considerations)
 
@@ -175,32 +176,50 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 A PhoneNumber can be formatted in various ways:
 
 ```php
-PhoneNumber::make('012 34 56 78', 'BE')->format($format);       // See libphonenumber\PhoneNumberFormat
-PhoneNumber::make('012 34 56 78', 'BE')->formatE164();          // +3212345678
-PhoneNumber::make('012 34 56 78', 'BE')->formatInternational(); // +32 12 34 56 78
-PhoneNumber::make('012 34 56 78', 'BE')->formatRFC3966();       // +32-12-34-56-78
-PhoneNumber::make('012/34.56.78', 'BE')->formatNational();      // 012 34 56 78
+$phone = PhoneNumber::make('012/34.56.78', 'BE');
+
+$phone->format($format);       // See libphonenumber\PhoneNumberFormat
+$phone->formatE164();          // +3212345678
+$phone->formatInternational(); // +32 12 34 56 78
+$phone->formatRFC3966();       // +32-12-34-56-78
+$phone->formatNational();      // 012 34 56 78
 
 // Formats so the number can be called straight from the provided country.
-PhoneNumber::make('012 34 56 78', 'BE')->formatForCountry('BE'); // 012 34 56 78
-PhoneNumber::make('012 34 56 78', 'BE')->formatForCountry('NL'); // 00 32 12 34 56 78
-PhoneNumber::make('012 34 56 78', 'BE')->formatForCountry('US'); // 011 32 12 34 56 78
+$phone->formatForCountry('BE'); // 012 34 56 78
+$phone->formatForCountry('NL'); // 00 32 12 34 56 78
+$phone->formatForCountry('US'); // 011 32 12 34 56 78
 
 // Formats so the number can be clicked on and called straight from the provided country using a cellphone.
-PhoneNumber::make('012 34 56 78', 'BE')->formatForMobileDialingInCountry('BE'); // 012345678
-PhoneNumber::make('012 34 56 78', 'BE')->formatForMobileDialingInCountry('NL'); // +3212345678
-PhoneNumber::make('012 34 56 78', 'BE')->formatForMobileDialingInCountry('US'); // +3212345678
+$phone->formatForMobileDialingInCountry('BE'); // 012345678
+$phone->formatForMobileDialingInCountry('NL'); // +3212345678
+$phone->formatForMobileDialingInCountry('US'); // +3212345678
 ```
 
 ### Number information
 Get some information about the phone number:
 
 ```php
-PhoneNumber::make('012 34 56 78', 'BE')->getType();              // 'fixed_line'
-PhoneNumber::make('012 34 56 78', 'BE')->isOfType('fixed_line'); // true
-PhoneNumber::make('012 34 56 78', 'BE')->getCountry();           // 'BE'
-PhoneNumber::make('012 34 56 78', 'BE')->isOfCountry('BE');      // true
-PhoneNumber::make('+32 12 34 56 78')->isOfCountry('BE');         // true
+$phone = PhoneNumber::make('012 34 56 78', 'BE');
+
+$phone->getType();              // 'fixed_line'
+$phone->isOfType('fixed_line'); // true
+$phone->getCountry();           // 'BE'
+$phone->isOfCountry('BE');      // true
+```
+
+### Equality comparison
+Check if a given phone number is (not) equal to another one:
+
+```php
+$phone = PhoneNumber::make('012 34 56 78', 'BE');
+
+$phone->equals('012/34.56.76', 'BE')       // true
+$phone->equals('+32 12 34 56 78')          // true
+$phone->equals( $anotherPhoneObject )      // true/false
+
+$phone->notEquals('045 67 89 10', 'BE')    // false
+$phone->notEquals('+32 45 67 89 10')       // true
+$phone->notEquals( $anotherPhoneObject )   // true/false
 ```
 
 ### Helper function
