@@ -19,8 +19,7 @@
         "illuminate/contracts": "^8.9|^9.0",
         "illuminate/support": "^8.0|^9.0",
         "illuminate/validation": "^8.0|^9.0",
-        "giggsey/libphonenumber-for-php": "^7.0|^8.0",
-        "league/iso3166": "^2.0|^3.0|^4.0"
+        "giggsey/libphonenumber-for-php": "^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": "*",
