@@ -4,9 +4,9 @@ namespace Propaganistas\LaravelPhone\Validation;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
 use Propaganistas\LaravelPhone\Exceptions\InvalidParameterException;
-use libphonenumber\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Traits\ParsesCountries;
 use Propaganistas\LaravelPhone\Traits\ParsesTypes;
@@ -122,7 +122,7 @@ class Phone
                 $parameters[] = $inputCountry;
             }
         }
-        
+
         $parameters = array_map('strtolower', $parameters);
 
         return [
