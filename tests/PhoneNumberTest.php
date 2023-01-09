@@ -70,6 +70,11 @@ class PhoneNumberTest extends TestCase
         $this->assertFalse($object->isOfCountry('US'));
 
         $object = new PhoneNumber('+24762889');
+        $object = $object->ofCountry('AC');
+        $this->assertTrue($object->isOfCountry('AC'));
+        $this->assertFalse($object->isOfCountry('US'));
+
+        $object = new PhoneNumber('+24762889');
         $this->assertTrue($object->isOfCountry('AC'));
         $this->assertFalse($object->isOfCountry('US'));
     }
