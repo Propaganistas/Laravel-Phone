@@ -2,8 +2,6 @@
 
 namespace Propaganistas\LaravelPhone\Exceptions;
 
-use Illuminate\Support\Collection;
-
 class InvalidParameterException extends \Exception
 {
     /**

@@ -3,13 +3,12 @@
 namespace Propaganistas\LaravelPhone\Rules;
 
 use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\Traits\ParsesCountries;
 use Propaganistas\LaravelPhone\Traits\ParsesTypes;
 
 class Phone
 {
     use ParsesTypes;
-    
+
     /**
      * The provided phone countries.
      *
