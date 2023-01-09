@@ -69,6 +69,14 @@ class PhoneNumberTest extends TestCase
         $this->assertTrue($object->isOfCountry('BE'));
         $this->assertFalse($object->isOfCountry('US'));
     }
+    
+    /** @test */
+    public function it_can_check_libphonenumber_specific_regions_as_country()
+    {
+        $object = new PhoneNumber('+247501234');
+        $this->assertTrue($object->isOfCountry('AC'));
+        $this->assertFalse($object->isOfCountry('US'));
+    }
 
     /** @test */
     public function it_can_make()
