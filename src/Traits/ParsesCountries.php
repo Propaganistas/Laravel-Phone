@@ -3,6 +3,7 @@
 namespace Propaganistas\LaravelPhone\Traits;
 
 use Illuminate\Support\Collection;
+use libphonenumber\PhoneNumberUtil;
 
 trait ParsesCountries
 {
@@ -14,7 +15,9 @@ trait ParsesCountries
      */
     public static function isValidCountryCode($country)
     {
-        $supportedRegions = app('libphonenumber')->getSupportedRegions();
+        $lib = PhoneNumberUtil::getInstance();
+
+        $supportedRegions = $lib->getSupportedRegions();
 
         return in_array($country, $supportedRegions);
     }
