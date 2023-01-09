@@ -598,7 +598,7 @@ class PhoneValidatorTest extends TestCase
     public function it_validates_libphonenumber_specific_regions_as_country()
     {
         $this->assertTrue($this->validator->make(
-            ['field' => '+24762889'],
+            ['field' => '+247501234'],
             ['field' => ['phone:AC']]
         )->passes());
     }
