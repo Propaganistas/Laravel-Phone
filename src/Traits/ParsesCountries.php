@@ -15,11 +15,7 @@ trait ParsesCountries
      */
     public static function isValidCountryCode($country)
     {
-        $lib = PhoneNumberUtil::getInstance();
-
-        $supportedRegions = $lib->getSupportedRegions();
-
-        return in_array($country, $supportedRegions);
+        return in_array($country, PhoneNumberUtil::getInstance()->getSupportedRegions());
     }
 
     /**
