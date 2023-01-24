@@ -24,7 +24,7 @@ class PhoneServiceProvider extends ServiceProvider
 
         $this->app->alias('libphonenumber', PhoneNumberUtil::class);
 
-        $this->app->afterResolving('validator', static function (Factory $validator) {
+        $this->callAfterResolving('validator', static function (Factory $validator) {
             $validator->extendDependent('phone', Validation\Phone::class . '@validate');
         });
 
