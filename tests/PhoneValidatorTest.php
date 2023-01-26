@@ -584,6 +584,30 @@ class PhoneValidatorTest extends TestCase
             ['field' => 'phone:mobile,country_code'])->passes()
         );
     }
+    
+    /** @test */
+    public function it_validates_lowercase_countries()
+    {
+        $this->assertTrue($this->validator->make(
+            ['Field' => '0470123456'],
+            ['Field' => 'phone:be'])->passes()
+        );
+        
+        $this->assertFalse($this->validator->make(
+            ['Field' => '0470123456'],
+            ['Field' => 'phone:us'])->passes()
+        );
+        
+        $this->assertTrue($this->validator->make(
+            ['field' => '0470123456', 'country' => 'be'],
+            ['field' => 'phone:country'])->passes()
+        );
+        
+        $this->assertFalse($this->validator->make(
+            ['field' => '0470123456', 'country' => 'us'],
+            ['field' => 'phone:country'])->passes()
+        );
+    }
 
     /** @test */
     public function it_copes_with_nullable_validation_rule()
