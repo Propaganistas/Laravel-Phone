@@ -15,7 +15,7 @@ trait ParsesCountries
      */
     public static function isValidCountryCode($country)
     {
-        return in_array($country, PhoneNumberUtil::getInstance()->getSupportedRegions());
+        return in_array(strtoupper($country), array_map('strtoupper', PhoneNumberUtil::getInstance()->getSupportedRegions()));
     }
 
     /**
@@ -31,11 +31,10 @@ trait ParsesCountries
                 /** @phpstan-ignore-next-line */
                 return is_null($value);
             })
-            ->map(function ($country) {
-                return strtoupper($country);
-            })
             ->filter(function ($value) {
                 return static::isValidCountryCode($value);
+            })->map(function ($value) {
+                return strtoupper($value);
             })->toArray();
     }
 }
