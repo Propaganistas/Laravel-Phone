@@ -272,7 +272,9 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
             }
         }
 
-        if ($countries = array_filter($countries)) {
+        $countries = array_filter($countries);
+
+        if (! empty($countries)) {
             throw NumberParseException::countryMismatch($this->number, $countries);
         }
 
@@ -375,7 +377,15 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function numberLooksInternational()
     {
-        return Str::startsWith($this->number, '+');
+        if (empty($this->number)) {
+            return false;
+        }
+
+        if (Str::startsWith($this->number, '+')) {
+            return true;
+        }
+
+        return strpos($this->number, '+', 2) && static::isValidCountryCode(Str::substr($this->number, 0, 2));
     }
 
     /**

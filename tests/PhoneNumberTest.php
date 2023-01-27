@@ -110,6 +110,20 @@ class PhoneNumberTest extends TestCase
     }
 
     /** @test */
+    public function it_can_format_international_numbers_prefixed_with_correct_country()
+    {
+        $object = new PhoneNumber('BE+3212345678');
+        $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
+    }
+
+    /** @test */
+    public function it_can_format_international_numbers_prefixed_with_wrong_country()
+    {
+        $object = new PhoneNumber('US+3212345678');
+        $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
+    }
+
+    /** @test */
     public function it_can_format_lenient_international_numbers_without_given_country()
     {
         $object = new PhoneNumber('+49(0)12-44 614038');
