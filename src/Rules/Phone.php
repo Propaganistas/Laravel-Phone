@@ -2,54 +2,56 @@
 
 namespace Propaganistas\LaravelPhone\Rules;
 
-use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\Traits\ParsesTypes;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidatorAwareRule;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Validator;
+use libphonenumber\PhoneNumberType as libPhoneNumberType;
+use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
+use Propaganistas\LaravelPhone\Aspects\PhoneNumberType;
+use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
-class Phone
+class Phone implements Rule, ValidatorAwareRule
 {
-    use ParsesTypes;
+    protected Validator $validator;
 
-    /**
-     * The provided phone countries.
-     *
-     * @var array
-     */
-    protected $countries = [];
+    protected ?string $countryField = null;
 
-    /**
-     * The input field name to check for a country value.
-     *
-     * @var string
-     */
-    protected $countryField;
+    protected array $countries = [];
 
-    /**
-     * The provided phone types.
-     *
-     * @var array
-     */
-    protected $types = [];
+    protected array $types = [];
 
-    /**
-     * Whether the number's country should be auto-detected.
-     *
-     * @var bool
-     */
-    protected $detect = false;
+    protected bool $lenient = false;
 
-    /**
-     * Whether to allow lenient checks (i.e. landline numbers without area codes).
-     *
-     * @var bool
-     */
-    protected $lenient = false;
+    public function passes($attribute, $value)
+    {
+        $countries = PhoneNumberCountry::sanitize([
+            $this->getCountryFieldValue($attribute),
+            ...$this->countries,
+        ]);
 
-    /**
-     * Set the phone countries.
-     *
-     * @param string|array $country
-     * @return $this
-     */
+        $types = PhoneNumberType::sanitize($this->types);
+
+        try {
+            $phone = (new PhoneNumber($value, $countries))->lenient($this->lenient);
+
+            // Is the country within the allowed list (if applicable)?
+            if (! empty($countries) && ! $phone->isOfCountry($countries)) {
+                return false;
+            }
+
+            // Is the type within the allowed list (if applicable)?
+            if (! empty($types) && ! $phone->isOfType($types)) {
+                return false;
+            }
+
+            return $phone->isValid();
+        } catch (NumberParseException $e) {
+            return false;
+        }
+    }
+
     public function country($country)
     {
         $countries = is_array($country) ? $country : func_get_args();
@@ -59,12 +61,6 @@ class Phone
         return $this;
     }
 
-    /**
-     * Set the country input field.
-     *
-     * @param string $name
-     * @return $this
-     */
     public function countryField($name)
     {
         $this->countryField = $name;
@@ -72,12 +68,6 @@ class Phone
         return $this;
     }
 
-    /**
-     * Set the phone types.
-     *
-     * @param int|string|array $type
-     * @return $this
-     */
     public function type($type)
     {
         $types = is_array($type) ? $type : func_get_args();
@@ -87,47 +77,20 @@ class Phone
         return $this;
     }
 
-    /**
-     * Shortcut method for mobile type restriction.
-     *
-     * @return $this
-     */
     public function mobile()
     {
-        $this->type(PhoneNumberType::MOBILE);
+        $this->type(libPhoneNumberType::MOBILE);
 
         return $this;
     }
 
-    /**
-     * Shortcut method for fixed line type restriction.
-     *
-     * @return $this
-     */
     public function fixedLine()
     {
-        $this->type(PhoneNumberType::FIXED_LINE);
+        $this->type(libPhoneNumberType::FIXED_LINE);
 
         return $this;
     }
 
-    /**
-     * Enable automatic country detection.
-     *
-     * @return $this
-     */
-    public function detect()
-    {
-        $this->detect = true;
-
-        return $this;
-    }
-
-    /**
-     * Enable lenient number checking.
-     *
-     * @return $this
-     */
     public function lenient()
     {
         $this->lenient = true;
@@ -135,21 +98,52 @@ class Phone
         return $this;
     }
 
-    /**
-     * Convert the rule to a validation string.
-     *
-     * @return string
-     */
-    public function __toString()
+    protected function getCountryFieldValue(string $attribute)
     {
-        $parameters = implode(',', array_merge(
-            $this->countries,
-            static::parseTypes($this->types),
-            ($this->countryField ? [$this->countryField]: []),
-            ($this->detect ? ['AUTO'] : []),
-            ($this->lenient ? ['LENIENT'] : [])
-        ));
+        // Using Arr::get() enables support for nested data.
+        return Arr::get($this->validator->getData(), $this->countryField ?: $attribute.'_country');
+    }
 
-        return 'phone' . (! empty($parameters) ? ":$parameters" : '');
+    protected function isDataKey($attribute): bool
+    {
+        // Using Arr::has() enables support for nested data.
+        return Arr::has($this->validator->getData(), $attribute);
+    }
+
+    public function setParameters($parameters)
+    {
+        $parameters = is_array($parameters) ? $parameters : func_get_args();
+
+        foreach ($parameters as $parameter) {
+            if (strcasecmp('lenient', $parameter) === 0) {
+                $this->lenient();
+            } elseif (strcasecmp('mobile', $parameter) === 0) {
+                $this->mobile();
+            } elseif (strcasecmp('fixed_line', $parameter) === 0) {
+                $this->fixedLine();
+            } elseif ($this->isDataKey($parameter)) {
+                $this->countryField = $parameter;
+            } elseif (PhoneNumberCountry::isValid($parameter)) {
+                $this->country($parameter);
+            } elseif (ctype_digit($parameter) && PhoneNumberType::isValid((int) $parameter)) {
+                $this->type((int) $parameter);
+            } elseif (PhoneNumberType::isValidName($parameter)) {
+                $this->type($parameter);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setValidator($validator)
+    {
+        $this->validator = $validator;
+
+        return $this;
+    }
+
+    public function message()
+    {
+        return trans('validation.phone');
     }
 }

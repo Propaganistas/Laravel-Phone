@@ -5,42 +5,29 @@ namespace Propaganistas\LaravelPhone\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
 
 abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAttributes
 {
-    /**
-     * @var array
-     */
-    protected $parameters = [];
+    protected array $parameters;
 
-    /**
-     * @param  mixed  $parameters
-     */
-    public function __construct($parameters = [])
+    public function __construct()
     {
-        $this->parameters = is_array($parameters) ? $parameters : func_get_args();
+        $this->parameters = func_get_args();
     }
 
-    /**
-     * @param string $key
-     * @param  array  $attributes
-     * @return array
-     */
-    protected function getPossibleCountries($key, array $attributes)
+    protected function getPossibleCountries($key, array $attributes): array
     {
-        $parameters = $this->parameters;
+        $parameters = array_map(function ($parameter) use ($attributes) {
+            if ($value = Arr::get($attributes, $parameter)) {
+                return $value;
+            }
 
-        // Discover if an attribute was provided. If not, default to _country.
-        $inputField = Collection::make($parameters)
-            ->intersect(array_keys(Arr::dot($attributes)))
-            ->first() ?: "{$key}_country";
+            return $parameter;
+        }, [...$this->parameters, $key.'_country']);
 
-        // Attempt to retrieve the field's value.
-        if ($inputCountry = Arr::get($attributes, $inputField)) {
-            $parameters[] = $inputCountry;
-        }
-
-        return $parameters;
+        return array_filter($parameters, function ($parameter) {
+            return PhoneNumberCountry::isValid($parameter);
+        });
     }
 }

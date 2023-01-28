@@ -13,14 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.3, 7.4, 8.0, 8.1, 8.2 ]
-        laravel: [ 8, 9 ]
+        php: [ 8.0, 8.1, 8.2 ]
+        laravel: [ 9 ]
         stability: [ prefer-lowest, prefer-stable ]
-        exclude:
-          - php: 7.3
-            laravel: 9
-          - php: 7.4
-            laravel: 9
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} (${{ matrix.stability }})
 
@@ -35,11 +30,6 @@ jobs:
           extensions: dom, curl, json, libxml, mbstring, zip
           tools: composer:v2
           coverage: none
-      
-      - name: Patch testbench version
-        if: matrix.laravel == 8
-        run: |
-          composer require "orchestra/testbench=^6.23" --dev --no-interaction --no-update
 
       # https://github.com/briannesbitt/Carbon/releases/tag/2.62.1
       - name: Patch Carbon version

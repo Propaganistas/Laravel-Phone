@@ -14,18 +14,20 @@ class RawPhoneNumberCastTest extends TestCase
     {
         $model = new ModelWithRawCast;
         $model->phone = '012 34 56 78';
+
+        $model->phone;
         $this->assertEquals('012 34 56 78', $model->getAttributes()['phone']);
 
         $model = new ModelWithRawCast;
-        $model->phone = PhoneNumber::make('012/34.56.78');
+        $model->phone = new PhoneNumber('012/34.56.78');
         $this->assertEquals('012/34.56.78', $model->getAttributes()['phone']);
 
         $model = new ModelWithRawCast;
-        $model->phone = PhoneNumber::make('012345678', 'BE');
+        $model->phone = new PhoneNumber('012345678', 'BE');
         $this->assertEquals('012345678', $model->getAttributes()['phone']);
 
         $model = new ModelWithRawCast;
-        $model->phone = PhoneNumber::make('012-34-56-78', 'US');
+        $model->phone = new PhoneNumber('012-34-56-78', 'US');
         $this->assertEquals('012-34-56-78', $model->getAttributes()['phone']);
     }
 
@@ -44,7 +46,7 @@ class RawPhoneNumberCastTest extends TestCase
         $model = new ModelWithIncompleteRawCast;
         $model->setRawAttributes([
             'phone_country' => 'BE',
-            'phone' => '012 34 56 78'
+            'phone' => '012 34 56 78',
         ]);
         $this->assertIsObject($model->phone);
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
@@ -56,7 +58,7 @@ class RawPhoneNumberCastTest extends TestCase
         $model = new ModelWithRawCastAndCountryField;
         $model->setRawAttributes([
             'country' => 'BE',
-            'phone' => '012 34 56 78'
+            'phone' => '012 34 56 78',
         ]);
         $this->assertIsObject($model->phone);
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
@@ -97,7 +99,7 @@ class RawPhoneNumberCastTest extends TestCase
 class ModelWithRawCast extends Model
 {
     protected $casts = [
-        'phone' => RawPhoneNumberCast::class.':BE',
+        'phone' => RawPhoneNumberCast::class.':BE,NL',
     ];
 }
 

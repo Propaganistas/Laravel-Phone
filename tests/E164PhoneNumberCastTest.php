@@ -17,7 +17,7 @@ class E164PhoneNumberCastTest extends TestCase
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
 
         $model = new ModelWithE164Cast;
-        $model->phone = PhoneNumber::make('+32 12/34.56.78');
+        $model->phone = new PhoneNumber('+32 12/34.56.78');
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
@@ -31,7 +31,7 @@ class E164PhoneNumberCastTest extends TestCase
 
         $model = new ModelWithE164Cast;
         $model->phone_country = 'BE';
-        $model->phone = PhoneNumber::make('+32 12/34.56.78');
+        $model->phone = new PhoneNumber('+32 12/34.56.78');
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
@@ -45,7 +45,7 @@ class E164PhoneNumberCastTest extends TestCase
 
         $model = new ModelWithE164CastAndCountryField;
         $model->country = 'BE';
-        $model->phone = PhoneNumber::make('+32 12/34.56.78');
+        $model->phone = new PhoneNumber('+32 12/34.56.78');
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
