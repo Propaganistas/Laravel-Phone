@@ -28,7 +28,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
 
     protected bool $lenient = false;
 
-    public function __construct($number, $country = [])
+    public function __construct(?string $number, $country = [])
     {
         $this->number = $number;
         $this->countries = Arr::wrap($country);

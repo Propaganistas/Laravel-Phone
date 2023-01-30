@@ -3,7 +3,7 @@
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 if (! function_exists('phone')) {
-    function phone(string $number, string|array $country = [], int|string $format = null)
+    function phone(?string $number, $country = [], $format = null)
     {
         $phone = new PhoneNumber($number, $country);
 
