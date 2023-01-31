@@ -407,17 +407,22 @@ class PhoneNumberTest extends TestCase
     /** @test */
     public function it_has_a_helper_function()
     {
-        // Test international landline number without country and format parameters.
         $actual = phone('+32 12 34 56 78');
-        $expected = new PhoneNumber('012345678', 'BE');
-        $this->assertEquals($expected, (string) $actual);
-
-        // Test landline number without format parameter.
-        $actual = phone('012345678', 'BE');
-        $expected = new PhoneNumber('012345678', 'BE');
+        $expected = new PhoneNumber('+32 12 34 56 78');
+        $this->assertEquals($expected, $actual);
+        
+        $actual = phone('+32 12 34 56 78', null);
+        $expected = new PhoneNumber('+32 12 34 56 78', null);
         $this->assertEquals($expected, $actual);
 
-        // Test landline number with format parameter.
+        $actual = phone('012 34 56 78', 'BE');
+        $expected = new PhoneNumber('012 34 56 78', 'BE');
+        $this->assertEquals($expected, $actual);
+        
+        $actual = phone('012 34 56 78', ['BE', 'NL']);
+        $expected = new PhoneNumber('012 34 56 78', ['BE', 'NL']);
+        $this->assertEquals($expected, $actual);
+
         $actual = phone('012345678', 'BE', PhoneNumberFormat::NATIONAL);
         $expected = '012 34 56 78';
         $this->assertEquals($expected, $actual);
