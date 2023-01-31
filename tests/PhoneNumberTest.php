@@ -12,15 +12,30 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 class PhoneNumberTest extends TestCase
 {
     /** @test */
-    public function it_can_construct()
+    public function it_constructs_without_country()
     {
         $object = new PhoneNumber('012345678');
         $this->assertInstanceOf(PhoneNumber::class, $object);
-
+    }
+    
+    /** @test */
+    public function it_constructs_with_string_country()
+    {
         $object = new PhoneNumber('012345678', 'BE');
         $this->assertInstanceOf(PhoneNumber::class, $object);
-
+    }
+    
+    /** @test */
+    public function it_constructs_with_array_country()
+    {
         $object = new PhoneNumber('012345678', ['BE', 'NL']);
+        $this->assertInstanceOf(PhoneNumber::class, $object);
+    }
+    
+    /** @test */
+    public function it_constructs_with_null_country()
+    {
+        $object = new PhoneNumber('012345678', null);
         $this->assertInstanceOf(PhoneNumber::class, $object);
     }
 
@@ -405,30 +420,6 @@ class PhoneNumberTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_helper_function()
-    {
-        $actual = phone('+32 12 34 56 78');
-        $expected = new PhoneNumber('+32 12 34 56 78');
-        $this->assertEquals($expected, $actual);
-        
-        $actual = phone('+32 12 34 56 78', null);
-        $expected = new PhoneNumber('+32 12 34 56 78', null);
-        $this->assertEquals($expected, $actual);
-
-        $actual = phone('012 34 56 78', 'BE');
-        $expected = new PhoneNumber('012 34 56 78', 'BE');
-        $this->assertEquals($expected, $actual);
-        
-        $actual = phone('012 34 56 78', ['BE', 'NL']);
-        $expected = new PhoneNumber('012 34 56 78', ['BE', 'NL']);
-        $this->assertEquals($expected, $actual);
-
-        $actual = phone('012345678', 'BE', PhoneNumberFormat::NATIONAL);
-        $expected = '012 34 56 78';
-        $this->assertEquals($expected, $actual);
-    }
-
-    /** @test */
     public function it_gets_the_exceptions_number()
     {
         $exception = NumberParseException::countryRequired('12345');
@@ -493,5 +484,45 @@ class PhoneNumberTest extends TestCase
 
         $this->assertTrue($object->notEquals('1234'));
         $this->assertTrue($object->notEquals('012345678', 'NL'));
+    }
+    
+    /** @test */
+    public function helper_function_constructs_without_country()
+    {
+        $actual = phone('+32 12 34 56 78');
+        $expected = new PhoneNumber('+32 12 34 56 78');
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /** @test */
+    public function helper_function_constructs_with_string_country()
+    {
+        $actual = phone('012 34 56 78', 'BE');
+        $expected = new PhoneNumber('012 34 56 78', 'BE');
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /** @test */
+    public function helper_function_constructs_with_array_country()
+    {
+        $actual = phone('012 34 56 78', ['BE', 'NL']);
+        $expected = new PhoneNumber('012 34 56 78', ['BE', 'NL']);
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /** @test */
+    public function helper_function_constructs_with_null_country()
+    {
+        $actual = phone('+32 12 34 56 78', null);
+        $expected = new PhoneNumber('+32 12 34 56 78', null);
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /** @test */
+    public function helper_function_formats()
+    {
+        $actual = phone('012345678', 'BE', PhoneNumberFormat::NATIONAL);
+        $expected = '012 34 56 78';
+        $this->assertEquals($expected, $actual);
     }
 }
