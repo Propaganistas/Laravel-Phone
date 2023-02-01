@@ -626,4 +626,13 @@ class PhoneValidatorTest extends TestCase
             ['field' => ['phone:AC']]
         )->passes());
     }
+
+    /** @test */
+    public function it_validates_one_digit_phone()
+    {
+        $this->assertFalse($this->validator->make(
+            ['field' => '1'],
+            ['field' => 'phone:AUTO'])->passes()
+        );
+    }
 }
