@@ -377,7 +377,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function numberLooksInternational()
     {
-        if (empty($this->number)) {
+        if (empty($this->number) || strlen($this->number) < 2) {
             return false;
         }
 
