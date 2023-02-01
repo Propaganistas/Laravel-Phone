@@ -68,6 +68,8 @@ Make sure the country field has the same name as the phone field but with `_coun
 
 Note: country codes should be [*ISO 3166-1 alpha-2 compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
 
+⚠️ If you don't provide a whitelist of countries, the validator will **only** accept internationally formatted phone numbers. Other input will validate to false because the validator won't be able to detect the originating country for cross-checking the validity of the number itself.
+
 To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
 
 ```php
