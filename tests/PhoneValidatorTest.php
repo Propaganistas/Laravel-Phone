@@ -126,6 +126,30 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
+    public function it_validates_in_international_mode()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '+3212345678'],
+            ['field' => 'phone:NL']
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '+3212345678'],
+            ['field' => 'phone:international,NL']
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '012345678'],
+            ['field' => 'phone:international,NL']
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678'],
+            ['field' => 'phone:international,BE']
+        )->passes());
+    }
+
+    /** @test */
     public function it_gracefully_ignores_invalid_country_field_value()
     {
         $this->assertFalse($this->validate(

@@ -22,6 +22,8 @@ class Phone implements Rule, ValidatorAwareRule
 
     protected array $types = [];
 
+    protected bool $international = false;
+
     protected bool $lenient = false;
 
     public function passes($attribute, $value)
@@ -37,7 +39,7 @@ class Phone implements Rule, ValidatorAwareRule
             $phone = (new PhoneNumber($value, $countries))->lenient($this->lenient);
 
             // Is the country within the allowed list (if applicable)?
-            if (! empty($countries) && ! $phone->isOfCountry($countries)) {
+            if (! $this->international && ! empty($countries) && ! $phone->isOfCountry($countries)) {
                 return false;
             }
 
@@ -98,6 +100,13 @@ class Phone implements Rule, ValidatorAwareRule
         return $this;
     }
 
+    public function international()
+    {
+        $this->international = true;
+
+        return $this;
+    }
+
     protected function getCountryFieldValue(string $attribute)
     {
         // Using Arr::get() enables support for nested data.
@@ -117,6 +126,8 @@ class Phone implements Rule, ValidatorAwareRule
         foreach ($parameters as $parameter) {
             if (strcasecmp('lenient', $parameter) === 0) {
                 $this->lenient();
+            } elseif (strcasecmp('international', $parameter) === 0) {
+                $this->international();
             } elseif (strcasecmp('mobile', $parameter) === 0) {
                 $this->mobile();
             } elseif (strcasecmp('fixed_line', $parameter) === 0) {
