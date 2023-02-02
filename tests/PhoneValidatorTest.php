@@ -628,7 +628,7 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
-    public function it_validates_one_digit_phone()
+    public function it_doesnt_throw_for_one_digit_numbers()
     {
         $this->assertFalse($this->validator->make(
             ['field' => '1'],
