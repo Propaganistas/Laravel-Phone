@@ -384,7 +384,7 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
         }
         
         if ($matches[1]) {
-            return static::isValidCountryCode(Str::substr($this->number, 0, 2))
+            return static::isValidCountryCode(Str::substr($this->number, 0, 2));
         }
 
         return true;
