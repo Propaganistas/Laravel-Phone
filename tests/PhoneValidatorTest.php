@@ -626,4 +626,13 @@ class PhoneValidatorTest extends TestCase
             ['field' => ['phone:AC']]
         )->passes());
     }
+
+    /** @test */
+    public function it_doesnt_throw_for_one_digit_numbers()
+    {
+        $this->assertFalse($this->validator->make(
+            ['field' => '1'],
+            ['field' => 'phone:AUTO'])->passes()
+        );
+    }
 }

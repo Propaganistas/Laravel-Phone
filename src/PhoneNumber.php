@@ -377,15 +377,17 @@ class PhoneNumber implements Jsonable, JsonSerializable, Serializable
      */
     public function numberLooksInternational()
     {
-        if (empty($this->number)) {
+        preg_match('/([a-z]{2})?(\+.+)/i', $this->number, $matches);
+        
+        if (empty($matches)) {
             return false;
         }
-
-        if (Str::startsWith($this->number, '+')) {
-            return true;
+        
+        if ($matches[1]) {
+            return static::isValidCountryCode(Str::substr($this->number, 0, 2));
         }
 
-        return strpos($this->number, '+', 2) && static::isValidCountryCode(Str::substr($this->number, 0, 2));
+        return true;
     }
 
     /**
