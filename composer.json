@@ -16,15 +16,15 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^9.0",
-        "illuminate/support": "^9.0",
-        "illuminate/validation": "^9.0",
+        "illuminate/contracts": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0",
+        "illuminate/validation": "^9.0|^10.0",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": "*",
         "phpunit/phpunit": "^9.5.10",
-        "nunomaduro/larastan": "^1.0",
+        "nunomaduro/larastan": "^2.4",
         "laravel/pint": "^1.4"
     },
     "autoload": {
