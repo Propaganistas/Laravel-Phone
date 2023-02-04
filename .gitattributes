@@ -4,5 +4,3 @@
 /tests export-ignore
 /phpunit.xml.dist export-ignore
 /phpstan.neon export-ignore
-/docker export-ignore
-/docker-compose.yml export-ignore
