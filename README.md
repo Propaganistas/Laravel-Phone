@@ -37,7 +37,7 @@ The Service Provider gets discovered automatically by Laravel.
 In your languages directory, add an extra translation in every `validation.php` language file:
 
 ```php
-'phone' => 'The :attribute field contains an invalid number.',
+'phone' => 'The :attribute field must be a valid number.',
 ```
 
 ## Validation
