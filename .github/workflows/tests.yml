@@ -49,4 +49,4 @@ jobs:
         run: vendor/bin/phpunit --verbose
         
       - name: Run phpstan
-        run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse --error-format=github
