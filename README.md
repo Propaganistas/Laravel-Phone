@@ -91,7 +91,7 @@ With leniency enabled, only the length of the number is checked instead of actua
 // 'phonefield'    => (new Phone)->lenient()
 ```
 
-To specify constraints on the E164 number format, use the `IS_E164` parameter:
+To specify constraints on the E.164 number format, use the `IS_E164` parameter:
 
 ```php
 'phonefield'       => 'phone:IS_E164',
