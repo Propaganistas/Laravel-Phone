@@ -467,4 +467,18 @@ class PhoneValidatorTest extends TestCase
             ['field' => ['phone:AC']]
         )->passes());
     }
+
+    /** @test */
+    public function it_validates_E164_format()
+    {
+        $this->assertTrue($this->validate(
+            ['field' => '+32470123456'],
+            ['field' => 'phone:is_e164']
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456'],
+            ['field' => 'phone:is_e164']
+        )->passes());
+    }
 }

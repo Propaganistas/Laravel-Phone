@@ -91,6 +91,13 @@ With leniency enabled, only the length of the number is checked instead of actua
 // 'phonefield'    => (new Phone)->lenient()
 ```
 
+To specify constraints on the E164 number format, use the `IS_E164` parameter:
+
+```php
+'phonefield'       => 'phone:IS_E164',
+// 'phonefield'    => (new Phone)->isE164()
+```
+
 ## Attribute casting
 
 Two cast classes are provided for automatic casting of Eloquent model attributes:
@@ -114,7 +121,7 @@ Both classes automatically cast the database value to a PhoneNumber object for f
 ```php
 $user->phone // PhoneNumber object or null
 ```
-When setting a value, they both accept a string value or a PhoneNumber object. 
+When setting a value, they both accept a string value or a PhoneNumber object.
 The `RawPhoneNumberCast` mutates the database value to the raw input number, while the `E164PhoneNumberCast` writes a formatted E.164 phone number to the database.
 
 In case of `RawPhoneNumberCast`, the cast needs to be hinted about the phone country in order to properly parse the raw number into a phone object.
@@ -251,7 +258,7 @@ Example:
 
 ### Presenting the phone number the way it was inputted
 
-If you store formatted phone numbers the raw user input will unretrievably get lost. It may be beneficial to present your users with their very own inputted phone number, for example in terms of improved user experience. 
+If you store formatted phone numbers the raw user input will unretrievably get lost. It may be beneficial to present your users with their very own inputted phone number, for example in terms of improved user experience.
 
 You'll need:
 * Two columns to store the raw input and the correlated country
@@ -274,10 +281,10 @@ You'll need:
   * E.164 formatted phone number
 * Probably a `saving()` observer (or equivalent) to prefill the variants before persistence
 * An extensive search query utilizing the searchable variants
-  
+
 Example:
 
-* User input = `12/34.56.78`  
+* User input = `12/34.56.78`
 * Observer method:
   ```php
   public function saving(User $user)

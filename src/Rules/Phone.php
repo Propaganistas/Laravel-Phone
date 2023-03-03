@@ -6,11 +6,11 @@ use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Validator;
-use libphonenumber\PhoneNumberType as libPhoneNumberType;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberType;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use libphonenumber\PhoneNumberType as libPhoneNumberType;
 
 class Phone implements Rule, ValidatorAwareRule
 {
@@ -25,6 +25,8 @@ class Phone implements Rule, ValidatorAwareRule
     protected bool $international = false;
 
     protected bool $lenient = false;
+
+    protected bool $isE164 = false;
 
     public function passes($attribute, $value)
     {
@@ -48,7 +50,16 @@ class Phone implements Rule, ValidatorAwareRule
                 return false;
             }
 
-            return $phone->isValid();
+            if (!$phone->isValid()) {
+                return false;
+            }
+
+            // Is the number E164 formatted (if applicable)?
+            if (! $this->isE164 && $phone->getRawNumber() !== $phone->formatE164()) {
+                return false;
+            }
+
+            return true;
         } catch (NumberParseException $e) {
             return false;
         }
@@ -107,6 +118,13 @@ class Phone implements Rule, ValidatorAwareRule
         return $this;
     }
 
+    public function isE164()
+    {
+        $this->isE164 = true;
+
+        return $this;
+    }
+
     protected function getCountryFieldValue(string $attribute)
     {
         // Using Arr::get() enables support for nested data.
@@ -132,6 +150,8 @@ class Phone implements Rule, ValidatorAwareRule
                 $this->mobile();
             } elseif (strcasecmp('fixed_line', $parameter) === 0) {
                 $this->fixedLine();
+            } elseif (strcasecmp('is_e164', $parameter) === 0) {
+                $this->isE164();
             } elseif ($this->isDataKey($parameter)) {
                 $this->countryField = $parameter;
             } elseif (PhoneNumberCountry::isValid($parameter)) {
