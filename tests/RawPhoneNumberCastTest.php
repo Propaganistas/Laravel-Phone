@@ -109,7 +109,7 @@ class RawPhoneNumberCastTest extends TestCase
             'BR' => ['BE', '012 34 56 78'],
             'BR complete' => ['BR', '11987654321'],
             'BR incomplete' => ['BR', '1191234'],
-            'BR with symbols' => ['BR', '(11) 91234'],
+            'BR incomplete with symbols' => ['BR', '(11) 91234'],
         ];
     }
 }
