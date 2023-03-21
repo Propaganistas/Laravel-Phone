@@ -132,7 +132,7 @@ public $casts = [
 ];
 ```
 
-In order to not encounter any unexpected issues when using these casts, please always validate any input using the [validation](#validation) rules previously described.
+**Important note:** Both casts expect __valid__ phone numbers in order to smoothly convert from/to PhoneNumber objects. Please validate phone numbers before setting them on a model. Refer to the [validation documentation](#validation) to learn how to validate phone numbers.
 
 #### ⚠️ Attribute assignment and `E164PhoneNumberCast`
 Due to the nature of `E164PhoneNumberCast` a valid country attribute is expected if the number is not passed in international format. Since casts are applied in the order of the given values, be sure to set the country attribute _before_ setting the phone number attribute. Otherwise `E164PhoneNumberCast` will encounter an empty country value and throw an unexpected exception.
