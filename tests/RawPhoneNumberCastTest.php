@@ -106,7 +106,11 @@ class RawPhoneNumberCastTest extends TestCase
     private function phoneDataProvider(): array
     {
         return [
-            'BR' => ['BE', '012 34 56 78'],
+            'BE' => ['BE', '012 34 56 78'],
+            'US' => ['US', '012-34-56-78'],
+            'US incomplete' => ['US', '012-34'],
+            'NL' => ['NL', '020 7308544'],
+            'NL incomplete' => ['NL', '020 730'],
             'BR complete' => ['BR', '11987654321'],
             'BR incomplete' => ['BR', '1191234'],
             'BR incomplete with symbols' => ['BR', '(11) 91234'],
