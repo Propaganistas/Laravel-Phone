@@ -14,12 +14,12 @@ class RawPhoneNumberCast extends PhoneNumberCast
         }
 
         $phone = new PhoneNumber($value,
-            $this->getPossibleCountries($key, $attributes)
+            $countries = $this->getPossibleCountries($key, $attributes)
         );
 
-        $country = $phone->getCountry();
+        $country = $phone->getCountry() ?? $countries;
 
-        if ($country === null) {
+        if (empty($country)) {
             throw new InvalidArgumentException('Missing country specification for '.$key.' attribute cast');
         }
 

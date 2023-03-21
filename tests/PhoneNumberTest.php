@@ -17,21 +17,21 @@ class PhoneNumberTest extends TestCase
         $object = new PhoneNumber('012345678');
         $this->assertInstanceOf(PhoneNumber::class, $object);
     }
-    
+
     /** @test */
     public function it_constructs_with_string_country()
     {
         $object = new PhoneNumber('012345678', 'BE');
         $this->assertInstanceOf(PhoneNumber::class, $object);
     }
-    
+
     /** @test */
     public function it_constructs_with_array_country()
     {
         $object = new PhoneNumber('012345678', ['BE', 'NL']);
         $this->assertInstanceOf(PhoneNumber::class, $object);
     }
-    
+
     /** @test */
     public function it_constructs_with_null_country()
     {
@@ -485,7 +485,7 @@ class PhoneNumberTest extends TestCase
         $this->assertTrue($object->notEquals('1234'));
         $this->assertTrue($object->notEquals('012345678', 'NL'));
     }
-    
+
     /** @test */
     public function helper_function_constructs_without_country()
     {
@@ -493,7 +493,7 @@ class PhoneNumberTest extends TestCase
         $expected = new PhoneNumber('+32 12 34 56 78');
         $this->assertEquals($expected, $actual);
     }
-    
+
     /** @test */
     public function helper_function_constructs_with_string_country()
     {
@@ -501,7 +501,7 @@ class PhoneNumberTest extends TestCase
         $expected = new PhoneNumber('012 34 56 78', 'BE');
         $this->assertEquals($expected, $actual);
     }
-    
+
     /** @test */
     public function helper_function_constructs_with_array_country()
     {
@@ -509,7 +509,7 @@ class PhoneNumberTest extends TestCase
         $expected = new PhoneNumber('012 34 56 78', ['BE', 'NL']);
         $this->assertEquals($expected, $actual);
     }
-    
+
     /** @test */
     public function helper_function_constructs_with_null_country()
     {
@@ -517,7 +517,7 @@ class PhoneNumberTest extends TestCase
         $expected = new PhoneNumber('+32 12 34 56 78', null);
         $this->assertEquals($expected, $actual);
     }
-    
+
     /** @test */
     public function helper_function_formats()
     {

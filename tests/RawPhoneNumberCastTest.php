@@ -40,25 +40,33 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
-    public function it_gets_with_implicit_country_field()
+    /**
+     * @test
+     *
+     * @dataProvider phoneDataProvider
+     */
+    public function it_gets_with_implicit_country_field(string $country, string $phone)
     {
         $model = new ModelWithIncompleteRawCast;
         $model->setRawAttributes([
-            'phone_country' => 'BE',
-            'phone' => '012 34 56 78',
+            'phone_country' => $country,
+            'phone' => $phone,
         ]);
         $this->assertIsObject($model->phone);
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
-    public function it_gets_with_explicit_country_field()
+    /**
+     * @test
+     *
+     * @dataProvider phoneDataProvider
+     */
+    public function it_gets_with_explicit_country_field(string $country, string $phone)
     {
         $model = new ModelWithRawCastAndCountryField;
         $model->setRawAttributes([
-            'country' => 'BE',
-            'phone' => '012 34 56 78',
+            'country' => $country,
+            'phone' => $phone,
         ]);
         $this->assertIsObject($model->phone);
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
@@ -94,12 +102,22 @@ class RawPhoneNumberCastTest extends TestCase
         $model->phone = null;
         $this->assertEquals(null, $model->toArray()['phone']);
     }
+
+    private function phoneDataProvider(): array
+    {
+        return [
+            'BR' => ['BE', '012 34 56 78'],
+            'BR complete' => ['BR', '11987654321'],
+            'BR incomplete' => ['BR', '1191234'],
+            'BR with symbols' => ['BR', '(11) 91234'],
+        ];
+    }
 }
 
 class ModelWithRawCast extends Model
 {
     protected $casts = [
-        'phone' => RawPhoneNumberCast::class.':BE,NL',
+        'phone' => RawPhoneNumberCast::class.':BE,NL,BR',
     ];
 }
 
