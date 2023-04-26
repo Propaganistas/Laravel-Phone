@@ -34,6 +34,15 @@ class PhoneNumber implements Jsonable, JsonSerializable
         $this->countries = Arr::wrap($country);
     }
 
+    public function getCarrier(): string|null
+    {
+        
+        $phoneUtil = PhoneNumberUtil::getInstance()->parse($this->number, $this->getCountry());
+        $carrierMapper = PhoneNumberToCarrierMapper::getInstance();
+        return $carrierMapper->getNameForNumber($phoneUtil, "en");
+    }
+
+    
     public function getCountry(): string|null
     {
         // Try to detect the country first from the number itself.
