@@ -247,4 +247,16 @@ class PhoneNumber implements Jsonable, JsonSerializable
             return (string) $this->number;
         }
     }
+    
+    public function getGeoInfo(): string|null
+    {
+
+        $phoneUtil = PhoneNumberUtil::getInstance()->parse($this->number, $this->getCountry());
+        
+        $geocoder = \libphonenumber\geocoding\PhoneNumberOfflineGeocoder::getInstance();
+
+        // Outputs "Zurich"
+        return $geocoder->getDescriptionForNumber($phoneUtil, "en");
+    }
+
 }
