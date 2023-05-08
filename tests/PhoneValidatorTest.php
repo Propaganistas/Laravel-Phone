@@ -460,6 +460,15 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
+    public function it_copes_with_required_if_validation_rule()
+    {
+       $this->assertTrue($this->validate(
+            ['other' => 0],
+            ['field' => ['required_if:other,1', 'phone:BE']]
+        )->passes());
+    }
+
+    /** @test */
     public function it_validates_libphonenumber_specific_regions_as_country()
     {
         $this->assertTrue($this->validate(
