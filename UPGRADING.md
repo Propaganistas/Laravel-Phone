@@ -1,6 +1,10 @@
 # Upgrading
 
 ## From 4.x to 5.x
+
+The package now minimally requires PHP 8.0 and Laravel 9.0. It also supports Laravel 10.
+All documented behavior is preserved. There are just some minor syntactical changes that might need your attention.
+
 **Estimated time to upgrade: 0 to 5 minutes**
 
 ### Validation
