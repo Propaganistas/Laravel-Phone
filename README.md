@@ -7,7 +7,7 @@
 
 Adds phone number functionality to Laravel based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php) of [libphonenumber by Google](https://github.com/googlei18n/libphonenumber).
 
-## Table of Contents
+## Table of Contents1
 
 - [Demo](#demo)
 - [Installation](#installation)
