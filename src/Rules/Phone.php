@@ -10,6 +10,7 @@ use libphonenumber\PhoneNumberType as libPhoneNumberType;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberType;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Phone implements Rule, ValidatorAwareRule
@@ -44,6 +45,10 @@ class Phone implements Rule, ValidatorAwareRule
             // Is the country within the allowed list (if applicable)?
             if (! $this->international && ! empty($countries) && ! $phone->isOfCountry($countries)) {
                 return false;
+            }
+
+            if (! empty($allowedTypes) && ! empty($blockedTypes)) {
+                throw IncompatibleTypesException::invalid();
             }
 
             // Is the type within the allowed list (if applicable)?

@@ -5,6 +5,7 @@ namespace Propaganistas\LaravelPhone\Tests;
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
 use Propaganistas\LaravelPhone\Rules\Phone;
+use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 
 class PhoneRuleValidatorTest extends TestCase
 {
@@ -39,5 +40,16 @@ class PhoneRuleValidatorTest extends TestCase
             ['field' => '+3212345678'],
             ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)]
         )->passes());
+    }
+
+    /** @test */
+    public function it_doesnt_allow_type_and_not_type()
+    {
+        $this->expectException(IncompatibleTypesException::class);
+
+        $this->validate(
+            ['field' => '+3212345678'],
+            ['field' => (new Phone)->type(PhoneNumberType::MOBILE)->notType(PhoneNumberType::MOBILE)]
+        )->passes();
     }
 }
