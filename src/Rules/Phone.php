@@ -10,6 +10,7 @@ use libphonenumber\PhoneNumberType as libPhoneNumberType;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
 use Propaganistas\LaravelPhone\Aspects\PhoneNumberType;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Phone implements Rule, ValidatorAwareRule
@@ -20,7 +21,9 @@ class Phone implements Rule, ValidatorAwareRule
 
     protected array $countries = [];
 
-    protected array $types = [];
+    protected array $allowedTypes = [];
+
+    protected array $blockedTypes = [];
 
     protected bool $international = false;
 
@@ -33,7 +36,8 @@ class Phone implements Rule, ValidatorAwareRule
             ...$this->countries,
         ]);
 
-        $types = PhoneNumberType::sanitize($this->types);
+        $allowedTypes = PhoneNumberType::sanitize($this->allowedTypes);
+        $blockedTypes = PhoneNumberType::sanitize($this->blockedTypes);
 
         try {
             $phone = (new PhoneNumber($value, $countries))->lenient($this->lenient);
@@ -43,8 +47,17 @@ class Phone implements Rule, ValidatorAwareRule
                 return false;
             }
 
+            if (! empty($allowedTypes) && ! empty($blockedTypes)) {
+                throw IncompatibleTypesException::invalid();
+            }
+
             // Is the type within the allowed list (if applicable)?
-            if (! empty($types) && ! $phone->isOfType($types)) {
+            if (! empty($allowedTypes) && ! $phone->isOfType($allowedTypes)) {
+                return false;
+            }
+
+            // Is the type within the blocked list (if applicable)?
+            if (! empty($blockedTypes) && $phone->isOfType($blockedTypes)) {
                 return false;
             }
 
@@ -74,7 +87,16 @@ class Phone implements Rule, ValidatorAwareRule
     {
         $types = is_array($type) ? $type : func_get_args();
 
-        $this->types = array_merge($this->types, $types);
+        $this->allowedTypes = array_merge($this->allowedTypes, $types);
+
+        return $this;
+    }
+
+    public function notType($type)
+    {
+        $types = is_array($type) ? $type : func_get_args();
+
+        $this->blockedTypes = array_merge($this->blockedTypes, $types);
 
         return $this;
     }
