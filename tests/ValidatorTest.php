@@ -431,7 +431,7 @@ class ValidatorTest extends TestCase
 
         $this->assertFalse($this->validate(
             ['field' => '0470123456'],
-            ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)->country('NL')]
+            ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)->country('US')]
         )->passes());
     }
 
@@ -449,7 +449,7 @@ class ValidatorTest extends TestCase
         )->passes());
 
         $this->assertFalse($this->validate(
-            ['field' => '0470123456', 'field_country' => 'NL'],
+            ['field' => '0470123456', 'field_country' => 'US'],
             ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)]
         )->passes());
     }
@@ -468,7 +468,7 @@ class ValidatorTest extends TestCase
         )->passes());
 
         $this->assertFalse($this->validate(
-            ['field' => '0470123456', 'some_country' => 'NL'],
+            ['field' => '0470123456', 'some_country' => 'US'],
             ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)->countryField('some_country')]
         )->passes());
     }
