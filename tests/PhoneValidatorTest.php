@@ -4,6 +4,7 @@ namespace Propaganistas\LaravelPhone\Tests;
 
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
+use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 
 class PhoneValidatorTest extends TestCase
 {
@@ -381,6 +382,102 @@ class PhoneValidatorTest extends TestCase
     }
 
     /** @test */
+    public function it_validates_blocked_type()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '+32470123456'],
+            ['field' => 'phone:!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '+3212345678'],
+            ['field' => 'phone:!'.PhoneNumberType::MOBILE]
+        )->passes());
+    }
+
+    /** @test */
+    public function it_validates_blocked_type_and_explicit_country_combined()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456'],
+            ['field' => 'phone:BE,!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678'],
+            ['field' => 'phone:BE,!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456'],
+            ['field' => 'phone:NL,!'.PhoneNumberType::MOBILE]
+        )->passes());
+    }
+
+    /** @test */
+    public function it_validates_blocked_type_and_implicit_country_field_combined()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456', 'field_country' => 'BE'],
+            ['field' => 'phone:!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678', 'field_country' => 'BE'],
+            ['field' => 'phone:!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456', 'field_country' => 'NL'],
+            ['field' => 'phone:!'.PhoneNumberType::MOBILE]
+        )->passes());
+    }
+
+    /** @test */
+    public function it_validates_blocked_type_and_custom_country_field_combined()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456', 'some_country' => 'BE'],
+            ['field' => 'phone:some_country,!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678', 'some_country' => 'BE'],
+            ['field' => 'phone:some_country,!'.PhoneNumberType::MOBILE]
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '0470123456', 'some_country' => 'NL'],
+            ['field' => 'phone:some_country,!'.PhoneNumberType::MOBILE]
+        )->passes());
+    }
+
+    /** @test */
+    public function it_validates_blocked_type_as_string()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '+32470123456'],
+            ['field' => 'phone:!mobile']
+        )->passes());
+
+        $this->assertTrue($this->validate(
+            ['field' => '+3212345678'],
+            ['field' => 'phone:!mobile']
+        )->passes());
+    }
+
+    /** @test */
+    public function it_doesnt_allow_allowed_and_blocked_types_simultaneously()
+    {
+        $this->expectException(IncompatibleTypesException::class);
+
+        $this->validate(
+            ['field' => '+3212345678'],
+            ['field' => 'phone:fixed_line,!mobile']
+        )->passes();
+    }
+
+    /** @test */
     public function it_prevents_parameter_hijacking_through_the_country_field()
     {
         $this->assertFalse($this->validate(
@@ -392,19 +489,19 @@ class PhoneValidatorTest extends TestCase
     /** @test */
     public function it_accepts_mixed_case_parameters()
     {
-        $this->assertTrue($this->validate(
+        $this->assertFalse($this->validate(
             ['field' => '+32470123456'],
-            ['field' => 'phone:aUtO,mObIlE']
-        )->passes());
-
-        $this->assertTrue($this->validate(
-            ['field' => '0470123456'],
-            ['field' => 'phone:bE,mObIlE']
+            ['field' => 'phone:interNATIONal,fixED_LIne']
         )->passes());
 
         $this->assertFalse($this->validate(
             ['field' => '0470123456'],
-            ['field' => 'phone:AuTo,MoBiLe']
+            ['field' => 'phone:bE,fixED_Line']
+        )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '012345678'],
+            ['field' => 'phone:interNATIONal,fixED_Line']
         )->passes());
     }
 

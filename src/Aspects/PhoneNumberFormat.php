@@ -21,7 +21,9 @@ class PhoneNumberFormat
 
     public static function isValidName($format): bool
     {
-        return ! is_null($format) && in_array($format, array_keys(static::all()), true);
+        $formats = array_map('strtoupper', array_keys(static::all()));
+
+        return ! is_null($format) && in_array(strtoupper($format), $formats, true);
     }
 
     public static function getHumanReadableName($format): string|null

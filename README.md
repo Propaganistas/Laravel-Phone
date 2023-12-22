@@ -83,6 +83,13 @@ To specify constraints on the number type, just append the allowed types to the 
 ```
 The most common types are `mobile` and `fixed_line`, but feel free to use any of the types defined [here](https://github.com/giggsey/libphonenumber-for-php/blob/master/src/PhoneNumberType.php).
 
+Prepend a type with an exclamation mark to blacklist it instead. Note that you can never use whitelisted *and* blacklisted types at the same time.
+
+```php
+'phonefield'       => 'phone:!mobile',
+// 'phonefield'    => (new Phone)->notType('mobile')
+```
+
 You can also enable lenient validation by using the `LENIENT` parameter.
 With leniency enabled, only the length of the number is checked instead of actual carrier patterns.
 

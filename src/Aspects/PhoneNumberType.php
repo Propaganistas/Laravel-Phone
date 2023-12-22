@@ -21,7 +21,9 @@ class PhoneNumberType
 
     public static function isValidName($type): bool
     {
-        return ! is_null($type) && in_array($type, array_keys(static::all()), true);
+        $types = array_map('strtoupper', array_keys(static::all()));
+
+        return ! is_null($type) && in_array(strtoupper($type), $types, true);
     }
 
     public static function getHumanReadableName($type): string|null

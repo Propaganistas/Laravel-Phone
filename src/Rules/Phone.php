@@ -146,14 +146,18 @@ class Phone implements Rule, ValidatorAwareRule
         $parameters = is_array($parameters) ? $parameters : func_get_args();
 
         foreach ($parameters as $parameter) {
-            if (strcasecmp('lenient', $parameter) === 0) {
+            if (str_starts_with($parameter, '!')) {
+                $parameter = substr($parameter, 1);
+
+                if (ctype_digit($parameter) && PhoneNumberType::isValid((int) $parameter)) {
+                    $this->notType((int) $parameter);
+                } elseif (PhoneNumberType::isValidName($parameter)) {
+                    $this->notType($parameter);
+                }
+            } elseif (strcasecmp('lenient', $parameter) === 0) {
                 $this->lenient();
             } elseif (strcasecmp('international', $parameter) === 0) {
                 $this->international();
-            } elseif (strcasecmp('mobile', $parameter) === 0) {
-                $this->mobile();
-            } elseif (strcasecmp('fixed_line', $parameter) === 0) {
-                $this->fixedLine();
             } elseif ($this->isDataKey($parameter)) {
                 $this->countryField = $parameter;
             } elseif (PhoneNumberCountry::isValid($parameter)) {
