@@ -1,6 +1,6 @@
 <?php
 
-namespace Propaganistas\LaravelPhone\Aspects;
+namespace Propaganistas\LaravelPhone\Concerns;
 
 use Illuminate\Support\Collection;
 use libphonenumber\PhoneNumberUtil;

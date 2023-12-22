@@ -5,7 +5,7 @@ namespace Propaganistas\LaravelPhone\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes;
 use Illuminate\Support\Arr;
-use Propaganistas\LaravelPhone\Aspects\PhoneNumberCountry;
+use Propaganistas\LaravelPhone\Concerns\PhoneNumberCountry;
 
 abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAttributes
 {
