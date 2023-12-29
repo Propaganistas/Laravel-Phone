@@ -290,8 +290,8 @@ Example:
   public function saving(User $user)
   {
       if ($user->isDirty('phone') && $user->phone) {
-          $user->phone_normalized = preg_replace('[^0-9]', '', $user->phone);
-          $user->phone_national = preg_replace('[^0-9]', '', phone($user->phone, $user->phone_country)->formatNational());
+          $user->phone_normalized = preg_replace('/[^0-9]/', '', $user->phone);
+          $user->phone_national = preg_replace('/[^0-9]/', '', phone($user->phone, $user->phone_country)->formatNational());
           $user->phone_e164 = phone($user->phone, $user->phone_country)->formatE164();
       }
   }
@@ -304,8 +304,8 @@ Example:
   ```php
   // $search holds the search term
   User::where(function($query) use ($search) {
-    $query->where('phone_normalized', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
-          ->orWhere('phone_national', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
-          ->orWhere('phone_e164', 'LIKE', preg_replace('[^+0-9]', '', $search) . '%')
+    $query->where('phone_normalized', 'LIKE', preg_replace('/[^0-9]/', '', $search) . '%')
+          ->orWhere('phone_national', 'LIKE', preg_replace('/[^0-9]/', '', $search) . '%')
+          ->orWhere('phone_e164', 'LIKE', preg_replace('/[^+0-9]/', '', $search) . '%')
   });
   ```
