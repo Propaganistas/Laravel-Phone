@@ -304,8 +304,8 @@ Example:
   ```php
   // $search holds the search term
   User::where(function($query) use ($search) {
-    $query->where('phone_normalized', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
-          ->orWhere('phone_national', 'LIKE', preg_replace('[^0-9]', '', $search) . '%')
-          ->orWhere('phone_e164', 'LIKE', preg_replace('[^+0-9]', '', $search) . '%')
+    $query->where('phone_normalized', 'LIKE', preg_replace('/[^0-9]/', '', $search) . '%')
+          ->orWhere('phone_national', 'LIKE', preg_replace('/[^0-9]/', '', $search) . '%')
+          ->orWhere('phone_e164', 'LIKE', preg_replace('/[^+0-9]/', '', $search) . '%')
   });
   ```
