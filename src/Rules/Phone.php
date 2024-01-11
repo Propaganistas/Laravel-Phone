@@ -158,14 +158,14 @@ class Phone implements Rule, ValidatorAwareRule
                 $this->lenient();
             } elseif (strcasecmp('international', $parameter) === 0) {
                 $this->international();
-            } elseif ($this->isDataKey($parameter)) {
-                $this->countryField = $parameter;
-            } elseif (PhoneNumberCountry::isValid($parameter)) {
-                $this->country($parameter);
             } elseif (ctype_digit($parameter) && PhoneNumberType::isValid((int) $parameter)) {
                 $this->type((int) $parameter);
             } elseif (PhoneNumberType::isValidName($parameter)) {
                 $this->type($parameter);
+            } elseif ($this->isDataKey($parameter)) {
+                $this->countryField = $parameter;
+            } elseif (PhoneNumberCountry::isValid($parameter)) {
+                $this->country($parameter);
             }
         }
 
