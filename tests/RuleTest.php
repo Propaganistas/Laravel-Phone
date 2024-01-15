@@ -184,6 +184,22 @@ class RuleTest extends TestCase
     }
 
     /** @test */
+    public function it_allows_data_field_names_to_be_parameters()
+    {
+        $base = (new Phone)->setValidator(validator([
+            'mobile' => null,
+            'fixed_line' => null,
+            'lenient' => null,
+            'international' => null,
+        ]));
+
+        $rule = $base->setParameters(['mobile', 'fixed_line', 'lenient', 'international']);
+        $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
+        $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
+        $this->assertTrue($this->getProtectedProperty($rule, 'international'));
+    }
+
+    /** @test */
     public function it_treats_string_validation_parameters_case_insensitive()
     {
         $base = (new Phone)->setValidator(validator(['foo' => null]));
