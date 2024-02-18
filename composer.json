@@ -24,7 +24,7 @@
     "require-dev": {
         "orchestra/testbench": "*",
         "phpunit/phpunit": "^9.5.10|^10.5",
-        "nunomaduro/larastan": "^2.4",
+        "larastan/larastan": "^2.8",
         "laravel/pint": "^1.4"
     },
     "autoload": {
