@@ -4,6 +4,7 @@ namespace Propaganistas\LaravelPhone\Tests;
 
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
+use PHPUnit\Framework\Attributes\Test;
 use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
@@ -14,7 +15,7 @@ class ValidatorTest extends TestCase
         return $this->app['validator']->make($data, $rules);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_without_parameters()
     {
         $this->assertTrue($this->validate(
@@ -33,8 +34,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-
-    /** @test */
+    #[Test]
     public function it_validates_with_explicit_countries()
     {
         $this->assertTrue($this->validate(
@@ -44,7 +44,7 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($this->validate(
             ['field' => '012345678'],
-            ['field' => (new Phone)->country(['NL','BE','US'])]
+            ['field' => (new Phone)->country(['NL', 'BE', 'US'])]
         )->passes());
 
         $this->assertFalse($this->validate(
@@ -54,11 +54,11 @@ class ValidatorTest extends TestCase
 
         $this->assertFalse($this->validate(
             ['field' => '012345678'],
-            ['field' => (new Phone)->country(['DE','NL','US'])]
+            ['field' => (new Phone)->country(['DE', 'NL', 'US'])]
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_countries_case_insensitive()
     {
         $this->assertTrue($this->validate(
@@ -72,7 +72,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_with_implicit_country_field()
     {
         $this->assertTrue($this->validate(
@@ -86,7 +86,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_with_custom_country_field()
     {
         $this->assertTrue($this->validate(
@@ -100,7 +100,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_country_field_case_insensitive()
     {
         $this->assertTrue($this->validate(
@@ -114,7 +114,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_with_explicit_countries_and_implicit_country_field_combined()
     {
         $this->assertTrue($this->validate(
@@ -128,7 +128,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_with_explicit_countries_and_custom_country_field_combined()
     {
         $this->assertTrue($this->validate(
@@ -142,7 +142,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_with_custom_country_field_taking_precedence_over_implicit_country_field()
     {
         $this->assertTrue($this->validate(
@@ -156,7 +156,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_in_international_mode()
     {
         $this->assertFalse($this->validate(
@@ -180,7 +180,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_in_lenient_mode()
     {
         $this->assertFalse($this->validate(
@@ -204,7 +204,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_array_input_with_explicit_countries()
     {
         $errors = $this->validate(
@@ -244,7 +244,7 @@ class ValidatorTest extends TestCase
         $this->assertEquals(['container.0.field', 'container.1.field'], $errors->keys());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_array_input_with_implicity_country_fields()
     {
         $errors = $this->validate(
@@ -273,7 +273,7 @@ class ValidatorTest extends TestCase
         $this->assertEquals(['container.0.field'], $errors->keys());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_array_input_with_custom_country_fields()
     {
         $errors = $this->validate(
@@ -303,7 +303,7 @@ class ValidatorTest extends TestCase
         $this->assertEquals(['container.0.field'], $errors->keys());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type()
     {
         $this->assertTrue($this->validate(
@@ -317,7 +317,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type_and_explicit_country_combined()
     {
         $this->assertTrue($this->validate(
@@ -336,7 +336,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type_and_implicit_country_field_combined()
     {
         $this->assertTrue($this->validate(
@@ -355,7 +355,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type_and_custom_country_field_combined()
     {
         $this->assertTrue($this->validate(
@@ -374,7 +374,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type_as_string()
     {
         $this->assertTrue($this->validate(
@@ -388,7 +388,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_type_case_insensitive()
     {
         $this->assertTrue($this->validate(
@@ -402,7 +402,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type()
     {
         $this->assertFalse($this->validate(
@@ -416,7 +416,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type_and_explicit_country_combined()
     {
         $this->assertFalse($this->validate(
@@ -435,7 +435,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type_and_implicit_country_field_combined()
     {
         $this->assertFalse($this->validate(
@@ -454,7 +454,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type_and_custom_country_field_combined()
     {
         $this->assertFalse($this->validate(
@@ -473,7 +473,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type_as_string()
     {
         $this->assertFalse($this->validate(
@@ -487,7 +487,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_blocked_type_case_insensitive()
     {
         $this->assertFalse($this->validate(
@@ -501,7 +501,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_doesnt_allow_allowed_and_blocked_types_simultaneously()
     {
         $this->expectException(IncompatibleTypesException::class);
@@ -512,7 +512,7 @@ class ValidatorTest extends TestCase
         )->passes();
     }
 
-    /** @test */
+    #[Test]
     public function it_prevents_parameter_hijacking_through_the_country_field()
     {
         $this->assertFalse($this->validate(
@@ -521,7 +521,7 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_copes_with_nullable_validation_rule()
     {
         $this->assertTrue($this->validate(
@@ -530,16 +530,16 @@ class ValidatorTest extends TestCase
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_copes_with_required_if_validation_rule()
     {
-       $this->assertTrue($this->validate(
+        $this->assertTrue($this->validate(
             ['other' => 0],
             ['field' => ['required_if:other,1', (new Phone)->country('BE')]]
         )->passes());
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_libphonenumber_specific_regions_as_country()
     {
         $this->assertTrue($this->validate(

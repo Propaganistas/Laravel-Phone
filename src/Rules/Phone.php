@@ -9,8 +9,8 @@ use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType as libPhoneNumberType;
 use Propaganistas\LaravelPhone\Concerns\PhoneNumberCountry;
 use Propaganistas\LaravelPhone\Concerns\PhoneNumberType;
-use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
+use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Phone implements Rule, ValidatorAwareRule

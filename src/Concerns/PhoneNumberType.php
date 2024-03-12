@@ -26,7 +26,7 @@ class PhoneNumberType
         return ! is_null($type) && in_array(strtoupper($type), $types, true);
     }
 
-    public static function getHumanReadableName($type): string|null
+    public static function getHumanReadableName($type): ?string
     {
         $name = array_search($type, static::all(), true);
 

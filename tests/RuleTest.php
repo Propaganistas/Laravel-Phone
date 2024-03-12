@@ -2,15 +2,14 @@
 
 namespace Propaganistas\LaravelPhone\Tests;
 
-use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
-use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
+use PHPUnit\Framework\Attributes\Test;
 use Propaganistas\LaravelPhone\Rules\Phone;
 use ReflectionClass;
 
 class RuleTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_defaults_to_nothing()
     {
         $rule = (new Phone);
@@ -23,7 +22,7 @@ class RuleTest extends TestCase
         $this->assertFalse($this->getProtectedProperty($rule, 'international'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_countries()
     {
         $rule = (new Phone)->country('BE');
@@ -33,7 +32,7 @@ class RuleTest extends TestCase
         $this->assertEquals(['BE', 'NL'], $this->getProtectedProperty($rule, 'countries'));
     }
 
-    /** @test */
+    #[Test]
     public function it_merges_existing_countries()
     {
         $rule = (new Phone)->country('BE');
@@ -42,14 +41,14 @@ class RuleTest extends TestCase
         $this->assertEquals(['BE', 'NL'], $this->getProtectedProperty($rule, 'countries'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_countryField()
     {
         $rule = (new Phone)->countryField('foo');
         $this->assertEquals('foo', $this->getProtectedProperty($rule, 'countryField'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_types()
     {
         $rule = (new Phone)->type('mobile');
@@ -59,7 +58,7 @@ class RuleTest extends TestCase
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_merges_existing_types()
     {
         $rule = (new Phone)->type('mobile');
@@ -68,7 +67,7 @@ class RuleTest extends TestCase
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_blocked_types()
     {
         $rule = (new Phone)->notType('mobile');
@@ -78,7 +77,7 @@ class RuleTest extends TestCase
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'blockedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_merges_existing_blocked_types()
     {
         $rule = (new Phone)->notType('mobile');
@@ -87,35 +86,35 @@ class RuleTest extends TestCase
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'blockedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_mobile_type_using_shortcut_method()
     {
         $rule = (new Phone)->mobile();
         $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_fixed_line_type_using_shortcut_method()
     {
         $rule = (new Phone)->fixedLine();
         $this->assertEquals([PhoneNumberType::FIXED_LINE], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_lenient_mode()
     {
         $rule = (new Phone)->lenient();
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_international_mode()
     {
         $rule = (new Phone)->international();
         $this->assertTrue($this->getProtectedProperty($rule, 'international'));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_default_validation_message()
     {
         app('translator')->setLocale('xx');
@@ -133,7 +132,7 @@ class RuleTest extends TestCase
         $this->assertEquals('foo', (new Phone)->message());
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_string_validation_parameters()
     {
         $base = (new Phone)->setValidator(validator(['foo' => null]));
@@ -172,18 +171,18 @@ class RuleTest extends TestCase
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
         $this->assertTrue($this->getProtectedProperty($rule, 'international'));
         $this->assertEquals('foo', $this->getProtectedProperty($rule, 'countryField'));
-        $this->assertEquals(['be','nl'], $this->getProtectedProperty($rule, 'countries'));
+        $this->assertEquals(['be', 'nl'], $this->getProtectedProperty($rule, 'countries'));
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
 
         $rule = (clone $base)->setParameters(['lenient', 'international', 'foo', 'be', 'nl', '!mobile', '!fixed_line']);
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
         $this->assertTrue($this->getProtectedProperty($rule, 'international'));
         $this->assertEquals('foo', $this->getProtectedProperty($rule, 'countryField'));
-        $this->assertEquals(['be','nl'], $this->getProtectedProperty($rule, 'countries'));
+        $this->assertEquals(['be', 'nl'], $this->getProtectedProperty($rule, 'countries'));
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'blockedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_treats_string_validation_parameters_case_insensitive()
     {
         $base = (new Phone)->setValidator(validator(['foo' => null]));
@@ -201,7 +200,7 @@ class RuleTest extends TestCase
         $this->assertEquals(['MoBIle'], $this->getProtectedProperty($rule, 'blockedTypes'));
     }
 
-    /** @test */
+    #[Test]
     public function it_treats_coinciding_field_names_as_parameters()
     {
         $base = (new Phone)->setValidator(validator([
@@ -221,7 +220,7 @@ class RuleTest extends TestCase
         $this->assertTrue($this->getProtectedProperty($rule, 'international'));
     }
 
-    /** @test */
+    #[Test]
     public function it_ignores_invalid_string_validation_parameters()
     {
         $base = (new Phone)->setValidator(validator([]));

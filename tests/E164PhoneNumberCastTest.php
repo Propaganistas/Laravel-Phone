@@ -3,13 +3,14 @@
 namespace Propaganistas\LaravelPhone\Tests;
 
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\Test;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use UnexpectedValueException;
 
 class E164PhoneNumberCastTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_mutates_to_e164_number()
     {
         $model = new ModelWithE164Cast;
@@ -21,7 +22,7 @@ class E164PhoneNumberCastTest extends TestCase
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
-    /** @test */
+    #[Test]
     public function it_mutates_to_e164_number_with_implicit_country_field()
     {
         $model = new ModelWithE164Cast;
@@ -35,7 +36,7 @@ class E164PhoneNumberCastTest extends TestCase
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
-    /** @test */
+    #[Test]
     public function it_mutates_to_e164_number_with_explicit_country_field()
     {
         $model = new ModelWithE164CastAndCountryField;
@@ -49,7 +50,7 @@ class E164PhoneNumberCastTest extends TestCase
         $this->assertEquals('+3212345678', $model->getAttributes()['phone']);
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_phone_object()
     {
         $model = new ModelWithE164Cast;
@@ -58,7 +59,7 @@ class E164PhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_when_accessing_non_international_value()
     {
         $model = new ModelWithE164Cast();
@@ -67,7 +68,7 @@ class E164PhoneNumberCastTest extends TestCase
         $model->phone;
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes()
     {
         $model = new ModelWithE164Cast();

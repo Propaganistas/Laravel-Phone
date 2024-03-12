@@ -15,17 +15,17 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "illuminate/contracts": "^9.0|^10.0",
-        "illuminate/support": "^9.0|^10.0",
-        "illuminate/validation": "^9.0|^10.0",
+        "php": "^8.1",
+        "illuminate/contracts": "^10.0|^11.0",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/validation": "^10.0|^11.0",
         "giggsey/libphonenumber-for-php": "^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": "*",
-        "phpunit/phpunit": "^9.5.10",
-        "nunomaduro/larastan": "^2.4",
-        "laravel/pint": "^1.4"
+        "phpunit/phpunit": "^10.5",
+        "larastan/larastan": "^2.9",
+        "laravel/pint": "^1.14"
     },
     "autoload": {
         "psr-4": {

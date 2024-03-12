@@ -26,7 +26,7 @@ class PhoneNumberFormat
         return ! is_null($format) && in_array(strtoupper($format), $formats, true);
     }
 
-    public static function getHumanReadableName($format): string|null
+    public static function getHumanReadableName($format): ?string
     {
         $name = array_search($format, static::all(), true);
 

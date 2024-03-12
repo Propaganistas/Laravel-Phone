@@ -4,12 +4,13 @@ namespace Propaganistas\LaravelPhone\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Test;
 use Propaganistas\LaravelPhone\Casts\RawPhoneNumberCast;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class RawPhoneNumberCastTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_mutates_to_raw_number()
     {
         $model = new ModelWithRawCast;
@@ -31,7 +32,7 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals('012-34-56-78', $model->getAttributes()['phone']);
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_phone_object()
     {
         $model = new ModelWithRawCast;
@@ -40,7 +41,7 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_with_implicit_country_field()
     {
         $model = new ModelWithIncompleteRawCast;
@@ -52,7 +53,7 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_with_explicit_country_field()
     {
         $model = new ModelWithRawCastAndCountryField;
@@ -64,7 +65,7 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_when_accessing_incomplete_raw_cast()
     {
         $model = new ModelWithIncompleteRawCast;
@@ -73,7 +74,7 @@ class RawPhoneNumberCastTest extends TestCase
         $model->phone;
     }
 
-    /** @test */
+    #[Test]
     public function it_gets_phone_object_when_accessing_incomplete_raw_cast_with_international_number()
     {
         $model = new ModelWithIncompleteRawCast;
@@ -83,7 +84,7 @@ class RawPhoneNumberCastTest extends TestCase
         $this->assertEquals(PhoneNumber::class, get_class($model->phone));
     }
 
-    /** @test */
+    #[Test]
     public function it_serializes()
     {
         $model = new ModelWithRawCast;

@@ -34,7 +34,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
         $this->countries = Arr::wrap($country);
     }
 
-    public function getCountry(): string|null
+    public function getCountry(): ?string
     {
         // Try to detect the country first from the number itself.
         try {
