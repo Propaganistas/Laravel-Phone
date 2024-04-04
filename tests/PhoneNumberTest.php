@@ -414,13 +414,6 @@ class PhoneNumberTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_empty_string_when_null_is_cast_to_string()
-    {
-        $object = new PhoneNumber(null);
-        $this->assertEquals('', (string) $object);
-    }
-
-    #[Test]
     public function it_gets_the_exceptions_number()
     {
         $exception = NumberParseException::countryRequired('12345');

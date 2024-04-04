@@ -22,13 +22,13 @@ class PhoneNumber implements Jsonable, JsonSerializable
 {
     use Macroable;
 
-    protected ?string $number;
+    protected string $number;
 
     protected array $countries;
 
     protected bool $lenient = false;
 
-    public function __construct(?string $number, $country = [])
+    public function __construct(string $number, $country = [])
     {
         $this->number = $number;
         $this->countries = Arr::wrap($country);
@@ -244,7 +244,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
         try {
             return $this->formatE164();
         } catch (Exception $e) {
-            return (string) $this->number;
+            return $this->number;
         }
     }
 }
