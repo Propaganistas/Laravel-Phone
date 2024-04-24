@@ -1,5 +1,14 @@
 # Upgrading
 
+## From <5.3 to >=5.3
+
+The internal dependency `giggsey/libphonenumber-for-php` is now substituted by `giggsey/libphonenumber-for-php-lite`.
+
+`libphonenumber-for-php-lite` is a lightweight drop-in replacement for `libphonenumber-for-php`, significantly reducing the package size being pulled in. `libphonenumber-for-php-lite` excludes geolocation, carrier information and short number info.
+
+This is a non-breaking change for functionality provided by `Laravel-Phone`.
+However, if you have defined a macro, please review your code and if needed require `giggsey/libphonenumber-for-php` as an explicit dependency in your project.
+
 ## From 4.x to 5.x
 
 The package now minimally requires PHP 8.0 and Laravel 9.0. It also supports Laravel 10.
