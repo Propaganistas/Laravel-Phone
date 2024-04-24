@@ -159,6 +159,11 @@ class ValidatorTest extends TestCase
     #[Test]
     public function it_validates_in_international_mode()
     {
+        $this->assertTrue($this->validate(
+            ['field' => '+3212345678'],
+            ['field' => (new Phone)->international()]
+        )->passes());
+
         $this->assertFalse($this->validate(
             ['field' => '+3212345678'],
             ['field' => (new Phone)->country('NL')]
@@ -177,6 +182,15 @@ class ValidatorTest extends TestCase
         $this->assertTrue($this->validate(
             ['field' => '012345678'],
             ['field' => (new Phone)->country('BE')->international()]
+        )->passes());
+    }
+
+    #[Test]
+    public function it_validates_non_parseable_international_looking_numbers()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '+12345678901234'],
+            ['field' => (new Phone)->international()]
         )->passes());
     }
 

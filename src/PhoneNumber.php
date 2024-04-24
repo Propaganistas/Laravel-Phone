@@ -62,7 +62,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
                 continue;
             }
 
-            if (PhoneNumberUtil::getInstance()->isValidNumberForRegion($libPhoneObject, $country)) {
+            if (PhoneNumberUtil::getInstance()->isValidNumberForRegion($libPhoneObject, $country ?? 'ZZ')) {
                 return PhoneNumberUtil::getInstance()->getRegionCodeForNumber($libPhoneObject);
             }
         }
@@ -169,7 +169,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
 
             return PhoneNumberUtil::getInstance()->isValidNumberForRegion(
                 $this->toLibPhoneObject(),
-                $this->getCountry(),
+                $this->getCountry() ?? 'ZZ',
             );
         } catch (NumberParseException $e) {
             return false;
