@@ -7,6 +7,9 @@ use Illuminate\Support\Collection;
 use libphonenumber\PhoneNumberFormat as libPhoneNumberFormat;
 use ReflectionClass;
 
+/**
+ * @internal
+ */
 class PhoneNumberFormat
 {
     public static function all(): array

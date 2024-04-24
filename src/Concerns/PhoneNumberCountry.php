@@ -5,6 +5,9 @@ namespace Propaganistas\LaravelPhone\Concerns;
 use Illuminate\Support\Collection;
 use libphonenumber\PhoneNumberUtil;
 
+/**
+ * @internal
+ */
 class PhoneNumberCountry
 {
     public static function all(): array
