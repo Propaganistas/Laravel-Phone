@@ -15,6 +15,9 @@ body:
         Still receiving an unexpected result? This package leverages `libphonenumber` to power its validation capabilities. If `libphonenumber` reports a number to be (in)valid, this package does so.
         This means that **only discrepancies** between `libphonenumber` and `Laravel-Phone` are bug reports targeted at this repository.
         In case you encounter such a discrepancy, please fill in the form below to provide us with appropriate details.
+  - type: markdown
+    attributes:
+      value: "## Report a discrepancy"
   - type: input
     attributes:
       label: Laravel-Phone version
