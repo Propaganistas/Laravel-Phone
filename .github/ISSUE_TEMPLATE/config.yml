@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Feature request
-    url: https://github.com/Propaganistas/Laravel-Phone/blob/master/.github/macroable.md
+    url: https://github.com/Propaganistas/Laravel-Phone/blob/master/.github/feature-requests.md
     about: 'The PhoneNumber class is macroable to support whatever you need. If you feel that something might be useful for others, please open a pull request.'
