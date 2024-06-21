@@ -1,0 +1,22 @@
+name: Bug report
+description: "Report something else that's broken."
+body:
+    - type: input
+      attributes:
+          label: Laravel-Phone version
+          description: Provide the Laravel-Phone version that you're using.
+          placeholder: 5.3.0
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Steps to reproduce
+          description: Provide detailed steps to reproduce your issue. If necessary, please provide a GitHub repository to demonstrate your issue.
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Observed vs Expected behavior
+          description: Explain sufficiently detailed what you're observing and what you would have expected instead.
+      validations:
+          required: true

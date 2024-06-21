@@ -1,0 +1,40 @@
+name: Unexpected validation result
+description: "For troubleshooting validation results that fail or succeed unexpectedly."
+body:
+  - type: markdown
+    attributes:
+      value: "## Please read this first"
+  - type: markdown
+    attributes:
+      value: |
+        Lots of issues are most often caused by incorrect mappings between request data and validation rules.
+          Please review and debug your own code properly before raising an issue.
+  - type: markdown
+    attributes:
+      value: |
+        Still receiving an unexpected result? This package leverages `libphonenumber` to power its validation capabilities. If `libphonenumber` reports a number to be (in)valid, this package does so.
+        This means that **only discrepancies** between `libphonenumber` and `Laravel-Phone` are bug reports targeted at this repository.
+        In case you encounter such a discrepancy, please fill in the form below to provide us with appropriate details.
+  - type: input
+    attributes:
+      label: Laravel-Phone version
+      description: Provide the Laravel-Phone version that you're using.
+      placeholder: 5.3.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Reproducible Laravel-Phone demo URL
+      description: Go to https://laravel-phone.herokuapp.com/ and reproduce your issue. Paste the URL in here.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Reproducible libphonenumber demo URL
+      description: Go to https://giggsey.com/libphonenumber/ and reproduce your issue. Take note of the "isValidNumber" and "isValidNumberForRegion" results. Paste the URL in here.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional remarks
+      description: Anything you would like to add?
