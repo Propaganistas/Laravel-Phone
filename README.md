@@ -186,7 +186,7 @@ $phone = new PhoneNumber('012/34.56.78', 'BE');
 $phone->format($format);       // See libphonenumber\PhoneNumberFormat
 $phone->formatE164();          // +3212345678
 $phone->formatInternational(); // +32 12 34 56 78
-$phone->formatRFC3966();       // +32-12-34-56-78
+$phone->formatRFC3966();       // tel:+32-12-34-56-78
 $phone->formatNational();      // 012 34 56 78
 
 // Formats so the number can be called straight from the provided country.
