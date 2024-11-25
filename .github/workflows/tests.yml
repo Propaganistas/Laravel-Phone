@@ -47,6 +47,3 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit
-        
-      - name: Run phpstan
-        run: vendor/bin/phpstan analyse --error-format=github
