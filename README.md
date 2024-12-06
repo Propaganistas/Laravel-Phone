@@ -181,7 +181,7 @@ Alternatively you can use the `phone()` helper function. It returns a `Propagani
 ```php
 phone('+3212/34.56.78');                // PhoneNumber instance
 phone('012 34 56 78', 'BE');            // PhoneNumber instance
-phone('012 34 56 78', 'BE', 'e164');    // +3212345678
+phone('012 34 56 78', 'BE', $format);   // string
 ```
 
 ### Formatting
