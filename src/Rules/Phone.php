@@ -2,10 +2,10 @@
 
 namespace Propaganistas\LaravelPhone\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Contracts\Validation\ValidatorAwareRule;
+use Closure;
+use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType as libPhoneNumberType;
 use Propaganistas\LaravelPhone\Concerns\PhoneNumberCountry;
 use Propaganistas\LaravelPhone\Concerns\PhoneNumberType;
@@ -13,9 +13,9 @@ use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
-class Phone implements Rule, ValidatorAwareRule
+class Phone implements ValidationRule, DataAwareRule
 {
-    protected Validator $validator;
+    protected array $data;
 
     protected ?string $countryField = null;
 
@@ -29,8 +29,21 @@ class Phone implements Rule, ValidatorAwareRule
 
     protected bool $lenient = false;
 
-    public function passes($attribute, $value)
+    public function setData(array $data)
     {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (! $this->passes($attribute, $value)) {
+            $fail('validation.phone')->translate();
+        }
+    }
+
+    protected function passes(string $attribute, mixed $value) {
         $countries = PhoneNumberCountry::sanitize([
             $this->getCountryFieldValue($attribute),
             ...$this->countries,
@@ -132,13 +145,13 @@ class Phone implements Rule, ValidatorAwareRule
     protected function getCountryFieldValue(string $attribute)
     {
         // Using Arr::get() enables support for nested data.
-        return Arr::get($this->validator->getData(), $this->countryField ?: $attribute.'_country');
+        return Arr::get($this->data, $this->countryField ?: $attribute.'_country');
     }
 
     protected function isDataKey($attribute): bool
     {
         // Using Arr::has() enables support for nested data.
-        return Arr::has($this->validator->getData(), $attribute);
+        return Arr::has($this->data, $attribute);
     }
 
     public function setParameters($parameters)
@@ -170,17 +183,5 @@ class Phone implements Rule, ValidatorAwareRule
         }
 
         return $this;
-    }
-
-    public function setValidator($validator)
-    {
-        $this->validator = $validator;
-
-        return $this;
-    }
-
-    public function message()
-    {
-        return trans('validation.phone');
     }
 }

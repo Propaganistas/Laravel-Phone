@@ -2,6 +2,7 @@
 
 namespace Propaganistas\LaravelPhone\Tests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
 use PHPUnit\Framework\Attributes\Test;
@@ -560,5 +561,48 @@ class ValidatorTest extends TestCase
             ['field' => '+247501234'],
             ['field' => [(new Phone)->country('AC')]]
         )->passes());
+    }
+
+    #[Test]
+    public function it_validates_with_validator_alias()
+    {
+        $this->assertTrue($this->validate(
+            ['field' => '0470123456'],
+            ['field' => ['phone:be,mobile']]
+        )->passes());
+    }
+
+    #[Test]
+    public function it_validates_with_rule_macro()
+    {
+        $this->assertTrue($this->validate(
+            ['field' => '0470123456'],
+            ['field' => [Rule::phone()->country('BE')->type('mobile')]]
+        )->passes());
+    }
+
+    #[Test]
+    public function it_translates_validation_message()
+    {
+        app('translator')->setLocale('xx');
+
+        app('translator')->setLoaded([
+            '*' => [
+                'validation' => [
+                    'xx' => [
+                        'phone' => 'foo',
+                    ],
+                ],
+            ],
+        ]);
+
+        $message = $this->validate(['field' => '003212345678'], ['field' => new Phone])->errors()->first('field');
+        $this->assertEquals('foo', $message);
+
+        $message = $this->validate(['field' => '003212345678'], ['field' => 'phone'])->errors()->first('field');
+        $this->assertEquals('foo', $message);
+
+        $message = $this->validate(['field' => '003212345678'], ['field' => Rule::phone()])->errors()->first('field');
+        $this->assertEquals('foo', $message);
     }
 }

@@ -4,8 +4,10 @@ namespace Propaganistas\LaravelPhone;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\InvokableValidationRule;
 use Illuminate\Validation\Rule;
 use libphonenumber\PhoneNumberUtil;
+use Propaganistas\LaravelPhone\Rules\Phone;
 
 class PhoneServiceProvider extends ServiceProvider
 {
@@ -28,10 +30,9 @@ class PhoneServiceProvider extends ServiceProvider
     {
         $this->callAfterResolving('validator', function (Factory $validator) {
             $validator->extendDependent('phone', function ($attribute, $value, array $parameters, $validator) {
-                return (new Rules\Phone)
-                    ->setValidator($validator)
-                    ->setParameters($parameters)
-                    ->passes($attribute, $value);
+                return InvokableValidationRule::make(
+                    (new Phone)->setData($validator->getData())->setParameters($parameters)
+                )->setValidator($validator)->passes($attribute, $value);
             });
         });
 

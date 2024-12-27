@@ -115,27 +115,9 @@ class RuleTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_default_validation_message()
-    {
-        app('translator')->setLocale('xx');
-
-        app('translator')->setLoaded([
-            '*' => [
-                'validation' => [
-                    'xx' => [
-                        'phone' => 'foo',
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->assertEquals('foo', (new Phone)->message());
-    }
-
-    #[Test]
     public function it_converts_string_validation_parameters()
     {
-        $base = (new Phone)->setValidator(validator(['foo' => null]));
+        $base = (new Phone)->setData(['foo' => null]);
 
         $rule = (clone $base)->setParameters('lenient');
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
@@ -185,7 +167,7 @@ class RuleTest extends TestCase
     #[Test]
     public function it_treats_string_validation_parameters_case_insensitive()
     {
-        $base = (new Phone)->setValidator(validator(['foo' => null]));
+        $base = (new Phone)->setData(['foo' => null]);
 
         $rule = (clone $base)->setParameters('LeNIent');
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));
@@ -203,12 +185,12 @@ class RuleTest extends TestCase
     #[Test]
     public function it_treats_coinciding_field_names_as_parameters()
     {
-        $base = (new Phone)->setValidator(validator([
+        $base = (new Phone)->setData([
             'mobile' => null,
             'fixed_line' => null,
             'lenient' => null,
             'international' => null,
-        ]));
+        ]);
 
         $rule = (clone $base)->setParameters(['mobile', 'fixed_line', 'lenient', 'international']);
 
@@ -223,7 +205,7 @@ class RuleTest extends TestCase
     #[Test]
     public function it_ignores_invalid_string_validation_parameters()
     {
-        $base = (new Phone)->setValidator(validator([]));
+        $base = (new Phone)->setData([]);
         $rule = (clone $base)->setParameters(['xyz', 'foo']);
 
         $this->assertEquals([], $this->getProtectedProperty($rule, 'countries'));
