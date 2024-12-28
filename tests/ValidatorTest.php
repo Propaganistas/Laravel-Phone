@@ -564,21 +564,23 @@ class ValidatorTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_with_validator_alias()
+    public function it_resolves_validator_alias()
     {
         $this->assertTrue($this->validate(
             ['field' => '0470123456'],
             ['field' => ['phone:be,mobile']]
         )->passes());
+
+        $this->assertFalse($this->validate(
+            ['field' => '012345678'],
+            ['field' => ['phone:nl']]
+        )->passes());
     }
 
     #[Test]
-    public function it_validates_with_rule_macro()
+    public function it_resolves_rule_macro()
     {
-        $this->assertTrue($this->validate(
-            ['field' => '0470123456'],
-            ['field' => [Rule::phone()->country('BE')->type('mobile')]]
-        )->passes());
+        $this->assertEquals(new Phone, Rule::phone());
     }
 
     #[Test]
