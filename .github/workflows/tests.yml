@@ -38,7 +38,7 @@ jobs:
 
       # https://github.com/briannesbitt/Carbon/releases/tag/2.62.1
       - name: Patch Carbon version
-        if: matrix.php == 8.2
+        if: matrix.php == 8.2 && matrix.laravel != 12
         run: |
           composer require "nesbot/carbon=^2.63" --dev --no-interaction --no-update
       
