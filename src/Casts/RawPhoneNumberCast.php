@@ -7,7 +7,10 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 
 class RawPhoneNumberCast extends PhoneNumberCast
 {
-    public function get($model, string $key, $value, array $attributes)
+    /**
+     * @param  string|null  $value
+     */
+    public function get($model, string $key, $value, array $attributes): ?PhoneNumber
     {
         if (! $value) {
             return null;
@@ -26,7 +29,10 @@ class RawPhoneNumberCast extends PhoneNumberCast
         return new PhoneNumber($value, $country);
     }
 
-    public function set($model, string $key, $value, array $attributes)
+    /**
+     * @param  string|null|PhoneNumber  $value
+     */
+    public function set($model, string $key, $value, array $attributes): string
     {
         if ($value instanceof PhoneNumber) {
             return $value->getRawNumber();
@@ -35,7 +41,10 @@ class RawPhoneNumberCast extends PhoneNumberCast
         return (string) $value;
     }
 
-    public function serialize($model, string $key, $value, array $attributes)
+    /**
+     * @param  PhoneNumber|null  $value
+     */
+    public function serialize($model, string $key, $value, array $attributes): ?string
     {
         if (! $value) {
             return null;

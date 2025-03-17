@@ -7,7 +7,10 @@ use UnexpectedValueException;
 
 class E164PhoneNumberCast extends PhoneNumberCast
 {
-    public function get($model, string $key, $value, array $attributes)
+    /**
+     * @param  string|null  $value
+     */
+    public function get($model, string $key, $value, array $attributes): ?PhoneNumber
     {
         if (! $value) {
             return null;
@@ -22,7 +25,10 @@ class E164PhoneNumberCast extends PhoneNumberCast
         return $phone;
     }
 
-    public function set($model, string $key, $value, array $attributes)
+    /**
+     * @param  PhoneNumber|null|string  $value
+     */
+    public function set($model, string $key, $value, array $attributes): ?string
     {
         if (! $value) {
             return null;
@@ -37,7 +43,10 @@ class E164PhoneNumberCast extends PhoneNumberCast
         return $value->formatE164();
     }
 
-    public function serialize($model, string $key, $value, array $attributes)
+    /**
+     * @param  PhoneNumber|null  $value
+     */
+    public function serialize($model, string $key, $value, array $attributes): ?string
     {
         if (! $value) {
             return null;
