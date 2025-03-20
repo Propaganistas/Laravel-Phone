@@ -2,12 +2,18 @@
 
 namespace Propaganistas\LaravelPhone\Casts;
 
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class RawPhoneNumberCast extends PhoneNumberCast
 {
-    public function get($model, string $key, $value, array $attributes)
+    /**
+     * Transform the attribute from the underlying model values.
+     *
+     * @return PhoneNumber|null
+     */
+    public function get(Model $model, string $key, mixed $value, array $attributes)
     {
         if (! $value) {
             return null;
@@ -26,7 +32,13 @@ class RawPhoneNumberCast extends PhoneNumberCast
         return new PhoneNumber($value, $country);
     }
 
-    public function set($model, string $key, $value, array $attributes)
+    /**
+     * Transform the attribute to its underlying model values.
+     *
+     * @param  PhoneNumber|string|null  $value
+     * @return string|null
+     */
+    public function set(Model $model, string $key, mixed $value, array $attributes)
     {
         if ($value instanceof PhoneNumber) {
             return $value->getRawNumber();
@@ -35,7 +47,12 @@ class RawPhoneNumberCast extends PhoneNumberCast
         return (string) $value;
     }
 
-    public function serialize($model, string $key, $value, array $attributes)
+    /**
+     * Serialize the attribute when converting the model to an array.
+     *
+     * @return string|null
+     */
+    public function serialize(Model $model, string $key, mixed $value, array $attributes)
     {
         if (! $value) {
             return null;
