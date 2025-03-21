@@ -84,6 +84,10 @@ class PhoneNumber implements Jsonable, JsonSerializable
     {
         $type = PhoneNumberUtil::getInstance()->getNumberType($this->toLibPhoneObject());
 
+        if (enum_exists(libPhoneNumberType::class)) {
+            $type = $type->value;
+        }
+
         return $asValue ? $type : PhoneNumberType::getHumanReadableName($type);
     }
 
@@ -92,19 +96,29 @@ class PhoneNumber implements Jsonable, JsonSerializable
         $types = PhoneNumberType::sanitize(Arr::wrap($type));
 
         // Add the unsure type when applicable.
-        if (array_intersect([libPhoneNumberType::FIXED_LINE, libPhoneNumberType::MOBILE], $types)) {
-            $types[] = libPhoneNumberType::FIXED_LINE_OR_MOBILE;
+        if (enum_exists(libPhoneNumberType::class)) {
+            if (in_array(libPhoneNumberType::FIXED_LINE->value, $types, true) || in_array(libPhoneNumberType::MOBILE->value, $types, true)) {
+                $types[] = libPhoneNumberType::FIXED_LINE_OR_MOBILE->value;
+            }
+        } else {
+            if (array_intersect([libPhoneNumberType::FIXED_LINE, libPhoneNumberType::MOBILE], $types)) {
+                $types[] = libPhoneNumberType::FIXED_LINE_OR_MOBILE;
+            }
         }
 
         return in_array($this->getType(true), $types, true);
     }
 
-    public function format(string|int $format): string
+    public function format($format): string
     {
         $sanitizedFormat = PhoneNumberFormat::sanitize($format);
 
         if (is_null($sanitizedFormat)) {
             throw NumberFormatException::invalid($format);
+        }
+
+        if (enum_exists(libPhoneNumberFormat::class)) {
+            $sanitizedFormat = libPhoneNumberFormat::from($sanitizedFormat);
         }
 
         return PhoneNumberUtil::getInstance()->format(

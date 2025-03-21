@@ -169,11 +169,19 @@ class PhoneNumberTest extends TestCase
     #[Test]
     public function it_returns_the_type_value()
     {
-        $object = new PhoneNumber('012345678', 'BE');
-        $this->assertEquals(PhoneNumberType::FIXED_LINE, $object->getType(true));
+        if (enum_exists(PhoneNumberType::class)) {
+            $object = new PhoneNumber('012345678', 'BE');
+            $this->assertEquals(PhoneNumberType::FIXED_LINE->value, $object->getType(true));
 
-        $object = new PhoneNumber('0470123456', 'BE');
-        $this->assertEquals(PhoneNumberType::MOBILE, $object->getType(true));
+            $object = new PhoneNumber('0470123456', 'BE');
+            $this->assertEquals(PhoneNumberType::MOBILE->value, $object->getType(true));
+        } else {
+            $object = new PhoneNumber('012345678', 'BE');
+            $this->assertEquals(PhoneNumberType::FIXED_LINE, $object->getType(true));
+
+            $object = new PhoneNumber('0470123456', 'BE');
+            $this->assertEquals(PhoneNumberType::MOBILE, $object->getType(true));
+        }
     }
 
     #[Test]
@@ -227,10 +235,15 @@ class PhoneNumberTest extends TestCase
     }
 
     #[Test]
-    public function it_formats_with_format_value()
+    public function it_formats_with_format()
     {
         $object = new PhoneNumber('+3212345678');
         $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL));
+
+        if (enum_exists(PhoneNumberFormat::class)) {
+            $object = new PhoneNumber('+3212345678');
+            $this->assertEquals('012 34 56 78', $object->format(PhoneNumberFormat::NATIONAL->value));
+        }
     }
 
     #[Test]

@@ -330,6 +330,18 @@ class ValidatorTest extends TestCase
             ['field' => '+3212345678'],
             ['field' => (new Phone)->type(PhoneNumberType::MOBILE)]
         )->passes());
+
+        if (enum_exists(PhoneNumberType::class)) {
+            $this->assertTrue($this->validate(
+                ['field' => '+32470123456'],
+                ['field' => (new Phone)->type(PhoneNumberType::MOBILE->value)]
+            )->passes());
+
+            $this->assertFalse($this->validate(
+                ['field' => '+3212345678'],
+                ['field' => (new Phone)->type(PhoneNumberType::MOBILE->value)]
+            )->passes());
+        }
     }
 
     #[Test]
@@ -429,6 +441,18 @@ class ValidatorTest extends TestCase
             ['field' => '+3212345678'],
             ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)]
         )->passes());
+
+        if (enum_exists(PhoneNumberType::class)) {
+            $this->assertFalse($this->validate(
+                ['field' => '+32470123456'],
+                ['field' => (new Phone)->notType(PhoneNumberType::MOBILE->value)]
+            )->passes());
+
+            $this->assertTrue($this->validate(
+                ['field' => '+3212345678'],
+                ['field' => (new Phone)->notType(PhoneNumberType::MOBILE->value)]
+            )->passes());
+        }
     }
 
     #[Test]

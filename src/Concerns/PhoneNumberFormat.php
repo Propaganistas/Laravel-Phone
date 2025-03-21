@@ -14,11 +14,21 @@ class PhoneNumberFormat
 {
     public static function all(): array
     {
+        if (enum_exists(libPhoneNumberFormat::class)) {
+            return Collection::make(libPhoneNumberFormat::cases())->mapWithKeys(function (libPhoneNumberFormat $format) {
+                return [$format->name => $format->value];
+            })->all();
+        }
+
         return (new ReflectionClass(libPhoneNumberFormat::class))->getConstants();
     }
 
     public static function isValid($format): bool
     {
+        if (enum_exists(libPhoneNumberFormat::class) && $format instanceof libPhoneNumberFormat) {
+            $format = $format->value;
+        }
+
         return ! is_null($format) && in_array($format, static::all(), true);
     }
 
@@ -31,6 +41,10 @@ class PhoneNumberFormat
 
     public static function getHumanReadableName($format): ?string
     {
+        if (enum_exists(libPhoneNumberFormat::class) && $format instanceof libPhoneNumberFormat) {
+            $format = $format->value;
+        }
+
         $name = array_search($format, static::all(), true);
 
         return $name ? strtolower($name) : null;
@@ -40,6 +54,10 @@ class PhoneNumberFormat
     {
         $sanitized = Collection::make(is_array($formats) ? $formats : [$formats])
             ->map(function ($format) {
+                if (enum_exists(libPhoneNumberFormat::class) && $format instanceof libPhoneNumberFormat) {
+                    $format = $format->value;
+                }
+
                 // If the format equals a constant's name, return its value.
                 // Otherwise just return the value.
                 return Arr::get(static::all(), strtoupper($format), $format);
