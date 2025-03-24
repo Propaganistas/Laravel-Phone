@@ -10,10 +10,8 @@ class RawPhoneNumberCast extends PhoneNumberCast
 {
     /**
      * Transform the attribute from the underlying model values.
-     *
-     * @return PhoneNumber|null
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes)
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?PhoneNumber
     {
         if (! $value) {
             return null;
@@ -36,9 +34,8 @@ class RawPhoneNumberCast extends PhoneNumberCast
      * Transform the attribute to its underlying model values.
      *
      * @param  PhoneNumber|string|null  $value
-     * @return string|null
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes)
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?string
     {
         if ($value instanceof PhoneNumber) {
             return $value->getRawNumber();
@@ -49,10 +46,8 @@ class RawPhoneNumberCast extends PhoneNumberCast
 
     /**
      * Serialize the attribute when converting the model to an array.
-     *
-     * @return string|null
      */
-    public function serialize(Model $model, string $key, mixed $value, array $attributes)
+    public function serialize(Model $model, string $key, mixed $value, array $attributes): ?string
     {
         if (! $value) {
             return null;
