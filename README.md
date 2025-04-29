@@ -5,7 +5,9 @@
 [![Total Downloads](https://poser.pugx.org/propaganistas/laravel-phone/downloads)](https://packagist.org/packages/propaganistas/laravel-phone)
 [![License](https://poser.pugx.org/propaganistas/laravel-phone/license)](https://packagist.org/packages/propaganistas/laravel-phone)
 
-Adds phone number functionality to Laravel based on the [PHP port](https://github.com/giggsey/libphonenumber-for-php-lite) of [libphonenumber by Google](https://github.com/googlei18n/libphonenumber).
+Adds phone number functionality to Laravel based on
+the [PHP port](https://github.com/giggsey/libphonenumber-for-php-lite)
+of [libphonenumber by Google](https://github.com/googlei18n/libphonenumber).
 
 ## Table of Contents
 
@@ -41,60 +43,71 @@ In your languages directory, add an extra translation in every `validation.php` 
 
 ## Validation
 
-Use the `phone` keyword in your validation rules array or use the `Propaganistas\LaravelPhone\Rules\Phone` rule class to define the rule in an expressive way.
+Use the `phone` keyword in your validation rules array or use the `Propaganistas\LaravelPhone\Rules\Phone` rule class to
+define the rule in an expressive way.
 
 To put constraints on the allowed originating countries, you can explicitly specify the allowed country codes.
 
 ```php
-'phonefield'       => 'phone:US,BE',
-// 'phonefield'    => (new Phone)->country(['US', 'BE'])
+'my_input'       => 'phone:US,BE',
+// 'my_input'    => (new Phone)->country(['US', 'BE'])
 ```
 
-Or to make things more dynamic, you can also match against another data field holding a country code. For example, to require a phone number to match the provided country of residence.
-Make sure the country field has the same name as the phone field but with `_country` appended for automatic discovery, or provide your custom country field name as a parameter to the validator:
+Or to make things more dynamic, you can also match against another data field holding a country code. For example, to
+require a phone number to match the provided country of residence.
+Make sure the country field has the same name as the phone field but with `_country` appended for automatic discovery,
+or provide your custom country field name as a parameter to the validator:
 
 ```php
-'phonefield'            => 'phone',
-// 'phonefield'         => (new Phone)
-'phonefield_country'    => 'required_with:phonefield',
+'my_input'            => 'phone',
+// 'my_input'         => (new Phone)
+'my_input_country'    => 'required_with:my_input',
 ```
 
 ```php
-'phonefield'            => 'phone:custom_country_field',
-// 'phonefield'         => (new Phone)->countryField('custom_country_field')
-'custom_country_field'  => 'required_with:phonefield',
+'my_input'            => 'phone:custom_country_field',
+// 'my_input'         => (new Phone)->countryField('custom_country_field')
+'custom_country_field'  => 'required_with:my_input',
 ```
 
-Note: country codes should be [*ISO 3166-1 alpha-2 compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+Note: country codes should be [*ISO 3166-1 alpha-2
+compliant*](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
 
-To support _any valid internationally formatted_ phone number next to the whitelisted countries, use the `INTERNATIONAL` parameter. This can be useful when you're expecting locally formatted numbers from a specific country but also want to accept any other foreign number entered properly:
+To support _any valid internationally formatted_ phone number next to the whitelisted countries, use the `INTERNATIONAL`
+parameter. This can be useful when you're expecting locally formatted numbers from a specific country but also want to
+accept any other foreign number entered properly:
 
 ```php
-'phonefield'            => 'phone:INTERNATIONAL,BE',
-// 'phonefield'         => (new Phone)->international()->country('BE')
+'my_input'            => 'phone:INTERNATIONAL,BE',
+// 'my_input'         => (new Phone)->international()->country('BE')
 ```
 
-To specify constraints on the number type, just append the allowed types to the end of the parameters, e.g.:
+To specify constraints on the number type, append the allowed types to the parameters, e.g.:
 
 ```php
-'phonefield'       => 'phone:mobile',
-// 'phonefield'    => (new Phone)->type('mobile')
+'my_input'       => 'phone:mobile',
+// 'my_input'    => (new Phone)->type('mobile')
+// 'my_input'    => (new Phone)->type(libphonenumber\PhoneNumberType::MOBILE)
 ```
-The most common types are `mobile` and `fixed_line`, but feel free to use any of the types defined [here](https://github.com/giggsey/libphonenumber-for-php/blob/master/src/PhoneNumberType.php).
 
-Prepend a type with an exclamation mark to blacklist it instead. Note that you can never use whitelisted *and* blacklisted types at the same time.
+The most common types are `mobile` and `fixed_line`, but feel free to use any of the types
+defined [here](https://github.com/giggsey/libphonenumber-for-php-lite/blob/master/src/PhoneNumberType.php).
+
+Prepend a type with an exclamation mark to blacklist it instead. Note that you can never use whitelisted *and*
+blacklisted types at the same time.
 
 ```php
-'phonefield'       => 'phone:!mobile',
-// 'phonefield'    => (new Phone)->notType('mobile')
+'my_input'       => 'phone:!mobile',
+// 'my_input'    => (new Phone)->notType('mobile')
+// 'my_input'    => (new Phone)->notType(libphonenumber\PhoneNumberType::MOBILE)
 ```
 
 You can also enable lenient validation by using the `LENIENT` parameter.
-With leniency enabled, only the length of the number is checked instead of actual carrier patterns.
+With leniency enabled, only the length of a number is checked instead of actual carrier patterns.
 
 ```php
-'phonefield'       => 'phone:LENIENT',
-// 'phonefield'    => (new Phone)->lenient()
+'my_input'       => 'phone:LENIENT',
+// 'my_input'    => (new Phone)->lenient()
 ```
 
 ## Attribute casting
@@ -120,14 +133,20 @@ Both classes automatically cast the database value to a PhoneNumber object for f
 ```php
 $user->phone // PhoneNumber object or null
 ```
-When setting a value, they both accept a string value or a PhoneNumber object. 
-The `RawPhoneNumberCast` mutates the database value to the raw input number, while the `E164PhoneNumberCast` writes a formatted E.164 phone number to the database.
 
-In case of `RawPhoneNumberCast`, the cast needs to be hinted about the phone country in order to properly parse the raw number into a phone object.
-In case of `E164PhoneNumberCast` and the value to be set is not already in some international format, the cast needs to be hinted about the phone country in order to properly mutate the value.
+When setting a value, they both accept a string value or a PhoneNumber object.
+The `RawPhoneNumberCast` mutates the database value to the raw input number, while the `E164PhoneNumberCast` writes a
+formatted E.164 phone number to the database.
+
+In case of `RawPhoneNumberCast`, the cast needs to be hinted about the phone country in order to properly parse the raw
+number into a phone object.
+In case of `E164PhoneNumberCast` and the value to be set is not already in some international format, the cast needs to
+be hinted about the phone country in order to properly mutate the value.
 
 Both classes accept cast parameters in the same way:
-1. When a similar named attribute exists, but suffixed with `_country` (e.g. phone_country), the cast will detect and use it automatically.
+
+1. When a similar named attribute exists, but suffixed with `_country` (e.g. phone_country), the cast will detect and
+   use it automatically.
 2. Provide another attribute's name as a cast parameter
 3. Provide one or several country codes as cast parameters
 
@@ -138,10 +157,16 @@ public $casts = [
 ];
 ```
 
-**Important note:** Both casts expect __valid__ phone numbers in order to smoothly convert from/to PhoneNumber objects. Please validate phone numbers before setting them on a model. Refer to the [validation documentation](#validation) to learn how to validate phone numbers.
+**Important note:** Both casts expect __valid__ phone numbers in order to smoothly convert from/to PhoneNumber objects.
+Please validate phone numbers before setting them on a model. Refer to the [validation documentation](#validation) to
+learn how to validate phone numbers.
 
 #### ⚠️ Attribute assignment and `E164PhoneNumberCast`
-Due to the nature of `E164PhoneNumberCast` a valid country attribute is expected if the number is not passed in international format. Since casts are applied in the order of the given values, be sure to set the country attribute _before_ setting the phone number attribute. Otherwise `E164PhoneNumberCast` will encounter an empty country value and throw an unexpected exception.
+
+Due to the nature of `E164PhoneNumberCast` a valid country attribute is expected if the number is not passed in
+international format. Since Laravel applies casts instantly when setting an attribute, be sure to set the country
+attribute _before_ setting the phone number attribute. Otherwise `E164PhoneNumberCast` will encounter an empty country
+value and throw an unexpected exception.
 
 ```php
 // Wrong
@@ -167,7 +192,9 @@ $model->phone = '012 34 56 78';
 
 ## Utility PhoneNumber class
 
-A phone number can be wrapped in the `Propaganistas\LaravelPhone\PhoneNumber` class to enhance it with useful utility methods. It's safe to directly reference these objects in views or when saving to the database as they will degrade gracefully to the E.164 format.
+A phone number can be wrapped in the `Propaganistas\LaravelPhone\PhoneNumber` class to enhance it with useful utility
+methods. It's safe to directly reference these objects in views or when saving to the database as they will degrade
+gracefully to the E.164 format.
 
 ```php
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -176,7 +203,8 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 (string) new PhoneNumber('012 34 56 78', 'BE');            // +3212345678
 ```
 
-Alternatively you can use the `phone()` helper function. It returns a `Propaganistas\LaravelPhone\PhoneNumber` instance or the formatted string if `$format` was provided:
+Alternatively you can use the `phone()` helper function. It returns a `Propaganistas\LaravelPhone\PhoneNumber` instance
+or the formatted string if `$format` was provided:
 
 ```php
 phone('+3212/34.56.78');                // PhoneNumber instance
@@ -185,6 +213,7 @@ phone('012 34 56 78', 'BE', $format);   // string
 ```
 
 ### Formatting
+
 A PhoneNumber can be formatted in various ways:
 
 ```php
@@ -208,18 +237,20 @@ $phone->formatForMobileDialingInCountry('US'); // +3212345678
 ```
 
 ### Number information
+
 Get some information about the phone number:
 
 ```php
 $phone = new PhoneNumber('012 34 56 78', 'BE');
 
-$phone->getType();              // 'fixed_line'
-$phone->isOfType('fixed_line'); // true
+$phone->getType();              // libphonenumber\PhoneNumberType::FIXED_LINE
+$phone->isOfType('fixed_line'); // true    (or use $phone->isOfType(libphonenumber\PhoneNumberType::FIXED_LINE) )
 $phone->getCountry();           // 'BE'
 $phone->isOfCountry('BE');      // true
 ```
 
 ### Equality comparison
+
 Check if a given phone number is (not) equal to another one:
 
 ```php
@@ -236,13 +267,17 @@ $phone->notEquals( $anotherPhoneObject )   // true/false
 
 ## Database considerations
 
-> Disclaimer: Phone number handling is quite different in each application. The topics mentioned below are therefore meant as a set of thought starters; support will **not** be provided.
+> Disclaimer: Phone number handling is quite different in each application. The topics mentioned below are therefore
+> meant as a set of thought starters; support will **not** be provided.
 
-Storing phone numbers in a database has always been a speculative topic and there's simply no silver bullet. It all depends on your application's requirements. Here are some things to take into account, along with an implementation suggestion. Your ideal database setup will probably be a combination of some of the pointers detailed below.
+Storing phone numbers in a database has always been a speculative topic and there's simply no silver bullet. It all
+depends on your application's requirements. Here are some things to take into account, along with an implementation
+suggestion. Your ideal database setup will probably be a combination of some of the pointers detailed below.
 
 ### Uniqueness
 
-The E.164 format globally and uniquely identifies a phone number across the world. It also inherently implies a specific country and can be supplied as-is to the `phone()` helper.
+The E.164 format globally and uniquely identifies a phone number across the world. It also inherently implies a specific
+country and can be supplied as-is to the `phone()` helper.
 
 You'll need:
 
@@ -253,37 +288,41 @@ Example:
 
 * User input = `012/45.65.78`
 * Database column
-  * `phone` (varchar) = `+3212456578`
+    * `phone` (varchar) = `+3212456578`
 
 ### Presenting the phone number the way it was inputted
 
-If you store formatted phone numbers the raw user input will unretrievably get lost. It may be beneficial to present your users with their very own inputted phone number, for example in terms of improved user experience. 
+If you store formatted phone numbers the raw user input will unretrievably get lost. It may be beneficial to present
+your users with their very own inputted phone number, for example in terms of improved user experience.
 
 You'll need:
+
 * Two columns to store the raw input and the correlated country
 
 Example:
 
 * User input = `012/34.56.78`
 * Database columns
-  * `phone` (varchar) = `012/34.56.78`
-  * `phone_country` (varchar) = `BE`
+    * `phone` (varchar) = `012/34.56.78`
+    * `phone_country` (varchar) = `BE`
 
 ### Supporting searches
 
-Searching through phone numbers can quickly become ridiculously complex and will always require deep understanding of the context and extent of your application. Here's _a_ possible approach covering quite a lot of "natural" use cases.
+Searching through phone numbers can quickly become ridiculously complex and will always require deep understanding of
+the context and extent of your application. Here's _a_ possible approach covering quite a lot of "natural" use cases.
 
 You'll need:
+
 * Three additional columns to store searchable variants of the phone number:
-  * Normalized input (raw input with all non-alpha characters stripped)
-  * National formatted phone number (with all non-alpha characters stripped)
-  * E.164 formatted phone number
+    * Normalized input (raw input with all non-alpha characters stripped)
+    * National formatted phone number (with all non-alpha characters stripped)
+    * E.164 formatted phone number
 * Probably a `saving()` observer (or equivalent) to prefill the variants before persistence
 * An extensive search query utilizing the searchable variants
-  
+
 Example:
 
-* User input = `12/34.56.78`  
+* User input = `12/34.56.78`
 * Observer method:
   ```php
   public function saving(User $user)
@@ -296,9 +335,9 @@ Example:
   }
   ```
 * Database columns
-  * `phone_normalized` (varchar) = `12345678`
-  * `phone_national` (varchar) = `012345678`
-  * `phone_e164` (varchar) = `+3212345678`
+    * `phone_normalized` (varchar) = `12345678`
+    * `phone_national` (varchar) = `012345678`
+    * `phone_e164` (varchar) = `+3212345678`
 * Search query:
   ```php
   // $search holds the search term

@@ -42,7 +42,7 @@ class RuleTest extends TestCase
     }
 
     #[Test]
-    public function it_sets_countryField()
+    public function it_sets_country_field()
     {
         $rule = (new Phone)->countryField('foo');
         $this->assertEquals('foo', $this->getProtectedProperty($rule, 'countryField'));
@@ -57,10 +57,8 @@ class RuleTest extends TestCase
         $rule = (new Phone)->type(['mobile', 'fixed_line']);
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
 
-        if (enum_exists(PhoneNumberType::class)) {
-            $rule = (new Phone)->type(PhoneNumberType::MOBILE);
-            $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'allowedTypes'));
-        }
+        $rule = (new Phone)->type(PhoneNumberType::MOBILE);
+        $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
     #[Test]
@@ -81,10 +79,8 @@ class RuleTest extends TestCase
         $rule = (new Phone)->notType(['mobile', 'fixed_line']);
         $this->assertEquals(['mobile', 'fixed_line'], $this->getProtectedProperty($rule, 'blockedTypes'));
 
-        if (enum_exists(PhoneNumberType::class)) {
-            $rule = (new Phone)->notType(PhoneNumberType::MOBILE);
-            $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'blockedTypes'));
-        }
+        $rule = (new Phone)->notType(PhoneNumberType::MOBILE);
+        $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'blockedTypes'));
     }
 
     #[Test]
@@ -106,7 +102,7 @@ class RuleTest extends TestCase
     #[Test]
     public function it_sets_fixed_line_type_using_shortcut_method()
     {
-        $rule = (new Phone)->fixedLine();
+        $rule = (new Phone)->fixed_line();
         $this->assertEquals([PhoneNumberType::FIXED_LINE], $this->getProtectedProperty($rule, 'allowedTypes'));
     }
 
@@ -147,28 +143,11 @@ class RuleTest extends TestCase
         $rule = (clone $base)->setParameters('fixed_line');
         $this->assertEquals(['fixed_line'], $this->getProtectedProperty($rule, 'allowedTypes'));
 
-        if (enum_exists(PhoneNumberType::class)) {
-            $rule = (clone $base)->setParameters([(string) PhoneNumberType::MOBILE->value]);
-            $this->assertEquals([PhoneNumberType::MOBILE->value], $this->getProtectedProperty($rule, 'allowedTypes'));
-        } else {
-            $rule = (clone $base)->setParameters([(string) PhoneNumberType::MOBILE]);
-            $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'allowedTypes'));
-        }
-
         $rule = (clone $base)->setParameters(['!mobile']);
         $this->assertEquals(['mobile'], $this->getProtectedProperty($rule, 'blockedTypes'));
 
         $rule = (clone $base)->setParameters(['!fixed_line']);
         $this->assertEquals(['fixed_line'], $this->getProtectedProperty($rule, 'blockedTypes'));
-
-
-        if (enum_exists(PhoneNumberType::class)) {
-            $rule = (clone $base)->setParameters(['!'.PhoneNumberType::MOBILE->value]);
-            $this->assertEquals([PhoneNumberType::MOBILE->value], $this->getProtectedProperty($rule, 'blockedTypes'));
-        } else {
-            $rule = (clone $base)->setParameters(['!'.PhoneNumberType::MOBILE]);
-            $this->assertEquals([PhoneNumberType::MOBILE], $this->getProtectedProperty($rule, 'blockedTypes'));
-        }
 
         $rule = (clone $base)->setParameters(['lenient', 'international', 'foo', 'be', 'nl', 'mobile', 'fixed_line']);
         $this->assertTrue($this->getProtectedProperty($rule, 'lenient'));

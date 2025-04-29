@@ -89,7 +89,7 @@ class E164PhoneNumberCastTest extends TestCase
     #[Test]
     public function it_throws_when_accessing_countryless_value()
     {
-        $model = new ModelWithE164Cast();
+        $model = new ModelWithE164Cast;
         $model->setRawAttributes(['phone' => '012 34 56 78']);
         $this->expectException(UnexpectedValueException::class);
         $model->phone;
@@ -98,11 +98,11 @@ class E164PhoneNumberCastTest extends TestCase
     #[Test]
     public function it_serializes()
     {
-        $model = new ModelWithE164Cast();
+        $model = new ModelWithE164Cast;
         $model->phone = '+32 12 34 56 78';
         $this->assertEquals('+3212345678', $model->toArray()['phone']);
 
-        $model = new ModelWithE164Cast();
+        $model = new ModelWithE164Cast;
         $model->phone = null;
         $this->assertEquals(null, $model->toArray()['phone']);
     }

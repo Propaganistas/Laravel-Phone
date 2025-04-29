@@ -5,8 +5,8 @@ namespace Propaganistas\LaravelPhone\Tests;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use libphonenumber\PhoneNumberType;
+use LogicException;
 use PHPUnit\Framework\Attributes\Test;
-use Propaganistas\LaravelPhone\Exceptions\IncompatibleTypesException;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
 class ValidatorTest extends TestCase
@@ -330,18 +330,6 @@ class ValidatorTest extends TestCase
             ['field' => '+3212345678'],
             ['field' => (new Phone)->type(PhoneNumberType::MOBILE)]
         )->passes());
-
-        if (enum_exists(PhoneNumberType::class)) {
-            $this->assertTrue($this->validate(
-                ['field' => '+32470123456'],
-                ['field' => (new Phone)->type(PhoneNumberType::MOBILE->value)]
-            )->passes());
-
-            $this->assertFalse($this->validate(
-                ['field' => '+3212345678'],
-                ['field' => (new Phone)->type(PhoneNumberType::MOBILE->value)]
-            )->passes());
-        }
     }
 
     #[Test]
@@ -441,18 +429,6 @@ class ValidatorTest extends TestCase
             ['field' => '+3212345678'],
             ['field' => (new Phone)->notType(PhoneNumberType::MOBILE)]
         )->passes());
-
-        if (enum_exists(PhoneNumberType::class)) {
-            $this->assertFalse($this->validate(
-                ['field' => '+32470123456'],
-                ['field' => (new Phone)->notType(PhoneNumberType::MOBILE->value)]
-            )->passes());
-
-            $this->assertTrue($this->validate(
-                ['field' => '+3212345678'],
-                ['field' => (new Phone)->notType(PhoneNumberType::MOBILE->value)]
-            )->passes());
-        }
     }
 
     #[Test]
@@ -543,12 +519,12 @@ class ValidatorTest extends TestCase
     #[Test]
     public function it_doesnt_allow_allowed_and_blocked_types_simultaneously()
     {
-        $this->expectException(IncompatibleTypesException::class);
+        $this->expectException(LogicException::class);
 
-        $this->validate(
+        $this->assertTrue($this->validate(
             ['field' => '+3212345678'],
             ['field' => (new Phone)->type('fixed_line')->notType('mobile')]
-        )->passes();
+        )->passes());
     }
 
     #[Test]
@@ -604,6 +580,7 @@ class ValidatorTest extends TestCase
     #[Test]
     public function it_resolves_rule_macro()
     {
+        /** @phpstan-ignore staticMethod.notFound */
         $this->assertEquals(new Phone, Rule::phone());
     }
 
@@ -628,7 +605,17 @@ class ValidatorTest extends TestCase
         $message = $this->validate(['field' => '003212345678'], ['field' => 'phone'])->errors()->first('field');
         $this->assertEquals('foo', $message);
 
+        /** @phpstan-ignore staticMethod.notFound */
         $message = $this->validate(['field' => '003212345678'], ['field' => Rule::phone()])->errors()->first('field');
         $this->assertEquals('foo', $message);
+    }
+
+    #[Test]
+    public function it_validates_unparseable_numbers_to_false()
+    {
+        $this->assertFalse($this->validate(
+            ['field' => '1'],
+            ['field' => ['phone:mobile']]
+        )->passes());
     }
 }

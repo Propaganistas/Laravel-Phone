@@ -5,7 +5,7 @@ namespace Propaganistas\LaravelPhone\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes;
 use Illuminate\Support\Arr;
-use Propaganistas\LaravelPhone\Concerns\PhoneNumberCountry;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAttributes
 {
@@ -27,7 +27,7 @@ abstract class PhoneNumberCast implements CastsAttributes, SerializesCastableAtt
         }, [...$this->parameters, $key.'_country']);
 
         return array_filter($parameters, function ($parameter) {
-            return PhoneNumberCountry::isValid($parameter);
+            return PhoneNumber::isValidCountry($parameter);
         });
     }
 }
