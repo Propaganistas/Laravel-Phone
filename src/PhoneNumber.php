@@ -76,11 +76,17 @@ class PhoneNumber implements Jsonable, JsonSerializable
     {
         $instance = clone $this;
         $instance->countries = Arr::wrap($country);
+        
+        $instanceCountry = $instance->getCountry();
 
-        return in_array(
-            mb_strtoupper($instance->getCountry()),
-            array_map('mb_strtoupper', $instance->countries)
-        );
+        if ($instanceCountry !== null) {
+            return in_array(
+                mb_strtoupper($instance->getCountry()),
+                array_map('mb_strtoupper', $instance->countries)
+            );
+        }
+
+        return false;
     }
 
     public static function isValidCountry(string $country): bool
