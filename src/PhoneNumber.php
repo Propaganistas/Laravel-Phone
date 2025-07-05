@@ -79,14 +79,14 @@ class PhoneNumber implements Jsonable, JsonSerializable
         
         $instanceCountry = $instance->getCountry();
 
-        if ($instanceCountry !== null) {
-            return in_array(
-                mb_strtoupper($instanceCountry),
-                array_map('mb_strtoupper', $instance->countries)
-            );
+        if ($instanceCountry === null) {
+            return false;
         }
 
-        return false;
+        return in_array(
+            mb_strtoupper($instanceCountry),
+            array_map('mb_strtoupper', $instance->countries)
+        );
     }
 
     public static function isValidCountry(string $country): bool
