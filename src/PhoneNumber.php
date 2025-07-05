@@ -81,7 +81,7 @@ class PhoneNumber implements Jsonable, JsonSerializable
 
         if ($instanceCountry !== null) {
             return in_array(
-                mb_strtoupper($instance->getCountry()),
+                mb_strtoupper($instanceCountry),
                 array_map('mb_strtoupper', $instance->countries)
             );
         }
