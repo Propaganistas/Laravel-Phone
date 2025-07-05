@@ -76,9 +76,15 @@ class PhoneNumber implements Jsonable, JsonSerializable
     {
         $instance = clone $this;
         $instance->countries = Arr::wrap($country);
+        
+        $instanceCountry = $instance->getCountry();
+
+        if ($instanceCountry === null) {
+            return false;
+        }
 
         return in_array(
-            mb_strtoupper($instance->getCountry()),
+            mb_strtoupper($instanceCountry),
             array_map('mb_strtoupper', $instance->countries)
         );
     }
