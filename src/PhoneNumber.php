@@ -70,13 +70,31 @@ class PhoneNumber implements Jsonable, JsonSerializable
     }
 
     /**
+     * Get the dialing code (country calling code) for this phone number's country.
+     *
+     * @return int|null The country dialing code (e.g. 1 for US/Canada, 44 for UK, 966 for Saudi Arabia),
+     *                  or null if no valid country code was found
+     */
+    public function getDialingCode(): ?int
+    {
+        $country = $this->getCountry();
+
+        // Return null if no valid country code was found
+        if ($country === null) {
+            return null;
+        }
+
+        return PhoneNumberUtil::getInstance()->getCountryCodeForRegion($country);
+    }
+
+    /**
      * @param  string|array<string>  $country
      */
     public function isOfCountry(array|string $country): bool
     {
         $instance = clone $this;
         $instance->countries = Arr::wrap($country);
-        
+
         $instanceCountry = $instance->getCountry();
 
         if ($instanceCountry === null) {
