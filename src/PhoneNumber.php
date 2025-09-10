@@ -70,12 +70,12 @@ class PhoneNumber implements Jsonable, JsonSerializable
     }
 
     /**
-     * Get the dialing code (country calling code) for this phone number's country.
+     * Get the country calling code for this phone number's country.
      *
-     * @return int|null The country dialing code (e.g. 1 for US/Canada, 44 for UK, 966 for Saudi Arabia),
+     * @return int|null The country calling code (e.g. 1 for US/Canada, 44 for UK, 966 for Saudi Arabia),
      *                  or null if no valid country code was found
      */
-    public function getDialingCode(): ?int
+    public function getCountryCallingCode(): ?int
     {
         $country = $this->getCountry();
 
