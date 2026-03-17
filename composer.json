@@ -17,14 +17,14 @@
   "require": {
     "php": "^8.2",
     "ext-mbstring": "*",
-    "illuminate/contracts": "^11.0|^12.0",
-    "illuminate/support": "^11.0|^12.0",
-    "illuminate/validation": "^11.0|^12.0",
+    "illuminate/contracts": "^11.0|^12.0|^13.0",
+    "illuminate/support": "^11.0|^12.0|^13.0",
+    "illuminate/validation": "^11.0|^12.0|^13.0",
     "giggsey/libphonenumber-for-php-lite": "^9.0"
   },
   "require-dev": {
     "orchestra/testbench": "*",
-    "phpunit/phpunit": "^11.5.3",
+    "phpunit/phpunit": "^11.5.3|^12.0",
     "laravel/pint": "^1.21"
   },
   "autoload": {
