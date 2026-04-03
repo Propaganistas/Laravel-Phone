@@ -110,6 +110,43 @@ With leniency enabled, only the length of a number is checked instead of actual 
 // 'my_input'    => (new Phone)->lenient()
 ```
 
+### Validating uniqueness with formatted phone numbers
+
+If you're storing formatted phone numbers in your database, you need to validate uniqueness against the same format used for storage rather than the raw input. The package supports [multiple formatting options](#formatting)).
+
+Use a Closure rule after the phone validation, applying the same format you use when storing:
+
+```php
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Propaganistas\LaravelPhone\Rules\Phone;
+
+// For creating a new record:
+'phone' => [
+    'required',
+    'string',
+    (new Phone)->country('BE'),
+    function (string $attribute, mixed $value, Closure $fail) {
+        if (User::where($attribute, (new PhoneNumber($value, 'BE'))->formatE164())->exists()) {
+            $fail(__('validation.unique'));
+        }
+    },
+],
+
+// For updating an existing record:
+'phone' => [
+    'required',
+    'string',
+    (new Phone)->country('BE'),
+    function (string $attribute, mixed $value, Closure $fail) use ($user) {
+        if (User::where($attribute, (new PhoneNumber($value, 'BE'))->formatE164())->whereNot('id', $user->id)->exists()) {
+            $fail(__('validation.unique'));
+        }
+    },
+],
+```
+
+Replace `formatE164()` with whichever format you're storing in your database (`formatInternational()`, `formatNational()`, etc.).
+
 ## Attribute casting
 
 Two cast classes are provided for automatic casting of Eloquent model attributes:
