@@ -36,7 +36,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/support=^${{ matrix.laravel }}" --no-interaction --no-update
+          testbench_major=$(( ${{ matrix.laravel }} - 2 ))
+          composer require "illuminate/support=^${{ matrix.laravel }}" "orchestra/testbench=^${testbench_major}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
