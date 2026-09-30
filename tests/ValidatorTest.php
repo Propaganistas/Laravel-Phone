@@ -158,6 +158,58 @@ class ValidatorTest extends TestCase
     }
 
     #[Test]
+    public function it_validates_with_default_country()
+    {
+        Phone::setDefaultCountry(['BE']);
+        $this->assertTrue($this->validate(
+            ['field' => '012345678'],
+            ['field' => (new Phone)],
+        )->passes());
+
+        Phone::setDefaultCountry(['NL']);
+
+        $this->assertFalse($this->validate(
+            ['field' => '012345678'],
+            ['field' => (new Phone)]
+        )->passes());
+    }
+
+    #[Test]
+    public function it_validates_with_explicit_country_taking_precedence_over_default_country()
+    {
+        Phone::setDefaultCountry(['NL']);
+        $this->assertTrue($this->validate(
+            ['field' => '012345678'],
+            ['field' => (new Phone)->country(['BE'])],
+        )->passes());
+
+        Phone::setDefaultCountry(['BE']);
+
+        $this->assertFalse($this->validate(
+            ['field' => '012345678'],
+            ['field' => (new Phone)->country(['NL'])]
+        )->passes());
+    }
+
+    #[Test]
+    public function it_validates_with_custom_country_field_and_default_country()
+    {
+        Phone::setDefaultCountry(['NL']);
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678', 'field_country' => 'BE'],
+            ['field' => (new Phone)]
+        )->passes());
+
+        Phone::setDefaultCountry(['BE']);
+
+        $this->assertTrue($this->validate(
+            ['field' => '012345678', 'field_country' => 'NL'],
+            ['field' => (new Phone)]
+        )->passes());
+    }
+
+    #[Test]
     public function it_validates_in_international_mode()
     {
         $this->assertTrue($this->validate(

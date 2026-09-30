@@ -49,6 +49,14 @@ class RuleTest extends TestCase
     }
 
     #[Test]
+    public function it_sets_default_countries()
+    {
+        Phone::setDefaultCountry(['BE']);
+        $rule = new Phone();
+        $this->assertEquals(['BE'], $this->getProtectedStaticProperty($rule, 'defaultCountries'));
+    }
+
+    #[Test]
     public function it_sets_types()
     {
         $rule = (new Phone)->type('mobile');
@@ -222,5 +230,10 @@ class RuleTest extends TestCase
         $property->setAccessible(true);
 
         return $property->getValue($object);
+    }
+
+    protected function getProtectedStaticProperty(object $object, string $property)
+    {
+        return (new ReflectionClass($object))->getStaticPropertyValue($property);
     }
 }

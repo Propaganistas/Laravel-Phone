@@ -39,6 +39,8 @@ class Phone implements DataAwareRule, ValidationRule
 
     protected bool $lenient = false;
 
+    protected static array $defaultCountries = [];
+
     public function setData(array $data)
     {
         $this->data = $data;
@@ -61,7 +63,7 @@ class Phone implements DataAwareRule, ValidationRule
 
         $countries = array_filter([
             $this->getCountryFieldValue($attribute),
-            ...$this->countries,
+            ...empty($this->countries) ? self::$defaultCountries : $this->countries,
         ]);
 
         try {
@@ -204,5 +206,10 @@ class Phone implements DataAwareRule, ValidationRule
         }
 
         return false;
+    }
+
+    public static function setDefaultCountry(array|string $country): void
+    {
+        self::$defaultCountries = is_array($country) ? $country : func_get_args();
     }
 }
