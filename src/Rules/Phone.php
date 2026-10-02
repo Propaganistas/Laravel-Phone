@@ -26,6 +26,11 @@ class Phone implements DataAwareRule, ValidationRule
     protected array $countries = [];
 
     /**
+     * @var array<string>
+     */
+    protected static array $defaultCountries = [];
+
+    /**
      * @var array<PhoneNumberType|string>
      */
     protected array $allowedTypes = [];
@@ -38,8 +43,6 @@ class Phone implements DataAwareRule, ValidationRule
     protected bool $international = false;
 
     protected bool $lenient = false;
-
-    protected static array $defaultCountries = [];
 
     public function setData(array $data)
     {

@@ -82,6 +82,20 @@ accept any other foreign number entered properly:
 // 'my_input'         => (new Phone)->international()->country('BE')
 ```
 
+If your application only accepts a specific set of countries, you can define global validation defaults to avoid
+repeating yourself. Individual rules can still override the global default when necessary.
+
+```php
+use Propaganistas\LaravelPhone\Rules\Phone;
+
+// In a ServiceProvider
+Phone::setDefaultCountry = ['BE', 'US'];
+
+// Validation
+'my_input'            => 'phone',    // Uses defaults; validates against BE and US
+'my_input'            => 'phone:NL', // Overrides defaults; only validates against NL
+```
+
 To specify constraints on the number type, append the allowed types to the parameters, e.g.:
 
 ```php
